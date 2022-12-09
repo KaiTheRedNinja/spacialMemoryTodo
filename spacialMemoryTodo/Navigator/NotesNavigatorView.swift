@@ -14,7 +14,9 @@ struct NotesNavigatorView: View {
 
     var body: some View {
         VStack {
-            Text("HI")
+            OutlineView { _ in
+                NotesOutlineView()
+            }
         }
         .onAppear {
             self.tabManager.openTab(tab: MainTabContent())

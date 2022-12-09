@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		93065F3B29437327002A3381 /* NotesOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F3A29437327002A3381 /* NotesOutlineView.swift */; };
+		93065F3E29437513002A3381 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F3D29437513002A3381 /* Location.swift */; };
+		93065F402943751B002A3381 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F3F2943751B002A3381 /* Todo.swift */; };
+		93065F4229437639002A3381 /* NotesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4129437639002A3381 /* NotesTableViewCell.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
 		931B7B8C2943609400BFAA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8B2943609400BFAA4E /* Assets.xcassets */; };
 		931B7B8F2943609400BFAA4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8D2943609400BFAA4E /* Main.storyboard */; };
@@ -20,6 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		93065F3A29437327002A3381 /* NotesOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesOutlineView.swift; sourceTree = "<group>"; };
+		93065F3D29437513002A3381 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		93065F3F2943751B002A3381 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		93065F4129437639002A3381 /* NotesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTableViewCell.swift; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931B7B872943609300BFAA4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		931B7B8B2943609400BFAA4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -45,6 +53,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		93065F3C294374FE002A3381 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				93065F3D29437513002A3381 /* Location.swift */,
+				93065F3F2943751B002A3381 /* Todo.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		931B7B7B2943609300BFAA4E = {
 			isa = PBXGroup;
 			children = (
@@ -64,6 +81,7 @@
 		931B7B862943609300BFAA4E /* spacialMemoryTodo */ = {
 			isa = PBXGroup;
 			children = (
+				93065F3C294374FE002A3381 /* Data */,
 				931B7BA62943712200BFAA4E /* Workspace */,
 				931B7BA32943702800BFAA4E /* Navigator */,
 				931B7B9A2943613200BFAA4E /* Window */,
@@ -98,6 +116,8 @@
 			isa = PBXGroup;
 			children = (
 				931B7BA42943703600BFAA4E /* NotesNavigatorView.swift */,
+				93065F3A29437327002A3381 /* NotesOutlineView.swift */,
+				93065F4129437639002A3381 /* NotesTableViewCell.swift */,
 			);
 			path = Navigator;
 			sourceTree = "<group>";
@@ -190,9 +210,13 @@
 				931B7B9E2943628500BFAA4E /* NavigatorSidebar.swift in Sources */,
 				931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */,
 				931B7BA229436A0600BFAA4E /* Workspace.swift in Sources */,
+				93065F4229437639002A3381 /* NotesTableViewCell.swift in Sources */,
+				93065F3E29437513002A3381 /* Location.swift in Sources */,
 				931B7BA52943703600BFAA4E /* NotesNavigatorView.swift in Sources */,
 				931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */,
 				931B7BA02943655600BFAA4E /* TabBar.swift in Sources */,
+				93065F3B29437327002A3381 /* NotesOutlineView.swift in Sources */,
+				93065F402943751B002A3381 /* Todo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

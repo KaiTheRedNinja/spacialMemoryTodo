@@ -11,6 +11,9 @@
 		93065F3E29437513002A3381 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F3D29437513002A3381 /* Location.swift */; };
 		93065F402943751B002A3381 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F3F2943751B002A3381 /* Todo.swift */; };
 		93065F4229437639002A3381 /* NotesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4129437639002A3381 /* NotesTableViewCell.swift */; };
+		93065F4429437931002A3381 /* CardsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4329437931002A3381 /* CardsContainerView.swift */; };
+		93065F462943793E002A3381 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F452943793E002A3381 /* CardsView.swift */; };
+		93065F4829437D9A002A3381 /* LocationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4729437D9A002A3381 /* LocationCardView.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
 		931B7B8C2943609400BFAA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8B2943609400BFAA4E /* Assets.xcassets */; };
 		931B7B8F2943609400BFAA4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8D2943609400BFAA4E /* Main.storyboard */; };
@@ -28,6 +31,9 @@
 		93065F3D29437513002A3381 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		93065F3F2943751B002A3381 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
 		93065F4129437639002A3381 /* NotesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesTableViewCell.swift; sourceTree = "<group>"; };
+		93065F4329437931002A3381 /* CardsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsContainerView.swift; sourceTree = "<group>"; };
+		93065F452943793E002A3381 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
+		93065F4729437D9A002A3381 /* LocationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCardView.swift; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931B7B872943609300BFAA4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		931B7B8B2943609400BFAA4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -126,6 +132,9 @@
 			isa = PBXGroup;
 			children = (
 				931B7BA72943714200BFAA4E /* WorkspaceView.swift */,
+				93065F4329437931002A3381 /* CardsContainerView.swift */,
+				93065F452943793E002A3381 /* CardsView.swift */,
+				93065F4729437D9A002A3381 /* LocationCardView.swift */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";
@@ -208,12 +217,15 @@
 			files = (
 				931B7B9C2943614D00BFAA4E /* MainWindowController.swift in Sources */,
 				931B7B9E2943628500BFAA4E /* NavigatorSidebar.swift in Sources */,
+				93065F4429437931002A3381 /* CardsContainerView.swift in Sources */,
 				931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */,
 				931B7BA229436A0600BFAA4E /* Workspace.swift in Sources */,
 				93065F4229437639002A3381 /* NotesTableViewCell.swift in Sources */,
 				93065F3E29437513002A3381 /* Location.swift in Sources */,
+				93065F4829437D9A002A3381 /* LocationCardView.swift in Sources */,
 				931B7BA52943703600BFAA4E /* NotesNavigatorView.swift in Sources */,
 				931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */,
+				93065F462943793E002A3381 /* CardsView.swift in Sources */,
 				931B7BA02943655600BFAA4E /* TabBar.swift in Sources */,
 				93065F3B29437327002A3381 /* NotesOutlineView.swift in Sources */,
 				93065F402943751B002A3381 /* Todo.swift in Sources */,

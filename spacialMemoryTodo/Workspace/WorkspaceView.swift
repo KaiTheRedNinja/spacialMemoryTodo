@@ -14,7 +14,7 @@ struct WorkspaceView: View {
 
     var body: some View {
         VStack {
-            Text("HI main content here")
+            CardsContainerView()
         }
         .onAppear {
             self.tabManager.openTab(tab: MainTabContent())

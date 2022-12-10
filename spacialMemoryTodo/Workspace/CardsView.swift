@@ -12,10 +12,10 @@ class CardsView: NSScrollView {
     var cards: [LocationCardView] = []
 
     var locations: [Location] = [
-        .init(name: "test location", todos: [
+        .init(name: "test 1", todos: [
             .init(name: "test todo"),
             .init(name: "test threedo")
-        ], rect: .init(x: 0, y: 0, width: 100, height: 100)),
+        ], rect: .init(x: 0, y: 0, width: 300, height: 100)),
         .init(name: "test 2", todos: [
         ], rect: .init(x: 300, y: 300, width: 300, height: 100))
     ]
@@ -26,6 +26,8 @@ class CardsView: NSScrollView {
         self.hasHorizontalScroller = true
         self.autohidesScrollers = true
         self.documentView = NSView(frame: frameRect)
+        self.wantsLayer = true
+        self.layer?.backgroundColor = NSColor.systemGray.cgColor
         locationsToCards()
         frameCards()
     }

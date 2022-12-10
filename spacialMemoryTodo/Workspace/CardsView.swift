@@ -49,7 +49,7 @@ class CardsView: NSScrollView {
         cards = newCards
     }
 
-    let minCardDistanceFromEdge: CGFloat = 100
+    let minCardDistanceFromEdge: CGFloat = 300
 
     func frameCards(animate: Bool = false) {
         // find the coordinates closest to each edge. This will serve as the reference points.
@@ -106,8 +106,8 @@ class CardsView: NSScrollView {
         }
 
         // set the document view's frame
-        let newWidth = max((edges[.trailing] ?? 0) + offsetSize.width + cardXDistance, self.contentView.frame.width)
-        let newHeight = max((edges[.bottom] ?? 0) + offsetSize.height + cardYDistance, self.contentView.frame.height)
+        let newWidth = (edges[.trailing] ?? 0) + offsetSize.width + cardXDistance
+        let newHeight = (edges[.bottom] ?? 0) + offsetSize.height + cardYDistance
         documentView?.frame.size = .init(width: newWidth,
                                          height: newHeight)
     }

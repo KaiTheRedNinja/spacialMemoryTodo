@@ -10,7 +10,7 @@ import SwiftUI
 class LocationCardView: NSView {
     var location: Location
 
-    init(frame: NSRect = .defaultLocationCardSize, location: Location) {
+    init(frame: CGRect = .defaultLocationCardSize, location: Location) {
         self.location = location
         super.init(frame: frame)
 

@@ -49,7 +49,7 @@ class CardsView: NSScrollView {
         cards = newCards
     }
 
-    let cardDistanceFromEdge: CGFloat = 100
+    let minCardDistanceFromEdge: CGFloat = 100
 
     func frameCards(animate: Bool = false) {
         // find the coordinates closest to each edge. This will serve as the reference points.
@@ -82,9 +82,16 @@ class CardsView: NSScrollView {
             }
         }
 
+        // using the size of the content view, calculate the card distance from edge for height and width
+        let cardsWidth = (edges[.trailing] ?? 0) - (edges[.leading] ?? 0)
+        let cardsHeight = (edges[.bottom] ?? 0) - (edges[.top] ?? 0)
+
+        let cardXDistance = max(minCardDistanceFromEdge, (contentView.frame.width-cardsWidth)/2)
+        let cardYDistance = max(minCardDistanceFromEdge, (contentView.frame.height-cardsHeight)/2)
+
         // reframe the origin of all frames by (`cardDistanceFromEdge - edges[.top]`, `cardDistanceFromEdge - edges[.leading]`)
-        let topEdgeOffset = cardDistanceFromEdge - (edges[.top] ?? 0)
-        let leadingEdgeOffset = cardDistanceFromEdge - (edges[.leading] ?? 0)
+        let leadingEdgeOffset = cardXDistance - (edges[.leading] ?? 0)
+        let topEdgeOffset = cardYDistance - (edges[.top] ?? 0)
         let offsetSize = CGSize(width: leadingEdgeOffset, height: topEdgeOffset)
 
         for card in cards {
@@ -99,11 +106,8 @@ class CardsView: NSScrollView {
         }
 
         // set the document view's frame
-        let newWidth = max((edges[.trailing] ?? 0) + offsetSize.width + cardDistanceFromEdge, self.contentView.frame.width)
-        let newHeight = max((edges[.bottom] ?? 0) + offsetSize.height + cardDistanceFromEdge, self.contentView.frame.height)
-        print("Edges: \(edges.description)")
-        print("Offest \(offsetSize)")
-        print("New sizes: \(newWidth), \(newHeight)")
+        let newWidth = max((edges[.trailing] ?? 0) + offsetSize.width + cardXDistance, self.contentView.frame.width)
+        let newHeight = max((edges[.bottom] ?? 0) + offsetSize.height + cardYDistance, self.contentView.frame.height)
         documentView?.frame.size = .init(width: newWidth,
                                          height: newHeight)
     }

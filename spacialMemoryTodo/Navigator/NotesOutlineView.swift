@@ -7,19 +7,29 @@
 
 import SwiftUI
 import macAppBoilerplate
+import Combine
 
 class NotesOutlineView: macAppBoilerplate.OutlineViewController {
-    var locations: [Location] = [
-        .init(name: "test location", todos: [
-            .init(name: "test todo"),
-            .init(name: "test threedo")
-        ])
-    ]
+    var locations: [Location] {
+        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent
+        else { return [] }
+
+        return tabContent.locations
+    }
+
+    var mainTabContentCancellable: AnyCancellable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         outlineView.dataSource = self
         outlineView.delegate = self
+        mainTabContentCancellable = tabManager.objectWillChange.sink {
+            self.outlineView.reloadData()
+        }
+    }
+
+    deinit {
+        mainTabContentCancellable.cancel()
     }
 }
 

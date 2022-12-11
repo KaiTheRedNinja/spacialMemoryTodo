@@ -17,7 +17,6 @@ class CardsView: NSScrollView {
     var tabManagerCancellable: AnyCancellable!
 
     var locations: [Location] {
-        print("tabs: \(tabManager.openedTabs)")
         guard let tabContent = tabManager.selectedTabItem() as? MainTabContent
         else { return [] }
 
@@ -125,6 +124,10 @@ class CardsView: NSScrollView {
 
     override func resizeSubviews(withOldSize oldSize: NSSize) {
         frameCards()
+    }
+
+    deinit {
+        tabManagerCancellable.cancel()
     }
 }
 

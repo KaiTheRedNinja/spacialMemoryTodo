@@ -104,6 +104,10 @@ class LocationCardView: DraggableResizableView {
             layer?.backgroundColor = .init(gray: 0.8, alpha: 1)
         }
     }
+
+    deinit {
+        locationCancellable.cancel()
+    }
 }
 
 extension LocationCardView: DraggableResizableViewDelegate {

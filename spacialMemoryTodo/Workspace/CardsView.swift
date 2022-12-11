@@ -40,7 +40,9 @@ class CardsView: NSScrollView {
         // iterate over locations and see if they have a corresponding card, add the location if otherwise
         let cardLocations = cards.map { $0.location }
         for (index, location) in locations.enumerated() where !cardLocations.contains(location) {
-            cards.insert(LocationCardView(location: location), at: index)
+            let newCard = LocationCardView(location: location)
+            newCard.cardsView = self
+            cards.insert(newCard, at: index)
         }
 
         // iterate over cards and see if they have a corresponding location, remove the card if otherwise
@@ -67,8 +69,6 @@ class CardsView: NSScrollView {
                 .leading: card.location.rect.minX,
                 .trailing: card.location.rect.maxX,
             ]
-
-            print("Card \(card.location.name) edges: \n\(cardEdges.description)")
 
             // replace the values in edges where the value is larger/smaller
             for (edge, value) in cardEdges where isBetterEdge(edge: edge, value: value) {

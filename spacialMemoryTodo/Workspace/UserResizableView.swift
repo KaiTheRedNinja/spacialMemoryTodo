@@ -238,3 +238,20 @@ protocol DraggableResizableViewDelegate {
     ///   - newRect: The new size of the view's `NSRect`
     func didResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect)
 }
+
+// default implementations
+
+extension DraggableResizableViewDelegate {
+    func shouldResizeView(for event: NSEvent,
+                          cursorAt cursorPosition: CornerBorderPosition,
+                          from oldRect: NSRect,
+                          to newRect: NSRect) -> Bool { true }
+    func willResizeView(for event: NSEvent,
+                        cursorAt cursorPosition: CornerBorderPosition,
+                        from oldRect: NSRect,
+                        to newRect: NSRect) {}
+    func didResizeView(for event: NSEvent,
+                       cursorAt cursorPosition: CornerBorderPosition,
+                       from oldRect: NSRect,
+                       to newRect: NSRect) {}
+}

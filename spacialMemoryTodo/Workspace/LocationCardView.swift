@@ -10,6 +10,8 @@ import SwiftUI
 class LocationCardView: DraggableResizableView {
     var location: Location
 
+    var cardsView: CardsView!
+
     var title: NSTextField!
     var count: NSTextField!
 
@@ -22,6 +24,7 @@ class LocationCardView: DraggableResizableView {
 
         self.wantsLayer = true
         self.layer?.backgroundColor = .init(gray: 0.8, alpha: 1)
+        self.delegate = self
 
         self.title = NSTextField(labelWithString: location.name)
         self.title.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
@@ -56,5 +59,26 @@ class LocationCardView: DraggableResizableView {
                                        y: outlineOffset,
                                        width: frame.width-outlineOffset*2,
                                        height: frame.height-titleHeight-titleOffset-outlineOffset)
+    }
+}
+
+extension LocationCardView: DraggableResizableViewDelegate {
+    func didResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect) {
+        // Calculate the offset applied to location.rect to produce oldRect
+        let xOffset = oldRect.origin.x - location.rect.origin.x
+        let yOffset = oldRect.origin.y - location.rect.origin.y
+
+        // Apply the same offset to newRect
+        let offsetNewFrame = NSRect(
+            x: newRect.origin.x - xOffset,
+            y: newRect.origin.y - yOffset,
+            width: newRect.size.width,
+            height: newRect.size.height
+        )
+
+        // Set the location.rect to the new frame
+        location.rect = offsetNewFrame
+
+        cardsView.frameCards()
     }
 }

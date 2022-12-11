@@ -25,6 +25,7 @@
 		931B7BA229436A0600BFAA4E /* Workspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA129436A0600BFAA4E /* Workspace.swift */; };
 		931B7BA52943703600BFAA4E /* NotesNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA42943703600BFAA4E /* NotesNavigatorView.swift */; };
 		931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA72943714200BFAA4E /* WorkspaceView.swift */; };
+		93C6405529457750006CEC5F /* UserResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C6405429457750006CEC5F /* UserResizableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		931B7BA129436A0600BFAA4E /* Workspace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workspace.swift; sourceTree = "<group>"; };
 		931B7BA42943703600BFAA4E /* NotesNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesNavigatorView.swift; sourceTree = "<group>"; };
 		931B7BA72943714200BFAA4E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
+		93C6405429457750006CEC5F /* UserResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResizableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				93065F452943793E002A3381 /* CardsView.swift */,
 				93065F4729437D9A002A3381 /* LocationCardView.swift */,
 				93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */,
+				93C6405429457750006CEC5F /* UserResizableView.swift */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				93065F462943793E002A3381 /* CardsView.swift in Sources */,
 				931B7BA02943655600BFAA4E /* TabBar.swift in Sources */,
 				93065F3B29437327002A3381 /* NotesOutlineView.swift in Sources */,
+				93C6405529457750006CEC5F /* UserResizableView.swift in Sources */,
 				93065F4C294440A0002A3381 /* LocationCardOutlineView.swift in Sources */,
 				93065F402943751B002A3381 /* Todo.swift in Sources */,
 			);

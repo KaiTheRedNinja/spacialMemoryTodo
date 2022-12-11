@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class LocationCardView: NSView {
+class LocationCardView: DraggableResizableView {
     var location: Location
 
     var title: NSTextField!

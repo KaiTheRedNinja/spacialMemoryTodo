@@ -12,7 +12,7 @@ class CardsView: NSScrollView {
     var cards: [LocationCardView] = []
 
     var locations: [Location] = [
-        .init(name: "test 1", todos: [
+        .init(name: "test 1 with the really long name", todos: [
             .init(name: "test todo"),
             .init(name: "test threedo")
         ], rect: .init(x: 0, y: 0, width: 300, height: 100)),

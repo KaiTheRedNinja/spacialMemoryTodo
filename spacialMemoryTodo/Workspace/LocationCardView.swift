@@ -28,11 +28,14 @@ class LocationCardView: DraggableResizableView {
 
         self.title = NSTextField(labelWithString: location.name)
         self.title.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
+        self.title.maximumNumberOfLines = 1
+        self.title.lineBreakMode = .byTruncatingMiddle
         self.addSubview(title)
 
         self.count = NSTextField(labelWithString: "\(location.todos.count)")
-        self.title.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
-        self.addSubview(title)
+        self.count.alignment = .right
+        self.count.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
+        self.addSubview(count)
 
         let outlineView = LocationCardOutlineView()
         outlineView.location = location
@@ -51,9 +54,19 @@ class LocationCardView: DraggableResizableView {
     let titleOffset: CGFloat = 10
     let outlineOffset: CGFloat = 3
     override func resizeSubviews(withOldSize oldSize: NSSize) {
+        print("Resizing subviews")
+
+        // calculate the width needed by the counter
+        count.sizeToFit()
+        let width = count.frame.width
+
         title.frame = .init(x: titleOffset,
                             y: frame.height-titleHeight-titleOffset,
-                            width: frame.height-titleOffset*2,
+                            width: frame.width-titleOffset*2-width,
+                            height: titleHeight)
+        count.frame = .init(x: titleOffset,
+                            y: frame.height-titleHeight-titleOffset,
+                            width: frame.width-titleOffset*2,
                             height: titleHeight)
         outlineView.view.frame = .init(x: outlineOffset,
                                        y: outlineOffset,

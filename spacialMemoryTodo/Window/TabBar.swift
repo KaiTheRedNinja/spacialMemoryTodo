@@ -28,7 +28,7 @@ class MainTabContent: macAppBoilerplate.TabBarItemRepresentable, ObservableObjec
     var iconColor: Color = .accentColor
 
     // the locations
-    var locations: [Location] = [
+    @Published var locations: [Location] = [
         .init(name: "test 1 with the really long name", todos: [
             .init(name: "test todo"),
             .init(name: "test threedo")
@@ -36,6 +36,14 @@ class MainTabContent: macAppBoilerplate.TabBarItemRepresentable, ObservableObjec
         .init(name: "test 2", todos: [
         ], rect: .init(x: 300, y: 300, width: 300, height: 100))
     ]
+
+    // the selection
+    @Published var selection: OneOrOther<Location, Todo>?
+}
+
+enum OneOrOther<One, Two> {
+    case one(One)
+    case two(Two)
 }
 
 enum TabID: macAppBoilerplate.TabBarID {

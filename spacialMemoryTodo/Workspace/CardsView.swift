@@ -16,17 +16,30 @@ class CardsView: NSScrollView {
     var tabManager: TabManager
     var tabManagerCancellable: AnyCancellable!
 
-    var locations: [Location] {
-        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent
-        else { return [] }
+    var tabContent: MainTabContent?
+    var tabContentCancellable: AnyCancellable?
 
-        return tabContent.locations
+    var locations: [Location] {
+        if let tabContent {
+            return tabContent.locations
+        }
+
+        if let tabContent = tabManager.selectedTabItem() as? MainTabContent {
+            self.tabContent = tabContent
+            self.tabContentCancellable = tabContent.objectWillChange.sink {
+                print("TAB CONTENT CHANGED BE EXCITED")
+            }
+            return tabContent.locations
+        }
+
+        return []
     }
 
     init(frame frameRect: NSRect, tabManager: TabManager) {
         self.tabManager = tabManager
         super.init(frame: frameRect)
         self.tabManagerCancellable = tabManager.objectWillChange.sink {
+            print("Tab Manager Changed! YAY")
             self.locationsToCards()
             self.frameCards()
         }
@@ -128,6 +141,7 @@ class CardsView: NSScrollView {
 
     deinit {
         tabManagerCancellable.cancel()
+        tabContentCancellable?.cancel()
     }
 }
 

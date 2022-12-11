@@ -1,5 +1,5 @@
 //
-//  UserResizableView.swift
+//  DraggableResizableView.swift
 //  spacialMemoryTodo
 //
 //  Created by Kai Quan Tay on 11/12/22.

@@ -6,22 +6,31 @@
 //
 
 import SwiftUI
+import macAppBoilerplate
+import Combine
 
 class CardsView: NSScrollView {
 
     var cards: [LocationCardView] = []
 
-    var locations: [Location] = [
-        .init(name: "test 1 with the really long name", todos: [
-            .init(name: "test todo"),
-            .init(name: "test threedo")
-        ], rect: .init(x: 0, y: 0, width: 300, height: 100)),
-        .init(name: "test 2", todos: [
-        ], rect: .init(x: 300, y: 300, width: 300, height: 100))
-    ]
+    var tabManager: TabManager
+    var tabManagerCancellable: AnyCancellable!
 
-    override init(frame frameRect: NSRect) {
+    var locations: [Location] {
+        print("tabs: \(tabManager.openedTabs)")
+        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent
+        else { return [] }
+
+        return tabContent.locations
+    }
+
+    init(frame frameRect: NSRect, tabManager: TabManager) {
+        self.tabManager = tabManager
         super.init(frame: frameRect)
+        self.tabManagerCancellable = tabManager.objectWillChange.sink {
+            self.locationsToCards()
+            self.frameCards()
+        }
         self.hasVerticalScroller = true
         self.hasHorizontalScroller = true
         self.autohidesScrollers = true

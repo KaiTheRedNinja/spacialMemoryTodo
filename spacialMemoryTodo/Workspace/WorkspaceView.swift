@@ -14,10 +14,7 @@ struct WorkspaceView: View {
 
     var body: some View {
         VStack {
-            CardsContainerView()
-        }
-        .onAppear {
-            self.tabManager.openTab(tab: MainTabContent())
+            CardsContainerView(tabManager: tabManager)
         }
     }
 }

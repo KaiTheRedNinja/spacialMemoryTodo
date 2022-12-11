@@ -30,7 +30,6 @@ class LocationCardView: DraggableResizableView {
         // setup the location, cancellable, and the view itself
         self.location = location
         self.locationCancellable = self.location.objectWillChange.sink {
-            print("Something about the location changed")
         }
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false

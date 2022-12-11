@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Todo: Identifiable, Equatable {
+class Todo: Identifiable, Equatable, ObservableObject {
     var name: String
     var isDone: Bool
 

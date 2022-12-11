@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 import macAppBoilerplate
 
 class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
     var location: Location!
+    var locationCancellable: AnyCancellable?
 
     override func configIcon(icon: NSImageView) {
         super.configIcon(icon: icon)
@@ -19,11 +21,22 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
     func addLocation() {
         label.stringValue = location.name
         resizeSubviews(withOldSize: .zero)
+
+        if locationCancellable == nil {
+            locationCancellable = location.objectWillChange.sink {
+                self.addLocation()
+            }
+        }
+    }
+
+    deinit {
+        locationCancellable?.cancel()
     }
 }
 
 class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
     var todo: Todo!
+    var todoCancellable: AnyCancellable?
 
     override func configIcon(icon: NSImageView) {
         super.configIcon(icon: icon)
@@ -33,5 +46,15 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
     func addTodo() {
         label.stringValue = todo.name
         resizeSubviews(withOldSize: .zero)
+
+        if todoCancellable == nil {
+            todoCancellable = todo.objectWillChange.sink {
+                self.addTodo()
+            }
+        }
+    }
+
+    deinit {
+        todoCancellable?.cancel()
     }
 }

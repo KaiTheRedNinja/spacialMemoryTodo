@@ -7,11 +7,11 @@
 
 import Foundation
 
-class Location: Identifiable, Equatable {
-    var name: String
-    var todos: [Todo]
+class Location: Identifiable, Equatable, ObservableObject {
+    @Published var name: String
+    @Published var todos: [Todo]
 
-    var rect: CGRect
+    @Published var rect: CGRect
 
     init(name: String, todos: [Todo], rect: CGRect = .defaultLocationCardSize) {
         self.name = name

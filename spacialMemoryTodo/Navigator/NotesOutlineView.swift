@@ -10,9 +10,22 @@ import macAppBoilerplate
 import Combine
 
 class NotesOutlineView: macAppBoilerplate.OutlineViewController {
+    private var mainTabNotLoadedYet: Bool = true
     var locations: [Location] {
-        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent
-        else { return [] }
+        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent else {
+            mainTabNotLoadedYet = true
+            return []
+        }
+
+        if mainTabNotLoadedYet {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                for location in tabContent.locations {
+                    self.outlineView.expandItem(location)
+                }
+            }
+        }
+
+        mainTabNotLoadedYet = false
 
         return tabContent.locations
     }

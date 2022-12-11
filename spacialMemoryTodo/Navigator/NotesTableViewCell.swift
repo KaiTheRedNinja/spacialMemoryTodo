@@ -15,7 +15,7 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
     override func configIcon(icon: NSImageView) {
         super.configIcon(icon: icon)
-        icon.image = NSImage(systemSymbolName: "house", accessibilityDescription: nil)
+        icon.image = NSImage(systemSymbolName: "location.circle", accessibilityDescription: nil)
     }
 
     func addLocation() {
@@ -45,6 +45,7 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
     func addTodo() {
         label.stringValue = todo.name
+        icon.image = NSImage(systemSymbolName: todo.isDone ? "checkmark.square.fill" : "square", accessibilityDescription: nil)
         resizeSubviews(withOldSize: .zero)
 
         if todoCancellable == nil {

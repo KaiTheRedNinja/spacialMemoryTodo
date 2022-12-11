@@ -138,11 +138,19 @@
 				931B7BA72943714200BFAA4E /* WorkspaceView.swift */,
 				93065F4329437931002A3381 /* CardsContainerView.swift */,
 				93065F452943793E002A3381 /* CardsView.swift */,
+				93C640562946079F006CEC5F /* CardView */,
+			);
+			path = Workspace;
+			sourceTree = "<group>";
+		};
+		93C640562946079F006CEC5F /* CardView */ = {
+			isa = PBXGroup;
+			children = (
 				93065F4729437D9A002A3381 /* LocationCardView.swift */,
 				93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */,
 				93C6405429457750006CEC5F /* DraggableResizableView.swift */,
 			);
-			path = Workspace;
+			path = CardView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

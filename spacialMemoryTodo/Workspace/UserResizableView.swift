@@ -87,117 +87,36 @@ class DraggableResizableView: NSView {
 
     override func mouseDragged(with event: NSEvent) {
 
-        guard let superView = superview else { return }
-
         let deltaX = event.deltaX
         let deltaY = event.deltaY
 
-        func topWorks() -> Bool {
-            let result = superView.frame.height / 3 ..< superView.frame.height ~= self.frame.size.height - deltaY
-            print("topWorks: \(result)")
-            return result
-        }
-
-        func topMoveWorks() -> Bool {
-            let result = self.frame.origin.y + self.frame.height - deltaY <= superView.frame.maxY
-            print("topMoveWorks: \(result)")
-            return result
-        }
-
-        func bottomWorks() -> Bool {
-            let result = superView.frame.height / 3 ..< superView.frame.height ~= self.frame.size.height + deltaY
-            print("bottomWorks: \(result)")
-            return result
-        }
-
-        func bottomMoveWorks() -> Bool {
-            let result = self.frame.origin.y - deltaY >= superView.frame.minY
-            print("bottomMoveWorks: \(result)")
-            return result
-        }
-
-        func leftWorks() -> Bool {
-            let result = superView.frame.width / 3 ..< superView.frame.width ~= self.frame.size.width - deltaX
-            print("leftWorks: \(result)")
-            return result
-        }
-
-        func leftMoveWorks() -> Bool {
-            let result = self.frame.origin.x + deltaX >= superView.frame.minX
-            print("leftMoveWorks: \(result)")
-            return result
-        }
-
-        func rightWorks() -> Bool {
-            let result = superView.frame.width / 3 ..< superView.frame.width ~= self.frame.size.width + deltaX
-            print("rightWorks: \(result)")
-            return result
-        }
-
-        func rightMoveWorks() -> Bool {
-            let result = self.frame.origin.x + self.frame.size.width + deltaX <= superView.frame.maxX
-            print("rightMoveWorks: \(result)")
-            return result
-        }
-
         switch cursorPosition {
         case .topLeft:
-            if topWorks(), leftWorks(), topMoveWorks(), leftMoveWorks() {
-
-                self.frame.size.width -= deltaX
-
-                self.frame.size.height -= deltaY
-
-                self.frame.origin.x += deltaX
-
-            }
+            self.frame.size.width -= deltaX
+            self.frame.size.height -= deltaY
+            self.frame.origin.x += deltaX
         case .bottomLeft:
-            if bottomWorks(), leftWorks(), bottomMoveWorks(), leftMoveWorks() {
-
-                self.frame.origin.x += deltaX
-
-                self.frame.origin.y -= deltaY
-
-                self.frame.size.width -= deltaX
-
-                self.frame.size.height += deltaY
-
-            }
+            self.frame.origin.x += deltaX
+            self.frame.origin.y -= deltaY
+            self.frame.size.width -= deltaX
+            self.frame.size.height += deltaY
         case .topRight:
-            if topWorks(), rightWorks(), topMoveWorks(), rightMoveWorks() {
-
-                self.frame.size.width += deltaX
-
-                self.frame.size.height -= deltaY
-
-            }
+            self.frame.size.width += deltaX
+            self.frame.size.height -= deltaY
         case  .bottomRight:
-            if bottomWorks(), rightWorks(), bottomMoveWorks(), rightMoveWorks() {
-
-                self.frame.origin.y -= deltaY
-
-                self.frame.size.width += deltaX
-
-                self.frame.size.height += deltaY
-            }
+            self.frame.origin.y -= deltaY
+            self.frame.size.width += deltaX
+            self.frame.size.height += deltaY
         case .top:
-            if topWorks(), topMoveWorks() {
-                self.frame.size.height -= deltaY
-            }
+            self.frame.size.height -= deltaY
         case .bottom:
-            if bottomWorks(), bottomMoveWorks() {
-                self.frame.size.height += deltaY
-                self.frame.origin.y -= deltaY
-            }
+            self.frame.size.height += deltaY
+            self.frame.origin.y -= deltaY
         case .left:
-            if leftWorks(), leftMoveWorks() {
-                self.frame.size.width -= deltaX
-                self.frame.origin.x += deltaX
-            }
+            self.frame.size.width -= deltaX
+            self.frame.origin.x += deltaX
         case .right:
-            if rightWorks(), rightMoveWorks() {
-                self.frame.size.width += deltaX
-            }
+            self.frame.size.width += deltaX
         case .none:
             self.frame.origin.x += deltaX
             self.frame.origin.y -= deltaY

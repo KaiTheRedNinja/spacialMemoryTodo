@@ -97,14 +97,20 @@ extension NotesOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         // get the tab content and selection
         guard let tabContent = tabManager.selectedTabItem() as? MainTabContent else { return }
         guard let selection = outlineView.item(atRow: outlineView.selectedRow) else {
-            tabContent.selection = nil
+            tabContent.selectedLocation = nil
+            tabContent.selectedTodo = nil
             return
         }
 
         if let selection = selection as? Location {
-            tabContent.selection = .one(selection)
-        } else if let selection = selection as? Todo {
-            tabContent.selection = .two(selection)
+            tabContent.selectedLocation = selection
+            tabContent.selectedTodo = nil
+        } else if let selection = selection as? Todo,
+                  let location = outlineView.parent(forItem: selection) as? Location {
+            tabContent.selectedLocation = location
+            tabContent.selectedTodo = selection
         }
+
+        print("Selections: \n\tloc: \(tabContent.selectedLocation)\n\ttod: \(tabContent.selectedTodo)")
     }
 }

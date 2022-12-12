@@ -38,7 +38,8 @@ class MainTabContent: macAppBoilerplate.TabBarItemRepresentable, ObservableObjec
     ]
 
     // the selection
-    @Published var selection: OneOrOther<Location, Todo>?
+    @Published var selectedLocation: Location?
+    @Published var selectedTodo: Todo?
 }
 
 enum OneOrOther<One, Two> {

@@ -20,6 +20,7 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
     func addLocation() {
         label.stringValue = location.name
+        secondaryLabel.stringValue = "\(location.todos.filter({ !$0.isDone }).count)"
         resizeSubviews(withOldSize: .zero)
 
         if locationCancellable == nil {

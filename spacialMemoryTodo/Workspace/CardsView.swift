@@ -60,7 +60,7 @@ class CardsView: NSScrollView {
     func updateData() {
         self.locationsToCards()
         self.frameCards()
-        self.scrollToSelectedCard()
+        self.scrollToSelectedCard(animate: true)
     }
 
     func locationsToCards() {
@@ -159,7 +159,7 @@ class CardsView: NSScrollView {
         }
     }
 
-    func scrollToSelectedCard() {
+    func scrollToSelectedCard(animate: Bool = false) {
         // Continue only if a card is not being dragged, document view exists,
         // a location has been selected, and that location has a card
         guard !isCurrentlyDraggingCard, let documentView,
@@ -199,7 +199,14 @@ class CardsView: NSScrollView {
 
         // Update the origin of the lens
         // the scrollview will scroll so that the point specified in scroll(to:) is at the bottom-left corner of the scroll view
-        self.contentView.scroll(to: NSPoint(x: lensOriginX, y: lensOriginY))
+        if animate {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.2
+                self.contentView.animator().setBoundsOrigin(NSPoint(x: lensOriginX, y: lensOriginY))
+            }
+        } else {
+            self.contentView.setBoundsOrigin(NSPoint(x: lensOriginX, y: lensOriginY))
+        }
 
         // select the card internally, to prevent the view jumping around
         currentlySelectedLocation = selectedLocation.id

@@ -210,6 +210,11 @@ class CardsView: NSScrollView {
 
         // select the card internally, to prevent the view jumping around
         currentlySelectedLocation = selectedLocation.id
+
+        // select the card visually
+        for card in cards {
+            card.isOutlined = card.location.id == currentlySelectedLocation
+        }
     }
 
     override func resizeSubviews(withOldSize oldSize: NSSize) {

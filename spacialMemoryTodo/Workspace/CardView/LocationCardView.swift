@@ -17,6 +17,13 @@ class LocationCardView: DraggableResizableView {
 
     // the parent CardsView, for sending updates
     weak var cardsView: CardsView!
+    // if the card has an outline
+    var isOutlined: Bool = false {
+        didSet {
+            layer?.borderColor = NSColor.controlAccentColor.cgColor
+            layer?.borderWidth = isOutlined ? 1 : 0
+        }
+    }
 
     // text field for displaying the Location's name
     var title: NSTextField!

@@ -184,27 +184,18 @@ class CardsView: NSScrollView {
         let idealLensCenterX = cardCenterX - lensCenterX
         let idealLensCenterY = cardCenterY - lensCenterY
 
-        // Calculate the maximum and minimum points that will be clipped to
-        let minimumPoint = container.origin
+        // Calculate the maximum points that will be clipped to
         let maximumPoint = NSPoint(x: container.origin.x + container.width - lens.size.width,
                                    y: container.origin.y + container.height - lens.size.height)
 
         // Calculate the new origin of the lens so that its center is the same as the center of the card
         // but make sure it does not exceed the bounds of the container
-        let lensOriginX = max(minimumPoint.x,   // do not let the x value go below the origin's x value
-                              min(idealLensCenterX,  // the ideal x position for the lens's origin to be
-                                  maximumPoint.x))  // do not let the x position get higher than valid
-        let lensOriginY = max(minimumPoint.y,   // do not let the y value go below the origin's y value
-                              min(idealLensCenterY,  // the ideal y position for the lens's origin to be
-                                  maximumPoint.y)) // do not let the y position get higher than valid
-
-        print(
-"""
-Scrolling to \(NSPoint(x: lensOriginX, y: lensOriginY)),
-clipped from \(NSPoint(x: idealLensCenterX, y: idealLensCenterY)),
-maximum:     \(maximumPoint),
-minimum:     \(minimumPoint)
-""")
+        let lensOriginX = max(container.origin.x,   // do not let the value go below the origin's value
+                              min(idealLensCenterX, // the ideal position for the lens's origin to be
+                                  maximumPoint.x))  // do not let the value go above the highest valid value
+        let lensOriginY = max(container.origin.y,
+                              min(idealLensCenterY,
+                                  maximumPoint.y))
 
         // Update the origin of the lens
         // the scrollview will scroll so that the point specified in scroll(to:) is at the bottom-left corner of the scroll view

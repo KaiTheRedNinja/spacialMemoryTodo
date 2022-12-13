@@ -110,7 +110,5 @@ extension NotesOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
             tabContent.selectedLocation = location
             tabContent.selectedTodo = selection
         }
-
-        print("Selections: \n\tloc: \(tabContent.selectedLocation)\n\ttod: \(tabContent.selectedTodo)")
     }
 }

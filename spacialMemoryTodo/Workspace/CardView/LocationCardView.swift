@@ -132,9 +132,11 @@ extension LocationCardView: DraggableResizableViewDelegate {
 
     func didStartDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {
         print("Started dragging")
+        cardsView.isCurrentlyDraggingCard = true
     }
 
     func didEndDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {
         print("Ended dragging")
+        cardsView.isCurrentlyDraggingCard = false
     }
 }

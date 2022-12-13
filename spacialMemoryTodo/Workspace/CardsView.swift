@@ -12,6 +12,7 @@ import Combine
 class CardsView: NSScrollView {
 
     var cards: [LocationCardView] = []
+    var isCurrentlyDraggingCard: Bool = false
 
     var tabManager: TabManager
     var tabManagerCancellable: AnyCancellable!
@@ -27,7 +28,7 @@ class CardsView: NSScrollView {
         if let tabContent = tabManager.selectedTabItem() as? MainTabContent {
             self.tabContent = tabContent
             self.tabContentCancellable = tabContent.objectWillChange.sink {
-                print("TAB CONTENT CHANGED BE EXCITED")
+                self.updateData()
             }
             return tabContent.locations
         }
@@ -39,9 +40,7 @@ class CardsView: NSScrollView {
         self.tabManager = tabManager
         super.init(frame: frameRect)
         self.tabManagerCancellable = tabManager.objectWillChange.sink {
-            print("Tab Manager Changed! YAY")
-            self.locationsToCards()
-            self.frameCards()
+            self.updateData()
         }
         self.hasVerticalScroller = true
         self.hasHorizontalScroller = true
@@ -55,6 +54,12 @@ class CardsView: NSScrollView {
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    func updateData() {
+        self.locationsToCards()
+        self.frameCards()
+        self.scrollToSelectedCard()
     }
 
     func locationsToCards() {
@@ -123,16 +128,87 @@ class CardsView: NSScrollView {
                 documentView?.addSubview(card)
             }
 
-            // fix the card's rect
-            card.frame = .init(origin: .init(from: card.location.rect.origin, offsetBy: offsetSize),
-                               size: card.location.rect.size)
+            let origin = CGPoint(from: card.location.rect.origin, offsetBy: offsetSize)
+            let size = card.location.rect.size
+
+            if animate {
+                NSAnimationContext.runAnimationGroup { context in
+                    context.duration = 0.2
+                    card.animator().frame = .init(origin: origin, size: size)
+                }
+            } else {
+                // fix the card's rect
+                card.frame = .init(origin: origin, size: size)
+            }
         }
 
         // set the document view's frame
         let newWidth = (edges[.trailing] ?? 0) + offsetSize.width + cardXDistance
         let newHeight = (edges[.bottom] ?? 0) + offsetSize.height + cardYDistance
-        documentView?.frame.size = .init(width: newWidth,
-                                         height: newHeight)
+
+        if animate {
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.2
+                documentView?.animator().frame.size = .init(width: newWidth,
+                                                            height: newHeight)
+            }
+        } else {
+            documentView?.frame.size = .init(width: newWidth,
+                                             height: newHeight)
+        }
+    }
+
+    func scrollToSelectedCard() {
+        guard !isCurrentlyDraggingCard, let documentView,
+              let selectedLocation = tabContent?.selectedLocation,
+              let cardForLocation = cards.first(where: { $0.location == selectedLocation })
+        else { return }
+
+        // scroll to the right card
+        print("Selected card at: \(cardForLocation.frame)")
+        // calculate how close to the center the card can be
+
+        let container: NSRect = documentView.frame  // the NSRect defining how large the bounding box is
+        let card: NSRect = cardForLocation.frame    // the NSRect defining where the card is
+        let lens: NSRect = self.visibleRect         // the NSRect defining what is visible
+
+        // Calculate the center point of the card
+        let cardCenterX = card.origin.x + (card.size.width / 2)
+        let cardCenterY = card.origin.y + (card.size.height / 2)
+
+        // Calculate the distance of the center point of the lens away from any given origin
+        let lensCenterX = lens.size.width / 2
+        let lensCenterY = lens.size.height / 2
+
+        // Calculate the ideal X and Y positions of the lens
+        let idealLensCenterX = cardCenterX - lensCenterX
+        let idealLensCenterY = cardCenterY - lensCenterY
+
+        // Calculate the maximum and minimum points that will be clipped to
+        let minimumPoint = container.origin
+        let maximumPoint = NSPoint(x: container.origin.x + container.width - lens.size.width,
+                                   y: container.origin.y + container.height - lens.size.height)
+
+        // Calculate the new origin of the lens so that its center is the same as the center of the card
+        // but make sure it does not exceed the bounds of the container
+        let lensOriginX = max(minimumPoint.x,   // do not let the x value go below the origin's x value
+                              min(idealLensCenterX,  // the ideal x position for the lens's origin to be
+                                  maximumPoint.x))  // do not let the x position get higher than valid
+        let lensOriginY = max(minimumPoint.y,   // do not let the y value go below the origin's y value
+                              min(idealLensCenterY,  // the ideal y position for the lens's origin to be
+                                  maximumPoint.y)) // do not let the y position get higher than valid
+
+        print(
+"""
+Scrolling to \(NSPoint(x: lensOriginX, y: lensOriginY)),
+clipped from \(NSPoint(x: idealLensCenterX, y: idealLensCenterY)),
+maximum:     \(maximumPoint),
+minimum:     \(minimumPoint)
+""")
+
+        // Update the origin of the lens
+        // the scrollview will scroll so that the point specified in scroll(to:) is at the bottom-left corner of the scroll view
+        self.contentView.scroll(to: NSPoint(x: lensOriginX, y: lensOriginY))
     }
 
     override func resizeSubviews(withOldSize oldSize: NSSize) {

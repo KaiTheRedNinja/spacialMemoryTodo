@@ -67,27 +67,33 @@ class DraggableResizableView: NSView {
     }
 
     override func mouseDown(with event: NSEvent) {
-
         let locationInView = convert(event.locationInWindow, from: nil)
-
         self.cursorPosition = self.cursorCornerBorderPosition(locationInView)
-
     }
 
     override func mouseUp(with event: NSEvent) {
+        // send the end message to the delegate
+        if mouseIsDragging {
+            mouseIsDragging = false
+            delegate?.didEndDragging(with: event, cursorAt: cursorPosition)
+        }
 
         self.cursorPosition = .none
-
     }
 
     override func mouseMoved(with event: NSEvent) {
-
         let locationInView = convert(event.locationInWindow, from: nil)
-
         self.cursorPosition = self.cursorCornerBorderPosition(locationInView)
     }
 
+    var mouseIsDragging: Bool = false
     override func mouseDragged(with event: NSEvent) {
+
+        // send the start message to the delegate
+        if !mouseIsDragging {
+            mouseIsDragging = true
+            delegate?.didStartDragging(with: event, cursorAt: cursorPosition)
+        }
 
         let deltaX = event.deltaX
         let deltaY = event.deltaY
@@ -218,7 +224,7 @@ protocol DraggableResizableViewDelegate {
 
     /// Tells the delegate that the view is going to be resized by the user's drag action.
     ///
-    /// Called after ``shouldResizeView(for:cursorAt:from:to:)``, before ``didResizeView(for:cursorAt:from:to:)``
+    /// Called after ``shouldResizeView(for:cursorAt:from:to:)-63m5m``, before ``didResizeView(for:cursorAt:from:to:)-54yxd``
     ///
     /// - Parameters:
     ///   - event: The event for the user's drag action
@@ -229,7 +235,7 @@ protocol DraggableResizableViewDelegate {
 
     /// Tells the delegate that the view has been resized by the user's drag action.
     ///
-    /// Called after ``willResizeView(for:cursorAt:from:to:)``
+    /// Called after ``willResizeView(for:cursorAt:from:to:)-3npf5``
     ///
     /// - Parameters:
     ///   - event: The event for the user's drag action
@@ -237,10 +243,23 @@ protocol DraggableResizableViewDelegate {
     ///   - oldRect: The previous `NSRect` of the view
     ///   - newRect: The new size of the view's `NSRect`
     func didResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect)
+
+    /// Tells the delegate that the user has started dragging. This function runs before ``shouldResizeView(for:cursorAt:from:to:)-63m5m`` and other
+    /// delegate functions.
+    /// - Parameters:
+    ///   - event: The event for the user's drag action
+    ///   - cursorPosition: The position of the cursor at the start of the drag action
+    func didStartDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition)
+
+    /// Tells the delegate that the user has ended dragging. This function runs after ``didResizeView(for:cursorAt:from:to:)-25du4`` and other
+    /// delegate functions.
+    /// - Parameters:
+    ///   - event: The event for the user's drag action
+    ///   - cursorPosition: The position of the cursor at the end of the drag action
+    func didEndDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition)
 }
 
 // default implementations
-
 extension DraggableResizableViewDelegate {
     func shouldResizeView(for event: NSEvent,
                           cursorAt cursorPosition: CornerBorderPosition,
@@ -254,4 +273,10 @@ extension DraggableResizableViewDelegate {
                        cursorAt cursorPosition: CornerBorderPosition,
                        from oldRect: NSRect,
                        to newRect: NSRect) {}
+
+    func didStartDragging(with event: NSEvent,
+                          cursorAt cursorPosition: CornerBorderPosition) {}
+
+    func didEndDragging(with event: NSEvent,
+                        cursorAt cursorPosition: CornerBorderPosition) {}
 }

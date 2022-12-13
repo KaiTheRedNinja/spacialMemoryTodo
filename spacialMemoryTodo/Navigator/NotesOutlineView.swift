@@ -10,39 +10,51 @@ import macAppBoilerplate
 import Combine
 
 class NotesOutlineView: macAppBoilerplate.OutlineViewController {
-    private var mainTabNotLoadedYet: Bool = true
+    var tabContent: MainTabContent?
+    var tabContentCancellable: AnyCancellable?
     var locations: [Location] {
+        // if tab content exists, return the locations
+        if let tabContent {
+            return tabContent.locations
+        }
+
+        // if it doesn't exist, see if it is stored in tab manager. Else, return empty.
         guard let tabContent = tabManager.selectedTabItem() as? MainTabContent else {
-            mainTabNotLoadedYet = true
             return []
         }
 
-        if mainTabNotLoadedYet {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                for location in tabContent.locations {
-                    self.outlineView.expandItem(location)
-                }
+        // if it is stored in tab manager but tab content does not exist yet, it means
+        // that this is the initial load. All top-level items should therefore be expanded.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            for location in tabContent.locations {
+                self.outlineView.expandItem(location)
             }
         }
 
-        mainTabNotLoadedYet = false
+        // save the tab content
+        self.tabContent = tabContent
+
+        self.tabContentCancellable = tabContent.objectWillChange.sink {
+            self.outlineView.reloadData()
+        }
 
         return tabContent.locations
     }
 
-    var mainTabContentCancellable: AnyCancellable!
+    var tabManagerCancellable: AnyCancellable!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         outlineView.dataSource = self
         outlineView.delegate = self
-        mainTabContentCancellable = tabManager.objectWillChange.sink {
+        tabManagerCancellable = tabManager.objectWillChange.sink {
             self.outlineView.reloadData()
         }
     }
 
     deinit {
-        mainTabContentCancellable.cancel()
+        tabManagerCancellable.cancel()
+        tabContentCancellable?.cancel()
     }
 }
 

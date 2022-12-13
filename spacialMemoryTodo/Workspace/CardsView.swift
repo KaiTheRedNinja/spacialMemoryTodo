@@ -12,6 +12,7 @@ import Combine
 class CardsView: NSScrollView {
 
     var cards: [LocationCardView] = []
+    var currentlySelectedLocation: Location.ID?
     var isCurrentlyDraggingCard: Bool = false
 
     var tabManager: TabManager
@@ -159,14 +160,13 @@ class CardsView: NSScrollView {
     }
 
     func scrollToSelectedCard() {
+        // Continue only if a card is not being dragged, document view exists,
+        // a location has been selected, and that location has a card
         guard !isCurrentlyDraggingCard, let documentView,
               let selectedLocation = tabContent?.selectedLocation,
+              selectedLocation.id != currentlySelectedLocation,
               let cardForLocation = cards.first(where: { $0.location == selectedLocation })
         else { return }
-
-        // scroll to the right card
-        print("Selected card at: \(cardForLocation.frame)")
-        // calculate how close to the center the card can be
 
         let container: NSRect = documentView.frame  // the NSRect defining how large the bounding box is
         let card: NSRect = cardForLocation.frame    // the NSRect defining where the card is
@@ -188,7 +188,7 @@ class CardsView: NSScrollView {
         let maximumPoint = NSPoint(x: container.origin.x + container.width - lens.size.width,
                                    y: container.origin.y + container.height - lens.size.height)
 
-        // Calculate the new origin of the lens so that its center is the same as the center of the card
+        // Calculate the new origin of the lens so that its center is as close as possible to the center of the card
         // but make sure it does not exceed the bounds of the container
         let lensOriginX = max(container.origin.x,   // do not let the value go below the origin's value
                               min(idealLensCenterX, // the ideal position for the lens's origin to be
@@ -200,6 +200,9 @@ class CardsView: NSScrollView {
         // Update the origin of the lens
         // the scrollview will scroll so that the point specified in scroll(to:) is at the bottom-left corner of the scroll view
         self.contentView.scroll(to: NSPoint(x: lensOriginX, y: lensOriginY))
+
+        // select the card internally, to prevent the view jumping around
+        currentlySelectedLocation = selectedLocation.id
     }
 
     override func resizeSubviews(withOldSize oldSize: NSSize) {

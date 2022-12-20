@@ -153,6 +153,13 @@ extension LocationCardView: DraggableResizableViewDelegate {
     func rectToSizeTo(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, withProposal newRect: NSRect) -> NSRect? {
         var returnedRect = newRect
         returnedRect.size = newRect.size.shrinkToNotSmallerThan(minSize: .minimumCardSize)
+
+        // if the old rect's width or height is the same as the returned rect's width or height,
+        // then reset the x and y value accordingly. This is to counteract the bug where if the card is at minimum
+        // width/height, the card would start to move instead of not resizing.
+        returnedRect.origin = .init(x: oldRect.width == returnedRect.width ? oldRect.minX : returnedRect.minX,
+                                    y: oldRect.height == returnedRect.height ? oldRect.minY : returnedRect.minY)
+
         return returnedRect
     }
 

@@ -111,17 +111,15 @@ class LocationCardView: DraggableResizableView {
     }
 
     override func viewDidChangeEffectiveAppearance() {
-        // textColor should automatically be whatever colour it needs to be
+        // textColor and shadow should automatically be whatever colour it needs to be
         title.textColor = .textColor
         count.textColor = .textColor
+        shadow?.shadowColor = .textColor
 
-        if effectiveAppearance.name.rawValue.lowercased().contains("dark") {
-            // dark mode
-            layer?.backgroundColor = .init(gray: 0.3, alpha: 1)
-        } else {
-            // light mode
-            layer?.backgroundColor = .init(gray: 0.8, alpha: 1)
-        }
+        // set the background colour
+        layer?.backgroundColor = effectiveAppearance.name.rawValue.lowercased().contains("dark") ?
+            .init(gray: 0.3, alpha: 1) :
+            .init(gray: 0.8, alpha: 1)
     }
 
     deinit {

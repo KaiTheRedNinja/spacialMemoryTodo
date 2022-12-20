@@ -133,25 +133,27 @@ class DraggableResizableView: NSView {
             newFrame.origin.y -= deltaY
         }
 
-        // ask the delegate for permission to resize the view
-        // if no delegate exists, it defaults to true
-        guard delegate?.shouldResizeView(for: event,
-                                         cursorAt: cursorPosition,
-                                         from: oldframe,
-                                         to: newFrame) ?? true else { return }
+        // ask the delegate for the rect that it should resize to
+        // if it returns nil, then do not resize.
+        // if no delegate exists, it defaults to resizing to the proposed rect
+        guard let finalFrame = delegate?.rectToSizeTo(for: event,
+                                                      cursorAt: cursorPosition,
+                                                      from: oldframe,
+                                                      withProposal: newFrame)
+        else { return }
 
         // inform the delegate that the view will resize
         delegate?.willResizeView(for: event,
                                  cursorAt: cursorPosition,
                                  from: oldframe,
-                                 to: newFrame)
+                                 to: finalFrame)
 
         // resize the view, then inform the delegate that the view did resize
-        self.frame = newFrame
+        self.frame = finalFrame
         delegate?.didResizeView(for: event,
                                 cursorAt: cursorPosition,
                                 from: oldframe,
-                                to: newFrame)
+                                to: finalFrame)
 
         self.repositionView()
     }
@@ -219,12 +221,12 @@ protocol DraggableResizableViewDelegate {
     ///   - cursorPosition: The corner or edge that the user is trying to drag
     ///   - oldRect: The current `NSRect` of the view
     ///   - newRect: The new, proposed resize of the view's `NSRect`
-    /// - Returns: If the view should continue with the resize (`true`) or cancel (`false`)
-    func shouldResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect) -> Bool
+    /// - Returns: The NSRect that the view should resize to, or nil if it should not resize at all
+    func rectToSizeTo(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, withProposal newRect: NSRect) -> NSRect?
 
     /// Tells the delegate that the view is going to be resized by the user's drag action.
     ///
-    /// Called after ``shouldResizeView(for:cursorAt:from:to:)-63m5m``, before ``didResizeView(for:cursorAt:from:to:)-54yxd``
+    /// Called after ``rectToSizeTo(for:cursorAt:from:withProposal:)-4kfu7``, before ``didResizeView(for:cursorAt:from:to:)-54yxd``
     ///
     /// - Parameters:
     ///   - event: The event for the user's drag action
@@ -261,10 +263,10 @@ protocol DraggableResizableViewDelegate {
 
 // default implementations
 extension DraggableResizableViewDelegate {
-    func shouldResizeView(for event: NSEvent,
-                          cursorAt cursorPosition: CornerBorderPosition,
-                          from oldRect: NSRect,
-                          to newRect: NSRect) -> Bool { true }
+    func rectToSizeTo(for event: NSEvent,
+                      cursorAt cursorPosition: CornerBorderPosition,
+                      from oldRect: NSRect,
+                      withProposal newRect: NSRect) -> NSRect? { newRect }
     func willResizeView(for event: NSEvent,
                         cursorAt cursorPosition: CornerBorderPosition,
                         from oldRect: NSRect,

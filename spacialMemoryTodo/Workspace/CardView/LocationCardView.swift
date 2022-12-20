@@ -10,14 +10,14 @@ import Combine
 
 class LocationCardView: DraggableResizableView {
 
-    // the Location that the card takes care of
+    /// The Location that the card takes care of
     var location: Location
-    // the cancellable for the Location's listener
+    /// The cancellable for the Location's listener
     var locationCancellable: AnyCancellable
 
-    // the parent CardsView, for sending updates
+    /// The parent CardsView, for sending updates
     weak var cardsView: CardsView!
-    // if the card has an outline
+    /// If the card has an outline
     var isOutlined: Bool = false {
         didSet {
             layer?.borderColor = NSColor.controlAccentColor.cgColor
@@ -25,12 +25,12 @@ class LocationCardView: DraggableResizableView {
         }
     }
 
-    // text field for displaying the Location's name
+    /// Text field for displaying the Location's name
     var title: NSTextField!
-    // text field for displaying the number of Todos for the the Location
+    /// Text field for displaying the number of Todos for the the Location
     var count: NSTextField!
 
-    // an outlineView to show the list of Todos
+    /// An outlineView to show the list of Todos
     var outlineView: LocationCardOutlineView!
 
     init(frame: CGRect = .defaultLocationCardSize, location: Location) {
@@ -86,9 +86,11 @@ class LocationCardView: DraggableResizableView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // some constants to manage the title's size
     let titleHeight: CGFloat = 25
     let titleOffset: CGFloat = 10
     let outlineOffset: CGFloat = 3
+    // resize all subviews when the size of the view changes
     override func resizeSubviews(withOldSize oldSize: NSSize) {
         print("Resizing subviews")
 
@@ -122,12 +124,32 @@ class LocationCardView: DraggableResizableView {
             .init(gray: 0.8, alpha: 1)
     }
 
+    override func menu(for event: NSEvent) -> NSMenu? {
+        // ensure that its a right mouse up event, or else its some event that we won't respond to.
+        // though it says right mouse down, but it actually triggers when right mouse releases.
+        guard event.type == .rightMouseDown else { return nil }
+
+        // create the menu. The title is not actually visible.
+        let menu = NSMenu(title: "Right Click Menu")
+
+        // add the items
+        menu.addItem(NSMenuItem(title: "Edit", action: nil, keyEquivalent: ""))
+
+        return menu
+    }
+
     deinit {
         locationCancellable.cancel()
     }
 }
 
 extension LocationCardView: DraggableResizableViewDelegate {
+    func rectToSizeTo(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, withProposal newRect: NSRect) -> NSRect? {
+        var returnedRect = newRect
+        returnedRect.size = newRect.size.shrinkToNotSmallerThan(minSize: .minimumCardSize)
+        return returnedRect
+    }
+
     func didResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect) {
         // Calculate the offset applied to location.rect to produce oldRect
         let xOffset = oldRect.origin.x - location.rect.origin.x
@@ -155,5 +177,14 @@ extension LocationCardView: DraggableResizableViewDelegate {
     func didEndDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {
         print("Ended dragging")
         cardsView.isCurrentlyDraggingCard = false
+    }
+}
+
+extension NSSize {
+    fileprivate static let minimumCardSize: NSSize = .init(width: 100, height: 100)
+
+    func shrinkToNotSmallerThan(minSize: NSSize) -> NSSize {
+        return .init(width: max(minSize.width, self.width),
+                     height: max(minSize.height, self.height))
     }
 }

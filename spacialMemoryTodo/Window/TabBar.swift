@@ -31,7 +31,9 @@ class MainTabContent: macAppBoilerplate.TabBarItemRepresentable, ObservableObjec
     @Published var locations: [Location] = [
         .init(name: "test 1 with the really long name", todos: [
             .init(name: "test todo"),
-            .init(name: "test threedo")
+            .init(name: "test threedo"),
+            .init(name: "test fourdo"),
+            .init(name: "test fivedo")
         ], rect: .init(x: 0, y: 0, width: 300, height: 100)),
         .init(name: "test 2", todos: [
         ], rect: .init(x: 300, y: 300, width: 300, height: 100))

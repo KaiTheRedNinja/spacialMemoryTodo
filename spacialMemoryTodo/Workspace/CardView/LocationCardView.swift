@@ -62,7 +62,12 @@ class LocationCardView: DraggableResizableView {
         let outlineView = LocationCardOutlineView()
         outlineView.location = location
         self.outlineView = outlineView
+        outlineView.view.wantsLayer = true
         self.addSubview(self.outlineView.view)
+
+        // add corner radii to the card and outline view
+        layer?.cornerRadius = 8
+        outlineView.view.layer?.cornerRadius = 6
 
         // run these to frame the objects correctly
         // and to make sure they're the right colours

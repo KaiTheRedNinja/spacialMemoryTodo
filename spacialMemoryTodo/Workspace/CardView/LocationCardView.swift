@@ -69,6 +69,12 @@ class LocationCardView: DraggableResizableView {
         layer?.cornerRadius = 8
         outlineView.view.layer?.cornerRadius = 6
 
+        // add a drop shadow
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 3
+        shadow.shadowOffset = .init(width: 0, height: 0)
+        self.shadow = shadow
+
         // run these to frame the objects correctly
         // and to make sure they're the right colours
         resizeSubviews(withOldSize: .zero)

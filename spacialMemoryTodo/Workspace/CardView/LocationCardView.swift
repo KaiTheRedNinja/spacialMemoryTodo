@@ -73,6 +73,7 @@ class LocationCardView: DraggableResizableView {
         let shadow = NSShadow()
         shadow.shadowBlurRadius = 3
         shadow.shadowOffset = .init(width: 0, height: 0)
+        shadow.shadowColor = .textColor
         self.shadow = shadow
 
         // run these to frame the objects correctly

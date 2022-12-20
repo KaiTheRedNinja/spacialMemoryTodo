@@ -134,8 +134,14 @@ class LocationCardView: DraggableResizableView {
 
         // add the items
         menu.addItem(NSMenuItem(title: "Edit", action: nil, keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Print Rect", action: #selector(printLocationDebugInfo), keyEquivalent: ""))
 
         return menu
+    }
+
+    @objc
+    func printLocationDebugInfo() {
+        print("Rect for Location with name \(location.name): \(location.rect)")
     }
 
     deinit {
@@ -170,12 +176,10 @@ extension LocationCardView: DraggableResizableViewDelegate {
     }
 
     func didStartDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {
-        print("Started dragging")
         cardsView.isCurrentlyDraggingCard = true
     }
 
     func didEndDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {
-        print("Ended dragging")
         cardsView.isCurrentlyDraggingCard = false
     }
 }

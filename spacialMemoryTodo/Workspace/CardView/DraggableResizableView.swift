@@ -101,34 +101,28 @@ class DraggableResizableView: NSView {
         let oldframe = self.frame // backup, for delegate purposes
         var newFrame = self.frame
 
+        // vertical axis
         switch cursorPosition {
-        case .topLeft:
-            newFrame.size.width -= deltaX
+        case .top, .topLeft, .topRight:
             newFrame.size.height -= deltaY
-            newFrame.origin.x += deltaX
-        case .bottomLeft:
-            newFrame.origin.x += deltaX
-            newFrame.origin.y -= deltaY
-            newFrame.size.width -= deltaX
-            newFrame.size.height += deltaY
-        case .topRight:
-            newFrame.size.width += deltaX
-            newFrame.size.height -= deltaY
-        case  .bottomRight:
-            newFrame.origin.y -= deltaY
-            newFrame.size.width += deltaX
-            newFrame.size.height += deltaY
-        case .top:
-            newFrame.size.height -= deltaY
-        case .bottom:
+        case .bottom, .bottomLeft, .bottomRight:
             newFrame.size.height += deltaY
             newFrame.origin.y -= deltaY
-        case .left:
+        default: break
+        }
+
+        // horizontal axis
+        switch cursorPosition {
+        case .left, .topLeft, .bottomLeft:
             newFrame.size.width -= deltaX
             newFrame.origin.x += deltaX
-        case .right:
+        case .right, .topRight, .bottomRight:
             newFrame.size.width += deltaX
-        case .none:
+        default: break
+        }
+
+        // none case
+        if cursorPosition == .none {
             newFrame.origin.x += deltaX
             newFrame.origin.y -= deltaY
         }

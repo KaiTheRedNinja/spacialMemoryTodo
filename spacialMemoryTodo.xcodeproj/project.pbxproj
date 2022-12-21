@@ -16,6 +16,7 @@
 		93065F4829437D9A002A3381 /* LocationCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4729437D9A002A3381 /* LocationCardView.swift */; };
 		93065F4C294440A0002A3381 /* LocationCardOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */; };
 		930967692952E33B00DB17CE /* PopUpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930967682952E33B00DB17CE /* PopUpManager.swift */; };
+		9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
 		931B7B8C2943609400BFAA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8B2943609400BFAA4E /* Assets.xcassets */; };
 		931B7B8F2943609400BFAA4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8D2943609400BFAA4E /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 		93065F4729437D9A002A3381 /* LocationCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCardView.swift; sourceTree = "<group>"; };
 		93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCardOutlineView.swift; sourceTree = "<group>"; };
 		930967682952E33B00DB17CE /* PopUpManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpManager.swift; sourceTree = "<group>"; };
+		9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationPopUpView.swift; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931B7B872943609300BFAA4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		931B7B8B2943609400BFAA4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 		930967672952E30600DB17CE /* PopUp */ = {
 			isa = PBXGroup;
 			children = (
+				9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */,
 				930967682952E33B00DB17CE /* PopUpManager.swift */,
 			);
 			path = PopUp;
@@ -256,6 +259,7 @@
 				93C6405529457750006CEC5F /* DraggableResizableView.swift in Sources */,
 				93065F4C294440A0002A3381 /* LocationCardOutlineView.swift in Sources */,
 				93065F402943751B002A3381 /* Todo.swift in Sources */,
+				9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */,
 				930967692952E33B00DB17CE /* PopUpManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

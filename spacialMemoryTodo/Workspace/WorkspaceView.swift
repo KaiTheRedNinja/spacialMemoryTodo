@@ -21,10 +21,7 @@ struct WorkspaceView: View {
         }
         .sheet(isPresented: $popUpManager.showLocationEditPopup) {
             GroupBox {
-                Text("HELLOOO")
-            }
-            .onAppear {
-                print("Sheet was presented")
+                EditLocationPopUpView(popUpManager: popUpManager)
             }
         }
     }

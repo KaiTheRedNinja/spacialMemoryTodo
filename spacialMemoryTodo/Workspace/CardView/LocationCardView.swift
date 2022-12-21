@@ -141,6 +141,7 @@ class LocationCardView: DraggableResizableView {
 
     @objc
     func showEditPopup() {
+        cardsView.popUpManager.locationToEdit = location
         cardsView.popUpManager.showLocationEditPopup.toggle()
         cardsView.popUpManager.objectWillChange.send()
     }

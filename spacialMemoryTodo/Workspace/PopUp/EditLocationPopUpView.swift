@@ -14,7 +14,7 @@ struct EditLocationPopUpView: View {
 
     var body: some View {
         ZStack {
-            if let location = popUpManager.locationToEdit {
+            if popUpManager.locationToEdit != nil {
                 locationEditView
             } else {
                 noLocationErrorView
@@ -27,12 +27,20 @@ struct EditLocationPopUpView: View {
         }
     }
 
+    @State var newName: String = "Untitled Location"
+
     /// The main view for editing things
     @ViewBuilder
     var locationEditView: some View {
         VStack {
-            TextField("Location Name", text: .constant("Test Name"))
+            TextField("Location Name", text: $newName)
                 .padding(.bottom, 5)
+                .onAppear {
+                    newName = popUpManager.locationToEdit?.name ?? ""
+                }
+                .onSubmit {
+                    save()
+                }
             colourPickerView
                 .padding(.bottom, 5)
             cancelSaveOptions
@@ -105,13 +113,24 @@ struct EditLocationPopUpView: View {
                 exit()
             }
             Button("Save") {
-                // TODO: Save
-                exit()
+                save()
             }
+            // disable the save button if there is no name
+            .disabled(newName.count == 0)
             .buttonStyle(.borderedProminent)
         }
     }
 
+    /// Exits and saves
+    func save() {
+        if let location = popUpManager.locationToEdit {
+            location.name = newName
+            location.objectWillChange.send()
+        }
+        exit()
+    }
+
+    /// Exits but does not save
     func exit() {
         popUpManager.showLocationEditPopup = false
     }

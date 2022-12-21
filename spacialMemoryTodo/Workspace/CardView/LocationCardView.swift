@@ -13,7 +13,7 @@ class LocationCardView: DraggableResizableView {
     /// The Location that the card takes care of
     var location: Location
     /// The cancellable for the Location's listener
-    var locationCancellable: AnyCancellable
+    var locationCancellable: AnyCancellable!
 
     /// The parent CardsView, for sending updates
     weak var cardsView: CardsView!
@@ -34,10 +34,8 @@ class LocationCardView: DraggableResizableView {
     var outlineView: LocationCardOutlineView!
 
     init(frame: CGRect = .defaultLocationCardSize, location: Location) {
-        // setup the location, cancellable, and the view itself
+        // setup the location and the view itself
         self.location = location
-        self.locationCancellable = self.location.objectWillChange.sink {
-        }
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
 
@@ -75,6 +73,12 @@ class LocationCardView: DraggableResizableView {
         shadow.shadowOffset = .init(width: 0, height: 0)
         shadow.shadowColor = .textColor
         self.shadow = shadow
+
+        // set up the location cancellable. This has to be after setup
+        // as it encapsulates `self` in a closure
+        self.locationCancellable = self.location.objectWillChange.sink {
+            self.title.stringValue = self.location.name
+        }
 
         // run these to frame the objects correctly
         // and to make sure they're the right colours

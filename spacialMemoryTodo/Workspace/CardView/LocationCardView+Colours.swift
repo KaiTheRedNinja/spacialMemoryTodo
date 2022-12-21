@@ -14,7 +14,14 @@ extension LocationCardView {
             PossibleColours.lightColours
         let colour = colourSource[location.colour] ?? .init(white: 0.5, alpha: 1)
         layer?.backgroundColor = colour.cgColor
-        shadow?.shadowColor = colour
+
+        // reinit the shadow, since just updating its properties does not seem to work
+        self.shadow = nil
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 3
+        shadow.shadowOffset = .init(width: 0, height: 0)
+        shadow.shadowColor = colour
+        self.shadow = shadow
     }
 }
 

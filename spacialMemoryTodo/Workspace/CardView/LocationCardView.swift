@@ -136,7 +136,8 @@ class LocationCardView: DraggableResizableView {
 
         // add the items
         menu.addItem(NSMenuItem(title: "Edit", action: #selector(showEditPopup), keyEquivalent: ""))
-        menu.addItem(NSMenuItem(title: "Print Rect", action: #selector(printLocationDebugInfo), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Spit Location", action: #selector(spitLocation), keyEquivalent: ""))
 
         return menu
     }
@@ -149,8 +150,15 @@ class LocationCardView: DraggableResizableView {
     }
 
     @objc
-    func printLocationDebugInfo() {
-        print("Rect for Location with name \(location.name): \(location.rect)")
+    func deleteLocation() {
+        cardsView.tabContent?.locations.removeAll(where: { $0.id == location.id })
+        cardsView.tabContent?.objectWillChange.send()
+    }
+
+    @objc
+    func spitLocation() {
+        print(location.rect)
+        print(frame)
     }
 
     deinit {

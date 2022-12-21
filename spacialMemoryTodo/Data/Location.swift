@@ -10,6 +10,7 @@ import Foundation
 class Location: Identifiable, Equatable, ObservableObject {
     @Published var name: String
     @Published var todos: [Todo]
+    @Published var colour: PossibleColours = .gray
 
     @Published var rect: CGRect
 

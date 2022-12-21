@@ -78,6 +78,7 @@ class LocationCardView: DraggableResizableView {
         // as it encapsulates `self` in a closure
         self.locationCancellable = self.location.objectWillChange.sink {
             self.title.stringValue = self.location.name
+            self.setBackgroundColour()
         }
 
         // run these to frame the objects correctly
@@ -117,15 +118,12 @@ class LocationCardView: DraggableResizableView {
     }
 
     override func viewDidChangeEffectiveAppearance() {
-        // textColor and shadow should automatically be whatever colour it needs to be
+        // textColor should automatically be whatever colour it needs to be
         title.textColor = .textColor
         count.textColor = .textColor
-        shadow?.shadowColor = .textColor
 
-        // set the background colour
-        layer?.backgroundColor = effectiveAppearance.name.rawValue.lowercased().contains("dark") ?
-            .init(gray: 0.3, alpha: 1) :
-            .init(gray: 0.8, alpha: 1)
+        // set background and shadow colour
+        setBackgroundColour()
     }
 
     override func menu(for event: NSEvent) -> NSMenu? {

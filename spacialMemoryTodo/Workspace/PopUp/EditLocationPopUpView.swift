@@ -50,18 +50,18 @@ struct EditLocationPopUpView: View {
 
     // TEMP: The selected colour
     @State
-    var selectedColour: LocationCardView.PossibleColours = .gray
+    var selectedColour: PossibleColours = .gray
 
     /// The colour select buttons below the title edit
     @ViewBuilder
     var colourPickerView: some View {
         HStack {
-            ForEach(LocationCardView.PossibleColours.allCases, id: \.rawValue) { color in
+            ForEach(PossibleColours.allCases, id: \.rawValue) { color in
                 Button {
                     print("Selected \(color)")
                     selectedColour = color
                 } label: {
-                    LocationCardView.swiftColours[color]
+                    PossibleColours.swiftColours[color]
                         .mask {
                             Circle()
                         }
@@ -78,6 +78,9 @@ struct EditLocationPopUpView: View {
                 }
                 .buttonStyle(.plain)
             }
+        }
+        .onAppear {
+            selectedColour = popUpManager.locationToEdit?.colour ?? .gray
         }
     }
 
@@ -113,6 +116,7 @@ struct EditLocationPopUpView: View {
     func save() {
         if let location = popUpManager.locationToEdit {
             location.name = newName
+            location.colour = selectedColour
             location.objectWillChange.send()
         }
         exit()

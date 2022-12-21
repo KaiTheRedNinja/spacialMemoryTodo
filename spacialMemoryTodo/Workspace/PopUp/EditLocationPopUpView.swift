@@ -48,38 +48,26 @@ struct EditLocationPopUpView: View {
         .padding(10)
     }
 
-    /// The available colours
-    var colours: [Color] = [
-        .blue,
-        .purple,
-        .pink,
-        .red,
-        .orange,
-        .yellow,
-        .green,
-        .gray
-    ]
-
     // TEMP: The selected colour
     @State
-    var selectedColour: Color = .gray
+    var selectedColour: LocationCardView.PossibleColours = .gray
 
     /// The colour select buttons below the title edit
     @ViewBuilder
     var colourPickerView: some View {
         HStack {
-            ForEach(0..<colours.count, id: \.hashValue) { index in
+            ForEach(LocationCardView.PossibleColours.allCases, id: \.rawValue) { color in
                 Button {
-                    print("Selected index \(index)")
-                    selectedColour = colours[index]
+                    print("Selected \(color)")
+                    selectedColour = color
                 } label: {
-                    colours[index]
+                    LocationCardView.swiftColours[color]
                         .mask {
                             Circle()
                         }
                         .frame(width: 15, height: 15)
                         .overlay {
-                            if selectedColour == colours[index] {
+                            if selectedColour == color {
                                 Color.white
                                     .mask {
                                         Circle()

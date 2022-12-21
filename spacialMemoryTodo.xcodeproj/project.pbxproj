@@ -17,6 +17,7 @@
 		93065F4C294440A0002A3381 /* LocationCardOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */; };
 		930967692952E33B00DB17CE /* PopUpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930967682952E33B00DB17CE /* PopUpManager.swift */; };
 		9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */; };
+		9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
 		931B7B8C2943609400BFAA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8B2943609400BFAA4E /* Assets.xcassets */; };
 		931B7B8F2943609400BFAA4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8D2943609400BFAA4E /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 		93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCardOutlineView.swift; sourceTree = "<group>"; };
 		930967682952E33B00DB17CE /* PopUpManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpManager.swift; sourceTree = "<group>"; };
 		9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationPopUpView.swift; sourceTree = "<group>"; };
+		9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationCardView+Colours.swift"; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931B7B872943609300BFAA4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		931B7B8B2943609400BFAA4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				93065F4729437D9A002A3381 /* LocationCardView.swift */,
+				9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */,
 				93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */,
 				93C6405429457750006CEC5F /* DraggableResizableView.swift */,
 			);
@@ -244,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				931B7B9C2943614D00BFAA4E /* MainWindowController.swift in Sources */,
+				9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */,
 				931B7B9E2943628500BFAA4E /* NavigatorSidebar.swift in Sources */,
 				93065F4429437931002A3381 /* CardsContainerView.swift in Sources */,
 				931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */,

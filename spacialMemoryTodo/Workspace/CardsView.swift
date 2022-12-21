@@ -89,14 +89,14 @@ class CardsView: NSScrollView {
         // since we want the effect of infinite space, the edges of the document view must always
         // be `cardDistanceFromEdge` away from the nearest card.
 
-        var edges: [Edge.Edges: CGFloat] = [:]
+        var edges: [MinMaxPositions: CGFloat] = [:]
 
         for card in cards {
-            let cardEdges: [Edge.Edges: CGFloat] = [
-                .top: card.location.rect.minY, // CGFloat's top is actually the minimum since going down the screen Y gets bigger
-                .bottom: card.location.rect.maxY,
-                .leading: card.location.rect.minX,
-                .trailing: card.location.rect.maxX,
+            let cardEdges: [MinMaxPositions: CGFloat] = [
+                .minY: card.location.rect.minY, // CGFloat's top is actually the minimum since going down the screen Y gets bigger
+                .maxY: card.location.rect.maxY,
+                .minX: card.location.rect.minX,
+                .maxX: card.location.rect.maxX,
             ]
 
             // replace the values in edges where the value is larger/smaller
@@ -104,26 +104,31 @@ class CardsView: NSScrollView {
                 edges[edge] = value
             }
 
-            func isBetterEdge(edge: Edge.Edges, value: CGFloat) -> Bool {
-                (   // if its top or leading, then the new value must be smaller
-                    (edge == .top || edge == .leading) && (edges[edge] ?? 0) >= value
-                ) || ( // if its bottom or trailing, then the new value must be larger
-                    (edge == .bottom || edge == .trailing) && (edges[edge] ?? 0) <= value
-                )
+            func isBetterEdge(edge: MinMaxPositions, value: CGFloat) -> Bool {
+                guard let existingValue = edges[edge] else {
+                    return true // set the edge to this, as it is currently blank
+                }
+
+                switch edge {
+                case .minX, .minY: // if its a min, then the new value must be smaller
+                    return value < existingValue
+                case .maxX, .maxY: // if its a max, then the new value must be larger
+                    return value > existingValue
+                }
             }
         }
 
         // using the size of the content view, calculate the card distance from edge for height and width
-        let cardsWidth = (edges[.trailing] ?? 0) - (edges[.leading] ?? 0)
-        let cardsHeight = (edges[.bottom] ?? 0) - (edges[.top] ?? 0)
+        let cardsWidth = (edges[.maxX] ?? 0) - (edges[.minX] ?? 0)
+        let cardsHeight = (edges[.maxY] ?? 0) - (edges[.minY] ?? 0)
 
         let cardXDistance = max(minCardDistanceFromEdge, (contentView.frame.width-cardsWidth)/2)
         let cardYDistance = max(minCardDistanceFromEdge, (contentView.frame.height-cardsHeight)/2)
 
-        // reframe the origin of all frames by (`cardDistanceFromEdge - edges[.top]`, `cardDistanceFromEdge - edges[.leading]`)
-        let leadingEdgeOffset = cardXDistance - (edges[.leading] ?? 0)
-        let topEdgeOffset = cardYDistance - (edges[.top] ?? 0)
-        let offsetSize = CGSize(width: leadingEdgeOffset, height: topEdgeOffset)
+        // reframe the origin of all frames
+        let minXEdgeOffset = cardXDistance - (edges[.minX] ?? 0)
+        let minYEdgeOffset = cardYDistance - (edges[.minY] ?? 0)
+        let offsetSize = CGSize(width: minXEdgeOffset, height: minYEdgeOffset)
 
         for card in cards {
             // if the card is not yet in the document view, add it
@@ -146,8 +151,8 @@ class CardsView: NSScrollView {
         }
 
         // set the document view's frame
-        let newWidth = (edges[.trailing] ?? 0) + offsetSize.width + cardXDistance
-        let newHeight = (edges[.bottom] ?? 0) + offsetSize.height + cardYDistance
+        let newWidth = (edges[.maxX] ?? 0) + offsetSize.width + cardXDistance
+        let newHeight = (edges[.maxY] ?? 0) + offsetSize.height + cardYDistance
 
         if animate {
             NSAnimationContext.runAnimationGroup { context in
@@ -236,22 +241,9 @@ extension CGPoint {
     }
 }
 
-extension Edge {
-    enum Edges: CaseIterable {
-        case top
-        case bottom
-        case leading
-        case trailing
-    }
-}
-
-extension Dictionary where Key == Edge.Edges {
-    var description: String {
-        var string = "[\n"
-        for (key, value) in self {
-            string += "\t\(key): \(value)\n"
-        }
-        string += "]"
-        return string
-    }
+fileprivate enum MinMaxPositions: CaseIterable {
+    case minX
+    case minY
+    case maxX
+    case maxY
 }

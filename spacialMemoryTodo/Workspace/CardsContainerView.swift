@@ -14,8 +14,11 @@ struct CardsContainerView: NSViewRepresentable {
     @ObservedObject
     var tabManager: TabManager
 
+    @ObservedObject
+    var popUpManager: PopUpManager
+
     func makeNSView(context: Context) -> CardsView {
-        return CardsView(frame: .zero, tabManager: tabManager)
+        return CardsView(frame: .zero, tabManager: tabManager, popUpManager: popUpManager)
     }
 
     func updateNSView(_ nsView: CardsView, context: Context) {}

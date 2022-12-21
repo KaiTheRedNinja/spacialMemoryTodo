@@ -133,10 +133,16 @@ class LocationCardView: DraggableResizableView {
         let menu = NSMenu(title: "Right Click Menu")
 
         // add the items
-        menu.addItem(NSMenuItem(title: "Edit", action: nil, keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Edit", action: #selector(showEditPopup), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: "Print Rect", action: #selector(printLocationDebugInfo), keyEquivalent: ""))
 
         return menu
+    }
+
+    @objc
+    func showEditPopup() {
+        cardsView.popUpManager.showLocationEditPopup.toggle()
+        cardsView.popUpManager.objectWillChange.send()
     }
 
     @objc

@@ -17,6 +17,7 @@ class CardsView: NSScrollView {
 
     var tabManager: TabManager
     var tabManagerCancellable: AnyCancellable!
+    var popUpManager: PopUpManager
 
     var tabContent: MainTabContent?
     var tabContentCancellable: AnyCancellable?
@@ -37,8 +38,9 @@ class CardsView: NSScrollView {
         return []
     }
 
-    init(frame frameRect: NSRect, tabManager: TabManager) {
+    init(frame frameRect: NSRect, tabManager: TabManager, popUpManager: PopUpManager) {
         self.tabManager = tabManager
+        self.popUpManager = popUpManager
         super.init(frame: frameRect)
         self.tabManagerCancellable = tabManager.objectWillChange.sink {
             self.updateData()

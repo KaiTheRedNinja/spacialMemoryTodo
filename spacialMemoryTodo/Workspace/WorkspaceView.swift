@@ -12,9 +12,20 @@ struct WorkspaceView: View {
     @EnvironmentObject
     var tabManager: TabManager
 
+    @StateObject
+    var popUpManager: PopUpManager = .init()
+
     var body: some View {
         VStack {
-            CardsContainerView(tabManager: tabManager)
+            CardsContainerView(tabManager: tabManager, popUpManager: popUpManager)
+        }
+        .sheet(isPresented: $popUpManager.showLocationEditPopup) {
+            GroupBox {
+                Text("HELLOOO")
+            }
+            .onAppear {
+                print("Sheet was presented")
+            }
         }
     }
 }

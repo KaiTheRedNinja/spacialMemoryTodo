@@ -8,9 +8,9 @@
 import Foundation
 
 enum Log {
-    /// Wrapper function for `print()`. Casuses a warning whenever used.
+    /// Wrapper function for logging to the console. Causes a warning whenever used.
     @available(*, deprecated, message: "Please remove this eventually")
     static func info(_ items: Any..., separator: String = "", terminator: String = "\n") {
-        print(items, separator: separator, terminator: terminator) // swiftlint:disable:this print_warning
+        print(items, separator: separator, terminator: terminator) // swiftlint:disable:this disallow_print
     }
 }

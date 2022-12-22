@@ -43,3 +43,9 @@ space corresponding to one that you are already familar with.
 - Rearranging locations (in sidebar)
 - Rearranging todos
 - Local storage
+
+## Building
+1. Clone this repository
+2. Open `spacialMemoryTodo.xcodeproj` in Xcode
+3. Click on `File -> Packages -> Update to Latest Package Versions` to fetch the dependencies
+4. Press the play button in the top left to run the application

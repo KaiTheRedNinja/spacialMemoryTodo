@@ -27,6 +27,8 @@ class LocationCardView: DraggableResizableView {
 
     /// Text field for displaying the Location's name
     var title: NSTextField!
+    /// Button for adding todos
+    var addTodoButton: NSButton!
     /// Text field for displaying the number of Todos for the the Location
     var count: NSTextField!
 
@@ -49,6 +51,13 @@ class LocationCardView: DraggableResizableView {
         self.title.maximumNumberOfLines = 1
         self.title.lineBreakMode = .byTruncatingMiddle
         self.addSubview(title)
+
+        // set up and configure the add todo Button
+        self.addTodoButton = NSButton(image: NSImage(systemSymbolName: "plus", accessibilityDescription: nil)!,
+                                      target: self,
+                                      action: #selector(addTodo))
+        self.addTodoButton.isBordered = false
+        self.addSubview(addTodoButton)
 
         // set up and configure the count TextField
         self.count = NSTextField(labelWithString: "\(location.todos.count)")
@@ -91,25 +100,36 @@ class LocationCardView: DraggableResizableView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    @objc
+    func addTodo() {
+        Log.info("Todo Added!")
+    }
+
     // some constants to manage the title's size
     let titleHeight: CGFloat = 25
     let titleOffset: CGFloat = 10
     let outlineOffset: CGFloat = 3
     // resize all subviews when the size of the view changes
     override func resizeSubviews(withOldSize oldSize: NSSize) {
-        Log.info("Resizing subviews")
-
-        // calculate the width needed by the counter
+        // calculate the width needed by each view
         count.sizeToFit()
-        let width = count.frame.width
+        let countWidth = count.frame.width
+        let buttonWidth = titleHeight
+        let titleWidth = frame.width - countWidth - buttonWidth - titleOffset*2
+
+        let viewY = frame.height-titleHeight
 
         title.frame = .init(x: titleOffset,
-                            y: frame.height-titleHeight-titleOffset,
-                            width: frame.width-titleOffset*2-width,
+                            y: viewY-titleOffset,
+                            width: titleWidth,
                             height: titleHeight)
-        count.frame = .init(x: titleOffset,
-                            y: frame.height-titleHeight-titleOffset,
-                            width: frame.width-titleOffset*2,
+        addTodoButton.frame = .init(x: titleOffset + titleWidth,
+                                    y: viewY,
+                                    width: buttonWidth,
+                                    height: buttonWidth-titleOffset)
+        count.frame = .init(x: titleOffset + titleWidth + buttonWidth,
+                            y: viewY-titleOffset,
+                            width: countWidth,
                             height: titleHeight)
         outlineView.view.frame = .init(x: outlineOffset,
                                        y: outlineOffset,

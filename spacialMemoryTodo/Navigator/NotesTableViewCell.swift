@@ -21,8 +21,14 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
     func addLocation() {
         label.stringValue = location.name
         secondaryLabel.stringValue = "\(location.todos.filter({ !$0.isDone }).count)"
+
+        if let colour = PossibleColours.swiftColours[location.colour] {
+            icon.contentTintColor = NSColor(colour)
+        }
+
         resizeSubviews(withOldSize: .zero)
 
+        // add the watcher
         if locationCancellable == nil {
             locationCancellable = location.objectWillChange.sink {
                 self.addLocation()

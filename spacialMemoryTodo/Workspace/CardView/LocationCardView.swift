@@ -187,10 +187,29 @@ class LocationCardView: DraggableResizableView {
 }
 
 extension LocationCardView: DraggableResizableViewDelegate {
+    func cursorForPosition(locationInView: CGPoint,
+                           calculatedPosition: CornerBorderPosition,
+                           suggestedCursor: NSCursor) -> NSCursor {
+        // if the mouse is not dragging, just use the default
+        guard calculatedPosition == .drag else { return suggestedCursor }
+
+        // if the cursor is in the title, let it drag
+        if title.frame.contains(locationInView) {
+            return suggestedCursor
+        }
+        // else, do not have the cursor
+        return .arrow
+    }
+
     func rectToSizeTo(for event: NSEvent,
                       cursorAt cursorPosition: CornerBorderPosition,
                       from oldRect: NSRect,
                       withProposal newRect: NSRect) -> NSRect? {
+
+        if cursorPosition == .drag && NSCursor.current == .arrow {
+            return nil
+        }
+
         var returnedRect = newRect
         returnedRect.size = newRect.size.shrinkToNotSmallerThan(minSize: .minimumCardSize)
 

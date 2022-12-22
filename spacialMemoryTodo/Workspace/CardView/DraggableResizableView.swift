@@ -13,6 +13,16 @@ enum CornerBorderPosition {
     case none
 }
 
+let NWSECursor = """
+/System/Library/Frameworks/WebKit.framework/Versions/Current/\
+Frameworks/WebCore.framework/Resources/northWestSouthEastResizeCursor.png
+"""
+
+let NESWCursor = """
+/System/Library/Frameworks/WebKit.framework/Versions/A/Frameworks/\
+WebCore.framework/Versions/A/Resources/northEastSouthWestResizeCursor.png
+"""
+
 class DraggableResizableView: NSView {
 
     private let resizableArea: CGFloat = 5
@@ -24,11 +34,11 @@ class DraggableResizableView: NSView {
             switch self.cursorPosition {
             case .bottomRight, .topLeft:
                 NSCursor(image:
-                            NSImage(byReferencingFile: "/System/Library/Frameworks/WebKit.framework/Versions/Current/Frameworks/WebCore.framework/Resources/northWestSouthEastResizeCursor.png")!,
+                            NSImage(byReferencingFile: NWSECursor)!,
                          hotSpot: NSPoint(x: 8, y: 8)).set()
             case .bottomLeft, .topRight:
                 NSCursor(image:
-                            NSImage(byReferencingFile: "/System/Library/Frameworks/WebKit.framework/Versions/A/Frameworks/WebCore.framework/Versions/A/Resources/northEastSouthWestResizeCursor.png")!,
+                            NSImage(byReferencingFile: NESWCursor)!,
                          hotSpot: NSPoint(x: 8, y: 8)).set()
             case .top, .bottom:
                 NSCursor.resizeUpDown.set()
@@ -207,7 +217,7 @@ class DraggableResizableView: NSView {
     }
 }
 
-protocol DraggableResizableViewDelegate {
+protocol DraggableResizableViewDelegate: AnyObject {
 
     /// Asks the delegate if the view should be resized by the user's drag action
     /// - Parameters:
@@ -216,18 +226,25 @@ protocol DraggableResizableViewDelegate {
     ///   - oldRect: The current `NSRect` of the view
     ///   - newRect: The new, proposed resize of the view's `NSRect`
     /// - Returns: The NSRect that the view should resize to, or nil if it should not resize at all
-    func rectToSizeTo(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, withProposal newRect: NSRect) -> NSRect?
+    func rectToSizeTo(for event: NSEvent,
+                      cursorAt cursorPosition: CornerBorderPosition,
+                      from oldRect: NSRect,
+                      withProposal newRect: NSRect) -> NSRect?
 
     /// Tells the delegate that the view is going to be resized by the user's drag action.
     ///
-    /// Called after ``rectToSizeTo(for:cursorAt:from:withProposal:)-4kfu7``, before ``didResizeView(for:cursorAt:from:to:)-54yxd``
+    /// Called after ``rectToSizeTo(for:cursorAt:from:withProposal:)-4kfu7``,
+    /// before ``didResizeView(for:cursorAt:from:to:)-54yxd``
     ///
     /// - Parameters:
     ///   - event: The event for the user's drag action
     ///   - cursorPosition: The corner or edge that the user is trying to drag
     ///   - oldRect: The current `NSRect` of the view
     ///   - newRect: The new resize of the view's `NSRect`
-    func willResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect)
+    func willResizeView(for event: NSEvent,
+                        cursorAt cursorPosition: CornerBorderPosition,
+                        from oldRect: NSRect,
+                        to newRect: NSRect)
 
     /// Tells the delegate that the view has been resized by the user's drag action.
     ///
@@ -238,21 +255,26 @@ protocol DraggableResizableViewDelegate {
     ///   - cursorPosition: The corner or edge that the user is trying to drag
     ///   - oldRect: The previous `NSRect` of the view
     ///   - newRect: The new size of the view's `NSRect`
-    func didResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect)
+    func didResizeView(for event: NSEvent,
+                       cursorAt cursorPosition: CornerBorderPosition,
+                       from oldRect: NSRect,
+                       to newRect: NSRect)
 
-    /// Tells the delegate that the user has started dragging. This function runs before ``shouldResizeView(for:cursorAt:from:to:)-63m5m`` and other
-    /// delegate functions.
+    /// Tells the delegate that the user has started dragging. This function runs before
+    /// ``shouldResizeView(for:cursorAt:from:to:)-63m5m`` and other delegate functions.
     /// - Parameters:
     ///   - event: The event for the user's drag action
     ///   - cursorPosition: The position of the cursor at the start of the drag action
-    func didStartDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition)
+    func didStartDragging(with event: NSEvent,
+                          cursorAt cursorPosition: CornerBorderPosition)
 
-    /// Tells the delegate that the user has ended dragging. This function runs after ``didResizeView(for:cursorAt:from:to:)-25du4`` and other
-    /// delegate functions.
+    /// Tells the delegate that the user has ended dragging. This function runs after
+    /// ``didResizeView(for:cursorAt:from:to:)-25du4`` and other delegate functions.
     /// - Parameters:
     ///   - event: The event for the user's drag action
     ///   - cursorPosition: The position of the cursor at the end of the drag action
-    func didEndDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition)
+    func didEndDragging(with event: NSEvent,
+                        cursorAt cursorPosition: CornerBorderPosition)
 }
 
 // default implementations

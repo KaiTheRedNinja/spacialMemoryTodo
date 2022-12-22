@@ -167,7 +167,10 @@ class LocationCardView: DraggableResizableView {
 }
 
 extension LocationCardView: DraggableResizableViewDelegate {
-    func rectToSizeTo(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, withProposal newRect: NSRect) -> NSRect? {
+    func rectToSizeTo(for event: NSEvent,
+                      cursorAt cursorPosition: CornerBorderPosition,
+                      from oldRect: NSRect,
+                      withProposal newRect: NSRect) -> NSRect? {
         var returnedRect = newRect
         returnedRect.size = newRect.size.shrinkToNotSmallerThan(minSize: .minimumCardSize)
 
@@ -182,7 +185,10 @@ extension LocationCardView: DraggableResizableViewDelegate {
         return returnedRect
     }
 
-    func didResizeView(for event: NSEvent, cursorAt cursorPosition: CornerBorderPosition, from oldRect: NSRect, to newRect: NSRect) {
+    func didResizeView(for event: NSEvent,
+                       cursorAt cursorPosition: CornerBorderPosition,
+                       from oldRect: NSRect,
+                       to newRect: NSRect) {
         // Calculate the offset applied to location.rect to produce oldRect
         let xOffset = oldRect.origin.x - location.rect.origin.x
         let yOffset = oldRect.origin.y - location.rect.origin.y
@@ -198,7 +204,7 @@ extension LocationCardView: DraggableResizableViewDelegate {
         // Set the location.rect to the new frame
         location.rect = offsetNewFrame
 
-        cardsView.frameCards()
+        cardsView.calculateCardFrames()
     }
 
     func didStartDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {

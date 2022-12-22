@@ -107,7 +107,7 @@ struct EditLocationPopUpView: View {
                 save()
             }
             // disable the save button if there is no name
-            .disabled(newName.count == 0)
+            .disabled(newName.isEmpty)
             .buttonStyle(.borderedProminent)
         }
     }

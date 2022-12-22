@@ -26,14 +26,14 @@ extension LocationCardView {
 }
 
 enum PossibleColours: String, CaseIterable {
-    case blue = "blue"
-    case purple = "purple"
-    case pink = "pink"
-    case red = "red"
-    case orange = "orange"
-    case yellow = "yellow"
-    case green = "green"
-    case gray = "gray"
+    case blue
+    case purple
+    case pink
+    case red
+    case orange
+    case yellow
+    case green
+    case gray
 
     static let allCases: [PossibleColours] = [
         .blue, .purple, .pink, .red, .orange, .yellow, .green, .gray

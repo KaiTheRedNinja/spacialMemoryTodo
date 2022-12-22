@@ -177,6 +177,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 931B7B932943609400BFAA4E /* Build configuration list for PBXNativeTarget "spacialMemoryTodo" */;
 			buildPhases = (
+				93A773EC2953FBA70043C397 /* SwiftLint Run Script */,
 				931B7B802943609300BFAA4E /* Sources */,
 				931B7B812943609300BFAA4E /* Frameworks */,
 				931B7B822943609300BFAA4E /* Resources */,
@@ -240,6 +241,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		93A773EC2953FBA70043C397 /* SwiftLint Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint --strict\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		931B7B802943609300BFAA4E /* Sources */ = {

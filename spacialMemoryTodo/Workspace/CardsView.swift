@@ -52,7 +52,7 @@ class CardsView: NSScrollView {
         self.wantsLayer = true
         self.layer?.backgroundColor = NSColor.systemGray.cgColor
         locationsToCards()
-        frameCards()
+        calculateCardFrames()
     }
 
     required init?(coder: NSCoder) {
@@ -61,7 +61,7 @@ class CardsView: NSScrollView {
 
     func updateData() {
         self.locationsToCards()
-        self.frameCards()
+        self.calculateCardFrames()
         self.scrollToSelectedCard(animate: true)
     }
 
@@ -84,19 +84,18 @@ class CardsView: NSScrollView {
 
     let minCardDistanceFromEdge: CGFloat = 300
 
-    func frameCards(animate: Bool = false) {
+    func calculateCardFrames(animate: Bool = false) {
         // find the coordinates closest to each edge. This will serve as the reference points.
         // since we want the effect of infinite space, the edges of the document view must always
         // be `cardDistanceFromEdge` away from the nearest card.
 
         var edges: [MinMaxPositions: CGFloat] = [:]
-
         for card in cards {
             let cardEdges: [MinMaxPositions: CGFloat] = [
-                .minY: card.location.rect.minY, // CGFloat's top is actually the minimum since going down the screen Y gets bigger
+                .minY: card.location.rect.minY,
                 .maxY: card.location.rect.maxY,
                 .minX: card.location.rect.minX,
-                .maxX: card.location.rect.maxX,
+                .maxX: card.location.rect.maxX
             ]
 
             // replace the values in edges where the value is larger/smaller
@@ -125,6 +124,13 @@ class CardsView: NSScrollView {
         let cardXDistance = max(minCardDistanceFromEdge, (contentView.frame.width-cardsWidth)/2)
         let cardYDistance = max(minCardDistanceFromEdge, (contentView.frame.height-cardsHeight)/2)
 
+        frameCards(edges: edges, cardXDistance: cardXDistance, cardYDistance: cardYDistance, animate: animate)
+    }
+
+    private func frameCards(edges: [MinMaxPositions: CGFloat],
+                            cardXDistance: CGFloat,
+                            cardYDistance: CGFloat,
+                            animate: Bool = false) {
         // reframe the origin of all frames
         let minXEdgeOffset = cardXDistance - (edges[.minX] ?? 0)
         let minYEdgeOffset = cardYDistance - (edges[.minY] ?? 0)
@@ -197,15 +203,15 @@ class CardsView: NSScrollView {
 
         // Calculate the new origin of the lens so that its center is as close as possible to the center of the card
         // but make sure it does not exceed the bounds of the container
-        let lensOriginX = max(container.origin.x,   // do not let the value go below the origin's value
+        let lensOriginX = max(container.origin.x, //   do not let the value go below the origin's value
                               min(idealLensCenterX, // the ideal position for the lens's origin to be
-                                  maximumPoint.x))  // do not let the value go above the highest valid value
+                                  maximumPoint.x)) //  do not let the value go above the highest valid value
         let lensOriginY = max(container.origin.y,
                               min(idealLensCenterY,
                                   maximumPoint.y))
 
-        // Update the origin of the lens
-        // the scrollview will scroll so that the point specified in scroll(to:) is at the bottom-left corner of the scroll view
+        // Update the origin of the lens. The scrollview will scroll so that the point
+        // specified in scroll(to:) is at the bottom-left corner of the scroll view
         if animate {
             NSAnimationContext.runAnimationGroup { context in
                 context.duration = 0.2
@@ -225,7 +231,7 @@ class CardsView: NSScrollView {
     }
 
     override func resizeSubviews(withOldSize oldSize: NSSize) {
-        frameCards()
+        calculateCardFrames()
     }
 
     deinit {
@@ -241,7 +247,7 @@ extension CGPoint {
     }
 }
 
-fileprivate enum MinMaxPositions: CaseIterable {
+private enum MinMaxPositions: CaseIterable {
     case minX
     case minY
     case maxX

@@ -197,8 +197,8 @@ extension LocationCardView: DraggableResizableViewDelegate {
         // if the old rect's width or height is the same as the returned rect's width or height,
         // then reset the x and y value accordingly. This is to counteract the bug where if the card is at minimum
         // width/height, the card would start to move instead of not resizing.
-        let widthIsSame = oldRect.width == returnedRect.width && cursorPosition != .none
-        let heightIsSame = oldRect.height == returnedRect.height && cursorPosition != .none
+        let widthIsSame = oldRect.width == returnedRect.width && cursorPosition != .drag
+        let heightIsSame = oldRect.height == returnedRect.height && cursorPosition != .drag
         returnedRect.origin = .init(x: widthIsSame ? oldRect.minX : returnedRect.minX,
                                     y: heightIsSame ? oldRect.minY : returnedRect.minY)
 

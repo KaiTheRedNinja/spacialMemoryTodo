@@ -10,7 +10,7 @@ import Cocoa
 enum CornerBorderPosition {
     case topLeft, topRight, bottomRight, bottomLeft
     case top, left, right, bottom
-    case none
+    case drag
 }
 
 let NWSECursor = """
@@ -29,26 +29,7 @@ class DraggableResizableView: NSView {
 
     var delegate: DraggableResizableViewDelegate?
 
-    private var cursorPosition: CornerBorderPosition = .none {
-        didSet {
-            switch self.cursorPosition {
-            case .bottomRight, .topLeft:
-                NSCursor(image:
-                            NSImage(byReferencingFile: NWSECursor)!,
-                         hotSpot: NSPoint(x: 8, y: 8)).set()
-            case .bottomLeft, .topRight:
-                NSCursor(image:
-                            NSImage(byReferencingFile: NESWCursor)!,
-                         hotSpot: NSPoint(x: 8, y: 8)).set()
-            case .top, .bottom:
-                NSCursor.resizeUpDown.set()
-            case .left, .right:
-                NSCursor.resizeLeftRight.set()
-            case .none:
-                NSCursor.openHand.set()
-            }
-        }
-    }
+    private var cursorPosition: CornerBorderPosition = .drag
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -88,7 +69,7 @@ class DraggableResizableView: NSView {
             delegate?.didEndDragging(with: event, cursorAt: cursorPosition)
         }
 
-        self.cursorPosition = .none
+        self.cursorPosition = .drag
     }
 
     override func mouseMoved(with event: NSEvent) {
@@ -132,7 +113,7 @@ class DraggableResizableView: NSView {
         }
 
         // none case
-        if cursorPosition == .none {
+        if cursorPosition == .drag {
             newFrame.origin.x += deltaX
             newFrame.origin.y -= deltaY
         }
@@ -165,36 +146,55 @@ class DraggableResizableView: NSView {
     @discardableResult
     func cursorCornerBorderPosition(_ locationInView: CGPoint) -> CornerBorderPosition {
 
-        if locationInView.x < resizableArea,
-           locationInView.y < resizableArea {
-            return .bottomLeft
-        }
-        if self.bounds.width - locationInView.x < resizableArea,
-           locationInView.y < resizableArea {
-            return .bottomRight
-        }
-        if locationInView.x < resizableArea,
-           self.bounds.height - locationInView.y < resizableArea {
-            return .topLeft
-        }
-        if self.bounds.height - locationInView.y < resizableArea,
-           self.bounds.width - locationInView.x < resizableArea {
-            return .topRight
-        }
-        if locationInView.x < resizableArea {
-            return .left
-        }
-        if self.bounds.width - locationInView.x < resizableArea {
-            return .right
-        }
-        if locationInView.y < resizableArea {
-            return .bottom
-        }
-        if self.bounds.height - locationInView.y < resizableArea {
-            return .top
+        var cursor: CornerBorderPosition = .drag
+
+        let isTop = self.bounds.height - locationInView.y < resizableArea
+        let isBottom = locationInView.y < resizableArea
+        let isLeading = locationInView.x < resizableArea
+        let isTrailing = self.bounds.width - locationInView.x < resizableArea
+
+        if isBottom {
+            cursor = .bottom
+            if isLeading {
+                cursor = .bottomLeft
+            } else if isTrailing {
+                cursor = .bottomRight
+            }
+        } else if isTop {
+            cursor = .top
+            if isLeading {
+                cursor = .topLeft
+            } else if isTrailing {
+                cursor = .topRight
+            }
+        } else if isLeading {
+            cursor = .left
+        } else if isTrailing {
+            cursor = .right
         }
 
-        return .none
+        return cursor
+    }
+
+    func setCursor() {
+        var cursor: NSCursor = .arrow
+
+        switch self.cursorPosition {
+        case .bottomRight, .topLeft:
+            cursor = .init(image: NSImage(byReferencingFile: NWSECursor)!,
+                           hotSpot: NSPoint(x: 8, y: 8))
+        case .bottomLeft, .topRight:
+            cursor = .init(image: NSImage(byReferencingFile: NESWCursor)!,
+                           hotSpot: NSPoint(x: 8, y: 8))
+        case .top, .bottom:
+            cursor = .resizeUpDown
+        case .left, .right:
+            cursor = .resizeLeftRight
+        case .drag:
+            cursor = .openHand
+        }
+
+        // TODO: Actually do things with the cursor
     }
 
     private func repositionView() {
@@ -218,6 +218,17 @@ class DraggableResizableView: NSView {
 }
 
 protocol DraggableResizableViewDelegate: AnyObject {
+
+    /// Asks the delegate for the cursor that should be displayed given the location of the
+    /// cursor, the calculated position, and the default suggested cursor.
+    /// - Parameters:
+    ///   - locationInView: The location of the cursor in the view's coordinate system
+    ///   - calculatedPosition: The ``CornerBorderPosition`` of the mouse
+    ///   - suggestedCursor: The suggested cursor, based on the `calculatedPosition`
+    /// - Returns: The cursor to set. Return `NSCursor.arrow` for the default cursor.
+    func cursorForPosition(locationInView: CGPoint,
+                           calculatedPosition: CornerBorderPosition,
+                           suggestedCursor: NSCursor) -> NSCursor
 
     /// Asks the delegate if the view should be resized by the user's drag action
     /// - Parameters:
@@ -279,6 +290,9 @@ protocol DraggableResizableViewDelegate: AnyObject {
 
 // default implementations
 extension DraggableResizableViewDelegate {
+    func cursorForPosition(locationInView: CGPoint,
+                           calculatedPosition: CornerBorderPosition,
+                           suggestedCursor: NSCursor) -> NSCursor { suggestedCursor }
     func rectToSizeTo(for event: NSEvent,
                       cursorAt cursorPosition: CornerBorderPosition,
                       from oldRect: NSRect,

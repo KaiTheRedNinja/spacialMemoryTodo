@@ -60,6 +60,7 @@ class DraggableResizableView: NSView {
     override func mouseDown(with event: NSEvent) {
         let locationInView = convert(event.locationInWindow, from: nil)
         self.cursorPosition = self.cursorCornerBorderPosition(locationInView)
+        setCursor(locationInView: locationInView)
     }
 
     override func mouseUp(with event: NSEvent) {
@@ -70,11 +71,13 @@ class DraggableResizableView: NSView {
         }
 
         self.cursorPosition = .drag
+        setCursor()
     }
 
     override func mouseMoved(with event: NSEvent) {
         let locationInView = convert(event.locationInWindow, from: nil)
         self.cursorPosition = self.cursorCornerBorderPosition(locationInView)
+        setCursor(locationInView: locationInView)
     }
 
     var mouseIsDragging: Bool = false
@@ -176,7 +179,7 @@ class DraggableResizableView: NSView {
         return cursor
     }
 
-    func setCursor() {
+    func setCursor(locationInView: CGPoint? = nil) {
         var cursor: NSCursor = .arrow
 
         switch self.cursorPosition {
@@ -194,7 +197,13 @@ class DraggableResizableView: NSView {
             cursor = .openHand
         }
 
-        // TODO: Actually do things with the cursor
+        if let locationInView, let delegate {
+            cursor = delegate.cursorForPosition(locationInView: locationInView,
+                                                calculatedPosition: self.cursorPosition,
+                                                suggestedCursor: cursor)
+        }
+
+        cursor.set()
     }
 
     private func repositionView() {

@@ -47,6 +47,8 @@ class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
         super.viewDidLoad()
         outlineView.dataSource = self
         outlineView.delegate = self
+        outlineView.menu = NSMenu()
+        outlineView.menu?.delegate = self
         tabManagerCancellable = tabManager.objectWillChange.sink {
             self.outlineView.reloadData()
         }
@@ -121,6 +123,30 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
                   let location = outlineView.parent(forItem: selection) as? Location {
             tabContent.selectedLocation = location
             tabContent.selectedTodo = selection
+        }
+    }
+}
+
+extension NavigatorOutlineView: NSMenuDelegate {
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        let row = outlineView.clickedRow
+        guard row >= 0, let item = outlineView.item(atRow: row) else {
+            menu.items = []
+            return
+        }
+
+        if let item = item as? Location {
+            menu.items = [
+                .init(title: "Mark \(item.todos.count) Todos As Done", action: nil, keyEquivalent: ""),
+                .init(title: "Delete Location", action: nil, keyEquivalent: "")
+            ]
+        } else if let item = item as? Todo {
+            menu.items = [
+                .init(title: "Mark As \(item.isDone ? "Not " : "")Done", action: nil, keyEquivalent: ""),
+                .init(title: "Delete Todo", action: nil, keyEquivalent: "")
+            ]
+        } else {
+            menu.items = []
         }
     }
 }

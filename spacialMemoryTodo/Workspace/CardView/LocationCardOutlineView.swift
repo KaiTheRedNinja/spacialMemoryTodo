@@ -46,10 +46,15 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
 
 extension LocationCardOutlineView: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
-        // TODO: update the menu
+        let row = outlineView.clickedRow
+        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
+            menu.items = []
+            return
+        }
+
         menu.items = [
-            .init(title: "Mark As Done", action: nil, keyEquivalent: ""),
-            .init(title: "Delete", action: nil, keyEquivalent: "")
+            .init(title: "Mark As \(item.isDone ? "Not " : "")Done", action: nil, keyEquivalent: ""),
+            .init(title: "Delete Todo", action: nil, keyEquivalent: "")
         ]
     }
 }

@@ -9,12 +9,14 @@ import SwiftUI
 import macAppBoilerplate
 
 class MainWindowController: macAppBoilerplate.MainWindowController {
+    var popUpManager: PopUpManager = .init()
+
     override func getNavigatorProtocol() -> SidebarProtocol {
-        return NavigatorSidebar()
+        return NavigatorSidebar(popUpManager: popUpManager)
     }
 
     override func getInspectorProtocol() -> SidebarProtocol {
-        return NavigatorSidebar()
+        return NavigatorSidebar(popUpManager: popUpManager)
     }
 
     override func getTabBarProtocol() -> TabBarProtocol {
@@ -22,7 +24,7 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
     }
 
     override func getWorkspaceProtocol() -> WorkspaceProtocol {
-        return Workspace()
+        return Workspace(popUpManager: popUpManager)
     }
 
     override func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {

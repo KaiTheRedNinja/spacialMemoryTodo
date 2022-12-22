@@ -12,8 +12,8 @@ struct WorkspaceView: View {
     @EnvironmentObject
     var tabManager: TabManager
 
-    @StateObject
-    var popUpManager: PopUpManager = .init()
+    @ObservedObject
+    var popUpManager: PopUpManager
 
     var body: some View {
         VStack {

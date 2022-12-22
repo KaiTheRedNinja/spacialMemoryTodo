@@ -12,20 +12,19 @@ struct SidebarNavigatorView: View {
     @EnvironmentObject
     var tabManager: TabManager
 
+    @ObservedObject
+    var popUpManager: PopUpManager
+
     var body: some View {
         VStack {
             OutlineView { _ in
-                NavigatorOutlineView()
+                let view = NavigatorOutlineView()
+                view.popUpManager = popUpManager
+                return view
             }
         }
         .onAppear {
             self.tabManager.openTab(tab: MainTabContent())
         }
-    }
-}
-
-struct NotesNavigatorView_Previews: PreviewProvider {
-    static var previews: some View {
-        SidebarNavigatorView()
     }
 }

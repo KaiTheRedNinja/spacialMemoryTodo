@@ -10,6 +10,12 @@ import macAppBoilerplate
 
 class NavigatorSidebar: macAppBoilerplate.SidebarProtocol {
 
+    init(popUpManager: PopUpManager) {
+        self.popUpManager = popUpManager
+    }
+
+    var popUpManager: PopUpManager
+
     // no items needed since its only one view
     var items: [macAppBoilerplate.SidebarDockIcon] = []
 
@@ -20,7 +26,7 @@ class NavigatorSidebar: macAppBoilerplate.SidebarProtocol {
 
     func sidebarViewFor(selection: Int) -> AnyView {
         MainContentWrapper {
-            SidebarNavigatorView()
+            SidebarNavigatorView(popUpManager: self.popUpManager)
         }
     }
 }

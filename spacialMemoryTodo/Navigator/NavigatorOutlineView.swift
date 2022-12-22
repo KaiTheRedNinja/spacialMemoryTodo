@@ -10,6 +10,7 @@ import macAppBoilerplate
 import Combine
 
 class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
+    var popUpManager: PopUpManager?
     var tabContent: MainTabContent?
     var tabContentCancellable: AnyCancellable?
     var locations: [Location] {
@@ -137,6 +138,7 @@ extension NavigatorOutlineView: NSMenuDelegate {
 
         if let item = item as? Location {
             menu.items = [
+                .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: ""),
                 .init(title: "Mark \(item.todos.count) Todos As Done", action: nil, keyEquivalent: ""),
                 .init(title: "Delete Location", action: nil, keyEquivalent: "")
             ]
@@ -148,5 +150,16 @@ extension NavigatorOutlineView: NSMenuDelegate {
         } else {
             menu.items = []
         }
+    }
+
+    @objc
+    func editLocation() {
+        let row = outlineView.clickedRow
+        guard row >= 0, let item = outlineView.item(atRow: row) as? Location else {
+            return
+        }
+
+        popUpManager?.locationToEdit = item
+        popUpManager?.showLocationEditPopup = true
     }
 }

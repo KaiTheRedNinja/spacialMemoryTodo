@@ -151,6 +151,10 @@ class LocationCardView: DraggableResizableView {
         // though it says right mouse down, but it actually triggers when right mouse releases.
         guard event.type == .rightMouseDown else { return nil }
 
+        // ensure that the right click is not within the outline view
+        let locationInView = convert(event.locationInWindow, from: nil)
+        guard !outlineView.view.frame.contains(locationInView) else { return nil }
+
         // create the menu. The title is not actually visible.
         let menu = NSMenu(title: "Right Click Menu")
 

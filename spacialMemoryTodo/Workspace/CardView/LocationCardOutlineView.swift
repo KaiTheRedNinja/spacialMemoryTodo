@@ -16,6 +16,8 @@ class LocationCardOutlineView: macAppBoilerplate.OutlineViewController {
         super.loadView()
         outlineView.delegate = self
         outlineView.dataSource = self
+        outlineView.menu = NSMenu()
+        outlineView.menu?.delegate = self
     }
 }
 
@@ -39,5 +41,15 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
         cell.todo = item
         cell.addTodo()
         return cell
+    }
+}
+
+extension LocationCardOutlineView: NSMenuDelegate {
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        // TODO: update the menu
+        menu.items = [
+            .init(title: "Mark As Done", action: nil, keyEquivalent: ""),
+            .init(title: "Delete", action: nil, keyEquivalent: "")
+        ]
     }
 }

@@ -1,5 +1,5 @@
 //
-//  NotesTableViewCell.swift
+//  NavigatorTableViewCell.swift
 //  spacialMemoryTodo
 //
 //  Created by Kai Quan Tay on 9/12/22.

@@ -9,7 +9,7 @@ import SwiftUI
 import macAppBoilerplate
 import Combine
 
-class NotesOutlineView: macAppBoilerplate.OutlineViewController {
+class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
     var tabContent: MainTabContent?
     var tabContentCancellable: AnyCancellable?
     var locations: [Location] {
@@ -58,7 +58,7 @@ class NotesOutlineView: macAppBoilerplate.OutlineViewController {
     }
 }
 
-extension NotesOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
+extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         guard let item else { return locations.count }
 

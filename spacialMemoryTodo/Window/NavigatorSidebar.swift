@@ -20,7 +20,7 @@ class NavigatorSidebar: macAppBoilerplate.SidebarProtocol {
 
     func sidebarViewFor(selection: Int) -> AnyView {
         MainContentWrapper {
-            NotesNavigatorView()
+            SidebarNavigatorView()
         }
     }
 }

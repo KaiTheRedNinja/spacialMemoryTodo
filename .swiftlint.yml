@@ -8,7 +8,6 @@ disabled_rules:
 
 # paths to ignore during linting.
 excluded:
-  - AuroraEditorModules/.build # Where Swift Package Manager checks out dependency sources
 
 # Exclude triggering type names.
 type_name:
@@ -103,12 +102,12 @@ custom_rules:
     message: "Use swiftlint:disable:next or swiftlint:disable:this"
     severity: error
 
-  # Add warnings to print statements
-  print_warning:
+  # Don't use print
+  disallow_print:
     included: ".*.swift"
-    name: "Print Warning"
-    regex: "print"
-    message: "Please avoid using print statements"
+    name: "No print"
+    regex: "print(.*)"
+    message: "Please do not use print(), use `Log.info()`."
     severity: warning
 
   # Disable Xcode placeholders like <#Description#>

@@ -97,7 +97,7 @@ class LocationCardView: DraggableResizableView {
     let outlineOffset: CGFloat = 3
     // resize all subviews when the size of the view changes
     override func resizeSubviews(withOldSize oldSize: NSSize) {
-        print("Resizing subviews")
+        Log.info("Resizing subviews")
 
         // calculate the width needed by the counter
         count.sizeToFit()
@@ -157,8 +157,8 @@ class LocationCardView: DraggableResizableView {
 
     @objc
     func spitLocation() {
-        print(location.rect)
-        print(frame)
+        Log.info(location.rect)
+        Log.info(frame)
     }
 
     deinit {

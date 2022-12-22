@@ -103,6 +103,14 @@ custom_rules:
     message: "Use swiftlint:disable:next or swiftlint:disable:this"
     severity: error
 
+  # Add warnings to print statements
+  print_warning:
+    included: ".*.swift"
+    name: "Print Warning"
+    regex: "print"
+    message: "Please avoid using print statements"
+    severity: warning
+
   # Disable Xcode placeholders like <#Description#>
   no_placeholders:
     included: ".*.swift"

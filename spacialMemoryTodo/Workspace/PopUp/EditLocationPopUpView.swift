@@ -58,7 +58,6 @@ struct EditLocationPopUpView: View {
         HStack {
             ForEach(PossibleColours.allCases, id: \.rawValue) { color in
                 Button {
-                    print("Selected \(color)")
                     selectedColour = color
                 } label: {
                     PossibleColours.swiftColours[color]

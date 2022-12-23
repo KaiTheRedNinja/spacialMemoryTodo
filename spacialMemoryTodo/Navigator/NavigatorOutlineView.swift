@@ -94,6 +94,7 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         if let item = item as? Location {
             let cell = LocationTableViewCell(frame: .zero, isEditable: false)
             cell.location = item
+            cell.outlineView = outlineView
             cell.addLocation()
             return cell
         }

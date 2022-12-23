@@ -87,6 +87,8 @@ class LocationCardView: DraggableResizableView {
         // as it encapsulates `self` in a closure
         self.locationCancellable = self.location.objectWillChange.sink {
             self.title.stringValue = self.location.name
+            self.count.stringValue = "\(self.location.todos.count)"
+            outlineView.outlineView.reloadData()
             self.setBackgroundColour()
         }
 
@@ -102,7 +104,8 @@ class LocationCardView: DraggableResizableView {
 
     @objc
     func addTodo() {
-        Log.info("Todo Added!")
+        location.todos.append(.init(name: "Untitled Todo"))
+        location.objectWillChange.send()
     }
 
     // some constants to manage the title's size

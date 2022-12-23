@@ -13,6 +13,8 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
     var location: Location!
     var locationCancellable: AnyCancellable?
 
+    var outlineView: NSOutlineView?
+
     override func configIcon(icon: NSImageView) {
         super.configIcon(icon: icon)
         icon.image = NSImage(systemSymbolName: "location.circle", accessibilityDescription: nil)
@@ -31,7 +33,7 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
         // add the watcher
         if locationCancellable == nil {
             locationCancellable = location.objectWillChange.sink {
-                self.addLocation()
+                self.outlineView?.reloadItem(self.location, reloadChildren: true)
             }
         }
     }

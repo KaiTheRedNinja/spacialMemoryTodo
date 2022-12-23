@@ -23,11 +23,13 @@ class LocationCardOutlineView: macAppBoilerplate.OutlineViewController {
 
 extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        return location.todos.filter({ !$0.isDone }).count
+//        return location.todos.filter({ !$0.isDone }).count
+        return location.todos.count
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        return location.todos.filter({ !$0.isDone })[index]
+//        return location.todos.filter({ !$0.isDone })[index]
+        return location.todos[index]
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
@@ -53,8 +55,34 @@ extension LocationCardOutlineView: NSMenuDelegate {
         }
 
         menu.items = [
-            .init(title: "Mark As \(item.isDone ? "Not " : "")Done", action: nil, keyEquivalent: ""),
-            .init(title: "Delete Todo", action: nil, keyEquivalent: "")
+            .init(title: "Mark As \(item.isDone ? "Not " : "")Done",
+                  action: #selector(markTodoAsDone),
+                  keyEquivalent: ""),
+            .init(title: "Delete Todo",
+                  action: #selector(deleteTodo),
+                  keyEquivalent: "")
         ]
+    }
+
+    @objc
+    func markTodoAsDone() {
+        let row = outlineView.clickedRow
+        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
+            return
+        }
+
+        item.isDone.toggle()
+        location.objectWillChange.send()
+    }
+
+    @objc
+    func deleteTodo() {
+        let row = outlineView.clickedRow
+        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
+            return
+        }
+
+        location.todos.removeAll(where: { $0.id == item.id })
+        location.objectWillChange.send()
     }
 }

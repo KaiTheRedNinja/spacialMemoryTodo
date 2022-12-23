@@ -66,7 +66,8 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let item else { return locations.count }
 
         if let item = item as? Location {
-            return item.todos.filter({ !$0.isDone }).count
+//            return item.todos.filter({ !$0.isDone }).count
+            return item.todos.count
         }
 
         return 0
@@ -76,7 +77,8 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let item else { return locations[index] }
 
         if let item = item as? Location {
-            return item.todos.filter({ !$0.isDone })[index]
+//            return item.todos.filter({ !$0.isDone })[index]
+            return item.todos[index]
         }
 
         return 0

@@ -60,7 +60,7 @@ class LocationCardView: DraggableResizableView {
         self.addSubview(addTodoButton)
 
         // set up and configure the count TextField
-        self.count = NSTextField(labelWithString: "\(location.todos.count)")
+        self.count = NSTextField(labelWithString: "\(location.todos.filter({ !$0.isDone }).count)")
         self.count.alignment = .right
         self.count.font = .boldSystemFont(ofSize: NSFont.systemFontSize)
         self.addSubview(count)
@@ -87,7 +87,7 @@ class LocationCardView: DraggableResizableView {
         // as it encapsulates `self` in a closure
         self.locationCancellable = self.location.objectWillChange.sink {
             self.title.stringValue = self.location.name
-            self.count.stringValue = "\(self.location.todos.count)"
+            self.count.stringValue = "\(self.location.todos.filter({ !$0.isDone }).count)"
             outlineView.outlineView.reloadData()
             self.setBackgroundColour()
         }

@@ -72,6 +72,13 @@ extension LocationCardOutlineView: NSMenuDelegate {
         }
 
         item.isDone.toggle()
+
+        // put the item at the end
+        if let index = location.todos.firstIndex(of: item) {
+            location.todos.remove(at: index)
+            location.todos.append(item)
+        }
+
         location.objectWillChange.send()
     }
 

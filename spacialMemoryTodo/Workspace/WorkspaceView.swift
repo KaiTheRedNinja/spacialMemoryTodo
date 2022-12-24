@@ -24,5 +24,10 @@ struct WorkspaceView: View {
                 EditLocationPopUpView(popUpManager: popUpManager)
             }
         }
+        .sheet(isPresented: $popUpManager.showTodoEditPopup) {
+            GroupBox {
+                EditTodoPopUpView(popUpManager: popUpManager)
+            }
+        }
     }
 }

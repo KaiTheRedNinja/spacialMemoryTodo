@@ -11,6 +11,7 @@ import macAppBoilerplate
 class LocationCardOutlineView: macAppBoilerplate.OutlineViewController {
 
     var location: Location!
+    var cardView: LocationCardView!
 
     override func loadView() {
         super.loadView()
@@ -58,6 +59,9 @@ extension LocationCardOutlineView: NSMenuDelegate {
             .init(title: "Mark As \(item.isDone ? "Not " : "")Done",
                   action: #selector(markTodoAsDone),
                   keyEquivalent: ""),
+            .init(title: "Edit Todo",
+                  action: #selector(editTodo),
+                  keyEquivalent: ""),
             .init(title: "Delete Todo",
                   action: #selector(deleteTodo),
                   keyEquivalent: "")
@@ -80,6 +84,18 @@ extension LocationCardOutlineView: NSMenuDelegate {
         }
 
         location.objectWillChange.send()
+    }
+
+    @objc
+    func editTodo() {
+        let row = outlineView.clickedRow
+        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
+            return
+        }
+
+        let manager = cardView.cardsView.popUpManager
+        manager.todoToEdit = item
+        manager.showTodoEditPopup = true
     }
 
     @objc

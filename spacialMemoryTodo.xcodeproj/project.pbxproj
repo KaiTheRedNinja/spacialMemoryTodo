@@ -18,6 +18,7 @@
 		930967692952E33B00DB17CE /* PopUpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930967682952E33B00DB17CE /* PopUpManager.swift */; };
 		9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */; };
 		9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */; };
+		9312DC4029572C060044FEC6 /* EditTodoPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */; };
 		931AD2A32953FFEC00062A13 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931AD2A22953FFEC00062A13 /* Log.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
 		931B7B8C2943609400BFAA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8B2943609400BFAA4E /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 		930967682952E33B00DB17CE /* PopUpManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpManager.swift; sourceTree = "<group>"; };
 		9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationPopUpView.swift; sourceTree = "<group>"; };
 		9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationCardView+Colours.swift"; sourceTree = "<group>"; };
+		9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoPopUpView.swift; sourceTree = "<group>"; };
 		931AD2A22953FFEC00062A13 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931B7B872943609300BFAA4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */,
+				9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */,
 				930967682952E33B00DB17CE /* PopUpManager.swift */,
 			);
 			path = PopUp;
@@ -284,6 +287,7 @@
 				93065F4829437D9A002A3381 /* LocationCardView.swift in Sources */,
 				931B7BA52943703600BFAA4E /* SidebarNavigatorView.swift in Sources */,
 				931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */,
+				9312DC4029572C060044FEC6 /* EditTodoPopUpView.swift in Sources */,
 				93065F462943793E002A3381 /* CardsView.swift in Sources */,
 				931B7BA02943655600BFAA4E /* TabBar.swift in Sources */,
 				93065F3B29437327002A3381 /* NavigatorOutlineView.swift in Sources */,

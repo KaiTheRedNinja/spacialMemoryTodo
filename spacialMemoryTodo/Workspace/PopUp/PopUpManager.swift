@@ -10,4 +10,7 @@ import SwiftUI
 class PopUpManager: ObservableObject {
     @Published var showLocationEditPopup: Bool = false
     @Published var locationToEdit: Location?
+
+    @Published var showTodoEditPopup: Bool = false
+    @Published var todoToEdit: Todo?
 }

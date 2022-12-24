@@ -68,6 +68,7 @@ class LocationCardView: DraggableResizableView {
         // set up the Todo outlineview
         let outlineView = LocationCardOutlineView()
         outlineView.location = location
+        outlineView.cardView = self
         self.outlineView = outlineView
         outlineView.view.wantsLayer = true
         self.addSubview(self.outlineView.view)

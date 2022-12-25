@@ -19,6 +19,7 @@
 		9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */; };
 		9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */; };
 		9312DC4029572C060044FEC6 /* EditTodoPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */; };
+		9312DC4329572DF30044FEC6 /* NewTodoToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9312DC4229572DF30044FEC6 /* NewTodoToolbarButton.swift */; };
 		931AD2A32953FFEC00062A13 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931AD2A22953FFEC00062A13 /* Log.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
 		931B7B8C2943609400BFAA4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 931B7B8B2943609400BFAA4E /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationPopUpView.swift; sourceTree = "<group>"; };
 		9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationCardView+Colours.swift"; sourceTree = "<group>"; };
 		9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoPopUpView.swift; sourceTree = "<group>"; };
+		9312DC4229572DF30044FEC6 /* NewTodoToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTodoToolbarButton.swift; sourceTree = "<group>"; };
 		931AD2A22953FFEC00062A13 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		931B7B872943609300BFAA4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,14 @@
 			path = PopUp;
 			sourceTree = "<group>";
 		};
+		9312DC4129572D4C0044FEC6 /* Toolbar */ = {
+			isa = PBXGroup;
+			children = (
+				9312DC4229572DF30044FEC6 /* NewTodoToolbarButton.swift */,
+			);
+			path = Toolbar;
+			sourceTree = "<group>";
+		};
 		931B7B7B2943609300BFAA4E = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +124,7 @@
 				93065F3C294374FE002A3381 /* Data */,
 				931B7BA62943712200BFAA4E /* Workspace */,
 				931B7BA32943702800BFAA4E /* Navigator */,
+				9312DC4129572D4C0044FEC6 /* Toolbar */,
 				931B7B9A2943613200BFAA4E /* Window */,
 				931B7B992943612400BFAA4E /* Application */,
 				931B7B902943609400BFAA4E /* spacialMemoryTodo.entitlements */,
@@ -277,6 +288,7 @@
 			files = (
 				931B7B9C2943614D00BFAA4E /* MainWindowController.swift in Sources */,
 				9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */,
+				9312DC4329572DF30044FEC6 /* NewTodoToolbarButton.swift in Sources */,
 				931AD2A32953FFEC00062A13 /* Log.swift in Sources */,
 				931B7B9E2943628500BFAA4E /* NavigatorSidebar.swift in Sources */,
 				93065F4429437931002A3381 /* CardsContainerView.swift in Sources */,

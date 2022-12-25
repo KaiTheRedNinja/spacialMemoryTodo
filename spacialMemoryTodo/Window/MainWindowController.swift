@@ -36,6 +36,49 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
         items.append(.flexibleSpace)
         items.append(.flexibleSpace)
         items.append(.flexibleSpace)
+
+        // custom items
+        items.append(.addNewItem)
+
         return items
     }
+
+    override func toolbar(_ toolbar: NSToolbar,
+                          itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
+                          willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+        // add the default items
+        if let defaultItem = builtinDefaultToolbar(toolbar,
+                                                   itemForItemIdentifier: itemIdentifier,
+                                                   willBeInsertedIntoToolbar: flag) {
+            return defaultItem
+        }
+
+        switch itemIdentifier {
+        case .addNewItem:
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.addNewItem)
+            toolbarItem.label = "Add New Location"
+            toolbarItem.paletteLabel = "Add New Location"
+            toolbarItem.toolTip = "Add a New Location"
+            toolbarItem.isBordered = true
+            toolbarItem.target = self
+            toolbarItem.action = #selector(addNewItem)
+            toolbarItem.image = NSImage(
+                systemSymbolName: "plus",
+                accessibilityDescription: nil
+            )?.withSymbolConfiguration(.init(scale: .large))
+
+            return toolbarItem
+        default:
+            return NSToolbarItem(itemIdentifier: itemIdentifier)
+        }
+    }
+
+    @objc
+    func addNewItem() {
+
+    }
+}
+
+extension NSToolbarItem.Identifier {
+     static let addNewItem = NSToolbarItem.Identifier("addNewItem")
 }

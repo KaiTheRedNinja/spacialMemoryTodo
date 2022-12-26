@@ -21,12 +21,12 @@ struct WorkspaceView: View {
         }
         .sheet(isPresented: $popUpManager.showLocationEditPopup) {
             GroupBox {
-                EditLocationPopUpView(popUpManager: popUpManager)
+                EditLocationPopUpView(tabManager: tabManager, popUpManager: popUpManager)
             }
         }
         .sheet(isPresented: $popUpManager.showTodoEditPopup) {
             GroupBox {
-                EditTodoPopUpView(popUpManager: popUpManager)
+                EditTodoPopUpView(tabManager: tabManager, popUpManager: popUpManager)
             }
         }
     }

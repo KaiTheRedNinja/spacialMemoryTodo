@@ -10,20 +10,9 @@ import macAppBoilerplate
 
 class LocationManager: macAppBoilerplate.TabBarItemRepresentable, ObservableObject {
 
-    init(fromDisk: Bool = true, autoSaveToDisk: Bool = true) {
+    init(fromDisk: Bool = true) {
         if fromDisk {
             loadLocationsFromPath()
-        }
-
-        if autoSaveToDisk {
-            autoSave()
-        }
-    }
-
-    func autoSave() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.saveLocationsToPath()
-            self.autoSave()
         }
     }
 
@@ -75,32 +64,26 @@ extension LocationManager {
         baseURL.appendingPathComponent("locations.json")
     }
 
-    func saveLocationsToPath(path: URL? = nil) {
+    private func saveLocationsToPath(path: URL? = nil) {
         let path = path ?? locationsURL
-
-        Log.info("Trying to write to path \(path)")
 
         let encoder = JSONEncoder()
         guard let data = try? encoder.encode(locations) else {
-            Log.info("Writing failed")
             return
         }
 
-        Log.info("Write success: \(data)")
         try? data.write(to: path, options: .atomic)
     }
 
     @discardableResult
-    func loadLocationsFromPath(path: URL? = nil) -> Bool {
+    private func loadLocationsFromPath(path: URL? = nil) -> Bool {
         let path = path ?? locationsURL
 
         // check that file exists
-        Log.info("Trying to read from path \(path)")
         guard filemanager.fileExists(atPath: path.path) else {
             // if the file doesn't exist, make sure that the folder exists so that the file
             // can be written there
             try? filemanager.createDirectory(at: baseURL, withIntermediateDirectories: false)
-            Log.info("Path does not exist. Creating folder.")
             return false
         }
 
@@ -112,9 +95,22 @@ extension LocationManager {
         }
 
         // load the locations
-        Log.info("Successfully loaded locations")
         self.locations = locs
 
         return true
+    }
+
+    static func save(sender: NSView) {
+        guard let window = sender.window?.windowController as? MainWindowController
+        else { return }
+
+        save(sender: window.tabManager)
+    }
+
+    static func save(sender: TabManager) {
+        guard let manager = sender.openedTabs.first as? LocationManager
+        else { return }
+
+        manager.saveLocationsToPath()
     }
 }

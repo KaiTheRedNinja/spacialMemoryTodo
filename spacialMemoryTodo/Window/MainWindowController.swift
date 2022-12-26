@@ -104,12 +104,13 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
                                                       width: CGRect.defaultLocationCardSize.width,
                                                       height: CGRect.defaultLocationCardSize.height)))
         tabContent.objectWillChange.send()
+
+        LocationManager.save(sender: tabManager)
     }
 
     @objc
     func saveLocations() {
-        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else { return }
-        tabContent.saveLocationsToPath()
+        LocationManager.save(sender: tabManager)
     }
 }
 

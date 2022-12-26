@@ -84,6 +84,8 @@ extension LocationCardOutlineView: NSMenuDelegate {
         }
 
         location.objectWillChange.send()
+
+        LocationManager.save(sender: self.view)
     }
 
     @objc
@@ -107,5 +109,6 @@ extension LocationCardOutlineView: NSMenuDelegate {
 
         location.todos.removeAll(where: { $0.id == item.id })
         location.objectWillChange.send()
+        LocationManager.save(sender: self.view)
     }
 }

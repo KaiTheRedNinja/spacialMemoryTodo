@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import macAppBoilerplate
 
 struct EditLocationPopUpView: View {
+
+    @ObservedObject
+    var tabManager: TabManager
 
     @ObservedObject
     var popUpManager: PopUpManager
@@ -113,14 +117,16 @@ struct EditLocationPopUpView: View {
 
     /// Exits and saves
     func save() {
-        if let location = popUpManager.locationToEdit {
-            location.name = newName
-            location.colour = selectedColour
-            location.objectWillChange.send()
+        defer { exit() }
+        guard let location = popUpManager.locationToEdit else { return }
 
-            popUpManager.lastColour = selectedColour
-        }
-        exit()
+        location.name = newName
+        location.colour = selectedColour
+        location.objectWillChange.send()
+
+        popUpManager.lastColour = selectedColour
+
+        LocationManager.save(sender: tabManager)
     }
 
     /// Exits but does not save

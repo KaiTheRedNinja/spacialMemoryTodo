@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import macAppBoilerplate
 
 struct EditTodoPopUpView: View {
+
+    @ObservedObject
+    var tabManager: TabManager
 
     @ObservedObject
     var popUpManager: PopUpManager
@@ -76,11 +80,13 @@ struct EditTodoPopUpView: View {
 
     /// Exits and saves
     func save() {
-        if let todo = popUpManager.todoToEdit {
-            todo.name = newName
-            todo.objectWillChange.send()
-        }
-        exit()
+        defer { exit() }
+        guard let todo = popUpManager.todoToEdit else { return }
+
+        todo.name = newName
+        todo.objectWillChange.send()
+
+        LocationManager.save(sender: tabManager)
     }
 
     /// Exits but does not save

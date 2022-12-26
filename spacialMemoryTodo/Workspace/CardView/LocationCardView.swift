@@ -107,6 +107,8 @@ class LocationCardView: DraggableResizableView {
     func addTodo() {
         location.todos.append(.init(name: "Untitled Todo"))
         location.objectWillChange.send()
+
+        LocationManager.save(sender: self)
     }
 
     // some constants to manage the title's size
@@ -180,6 +182,7 @@ class LocationCardView: DraggableResizableView {
     func deleteLocation() {
         cardsView.tabContent?.locations.removeAll(where: { $0.id == location.id })
         cardsView.tabContent?.objectWillChange.send()
+        LocationManager.save(sender: self)
     }
 
     deinit {
@@ -253,6 +256,7 @@ extension LocationCardView: DraggableResizableViewDelegate {
 
     func didEndDragging(with event: NSEvent, cursorAt cursorPosition: CornerBorderPosition) {
         cardsView.isCurrentlyDraggingCard = false
+        LocationManager.save(sender: self)
     }
 }
 

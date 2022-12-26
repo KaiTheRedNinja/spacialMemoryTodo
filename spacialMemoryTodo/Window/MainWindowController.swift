@@ -80,6 +80,7 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
         let location = tabContent.locationForNewTodo?(CGRect.defaultLocationCardSize.size) ?? .zero
         tabContent.locations.append(.init(name: "Untitled Location",
                                           todos: [],
+                                          colour: popUpManager.lastColour,
                                           rect: .init(x: location.x,
                                                       y: location.y,
                                                       width: CGRect.defaultLocationCardSize.width,

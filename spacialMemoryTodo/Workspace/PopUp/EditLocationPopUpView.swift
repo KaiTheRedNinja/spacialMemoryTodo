@@ -117,6 +117,8 @@ struct EditLocationPopUpView: View {
             location.name = newName
             location.colour = selectedColour
             location.objectWillChange.send()
+
+            popUpManager.lastColour = selectedColour
         }
         exit()
     }

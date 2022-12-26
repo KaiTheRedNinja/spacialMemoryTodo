@@ -10,15 +10,19 @@ import Foundation
 class Location: Identifiable, Equatable, ObservableObject {
     @Published var name: String
     @Published var todos: [Todo]
-    @Published var colour: PossibleColours = .gray
+    @Published var colour: PossibleColours
 
     // as it changes VERY often while moving, it cannot be published
     // for the sake of memory usage
     var rect: CGRect
 
-    init(name: String, todos: [Todo], rect: CGRect = .defaultLocationCardSize) {
+    init(name: String,
+         todos: [Todo],
+         colour: PossibleColours = .gray,
+         rect: CGRect = .defaultLocationCardSize) {
         self.name = name
         self.todos = todos
+        self.colour = colour
         self.rect = rect
     }
 

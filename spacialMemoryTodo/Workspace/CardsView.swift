@@ -29,21 +29,27 @@ class CardsView: NSScrollView {
 
         if let tabContent = tabManager.selectedTabItem() as? MainTabContent {
             self.tabContent = tabContent
-            tabContent.locationForNewTodo = { _ in
-                // if there are no locations on screen, just return 0,0
-                guard !tabContent.locations.isEmpty else {
-                    return .zero
+            tabContent.locationForNewTodo = { size in
+                // calculate the center of the visible screen
+                let visibleScreenCenter = CGPoint(x: self.documentVisibleRect.midX,
+                                                  y: self.documentVisibleRect.midY)
+
+                // get the card offset (use 0,0 if there are no cards)
+                var cardOffset = CGSize.zero
+                if let refCard = self.cards.first {
+                    cardOffset = .init(width: refCard.location.rect.minX - refCard.frame.minX,
+                                       height: refCard.location.rect.minY - refCard.frame.minY)
                 }
 
-                // calculate the center of the visible screen
-
-                // get the card offset
-
                 // offset it by the card offset
+                var locationForTodo = CGPoint(from: visibleScreenCenter, offsetBy: cardOffset)
 
                 // move it to account for the card's size
+                locationForTodo = .init(from: locationForTodo,
+                                        offsetBy: .init(width: size.width/2 * -1,
+                                                        height: size.height/2 * -1))
 
-                return .zero
+                return locationForTodo
             }
             self.tabContentCancellable = tabContent.objectWillChange.sink {
                 self.updateData()

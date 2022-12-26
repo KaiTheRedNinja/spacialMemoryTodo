@@ -22,9 +22,7 @@ class Location: Identifiable, Equatable, ObservableObject {
         self.rect = rect
     }
 
-    var id: String {
-        "\(name)\(todos.map({ $0.id }))\(rect)"
-    }
+    var id = UUID()
 
     static func == (lhs: Location, rhs: Location) -> Bool {
         lhs.id == rhs.id

@@ -25,6 +25,9 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
     }
 
     override func getWorkspaceProtocol() -> WorkspaceProtocol {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.tabManager.openTab(tab: LocationManager())
+        }
         return Workspace(popUpManager: popUpManager)
     }
 
@@ -39,6 +42,7 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
         items.append(.flexibleSpace)
 
         // custom items
+        items.append(.saveItem)
         items.append(.addNewItem)
 
         return items
@@ -69,6 +73,20 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
             )?.withSymbolConfiguration(.init(scale: .large))
 
             return toolbarItem
+        case .saveItem:
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.saveItem)
+            toolbarItem.label = "Save"
+            toolbarItem.paletteLabel = "Save"
+            toolbarItem.toolTip = "Save Locations"
+            toolbarItem.isBordered = true
+            toolbarItem.target = self
+            toolbarItem.action = #selector(saveLocations)
+            toolbarItem.image = NSImage(
+                systemSymbolName: "circle",
+                accessibilityDescription: nil
+            )?.withSymbolConfiguration(.init(scale: .large))
+
+            return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
@@ -87,8 +105,15 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
                                                       height: CGRect.defaultLocationCardSize.height)))
         tabContent.objectWillChange.send()
     }
+
+    @objc
+    func saveLocations() {
+        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else { return }
+        tabContent.saveLocationsToPath()
+    }
 }
 
 extension NSToolbarItem.Identifier {
-     static let addNewItem = NSToolbarItem.Identifier("addNewItem")
+    static let addNewItem = NSToolbarItem.Identifier("addNewItem")
+    static let saveItem = NSToolbarItem.Identifier("saveItem")
 }

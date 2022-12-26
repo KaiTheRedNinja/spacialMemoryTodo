@@ -165,7 +165,6 @@ class LocationCardView: DraggableResizableView {
         // add the items
         menu.addItem(NSMenuItem(title: "Edit", action: #selector(showEditPopup), keyEquivalent: ""))
         menu.addItem(NSMenuItem(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
-        menu.addItem(NSMenuItem(title: "Spit Location", action: #selector(spitLocation), keyEquivalent: ""))
 
         return menu
     }
@@ -181,12 +180,6 @@ class LocationCardView: DraggableResizableView {
     func deleteLocation() {
         cardsView.tabContent?.locations.removeAll(where: { $0.id == location.id })
         cardsView.tabContent?.objectWillChange.send()
-    }
-
-    @objc
-    func spitLocation() {
-        Log.info(location.rect)
-        Log.info(frame)
     }
 
     deinit {

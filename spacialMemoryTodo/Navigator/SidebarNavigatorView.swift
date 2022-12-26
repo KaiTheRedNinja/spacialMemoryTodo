@@ -23,8 +23,5 @@ struct SidebarNavigatorView: View {
                 return view
             }
         }
-        .onAppear {
-            self.tabManager.openTab(tab: LocationManager())
-        }
     }
 }

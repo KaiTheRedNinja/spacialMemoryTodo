@@ -140,15 +140,38 @@ extension NavigatorOutlineView: NSMenuDelegate {
         }
 
         if let item = item as? Location {
+
+            let doneCount = item.todos.lazy.filter({ $0.isDone }).count
+            let notDoneCount = item.todos.count - doneCount
+
             menu.items = [
-                .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: ""),
-                .init(title: "Mark \(item.todos.count) Todos As Done", action: nil, keyEquivalent: ""),
-                .init(title: "Delete Location", action: nil, keyEquivalent: "")
+                .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: "")
             ]
+
+            if notDoneCount > 0 {
+                menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
+                                        action: #selector(markAllTodosDone),
+                                        keyEquivalent: ""))
+            }
+
+            if doneCount > 0 {
+                menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
+                                        action: #selector(markAllTodosNotDone),
+                                        keyEquivalent: ""))
+            }
+
+            menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
         } else if let item = item as? Todo {
             menu.items = [
-                .init(title: "Mark As \(item.isDone ? "Not " : "")Done", action: nil, keyEquivalent: ""),
-                .init(title: "Delete Todo", action: nil, keyEquivalent: "")
+                .init(title: "Mark As \(item.isDone ? "Not " : "")Done",
+                      action: #selector(markTodoAsDone),
+                      keyEquivalent: ""),
+                .init(title: "Edit Todo",
+                      action: #selector(editTodo),
+                      keyEquivalent: ""),
+                .init(title: "Delete Todo",
+                      action: #selector(deleteTodo),
+                      keyEquivalent: "")
             ]
         } else {
             menu.items = []
@@ -157,12 +180,82 @@ extension NavigatorOutlineView: NSMenuDelegate {
 
     @objc
     func editLocation() {
-        let row = outlineView.clickedRow
-        guard row >= 0, let item = outlineView.item(atRow: row) as? Location else {
-            return
-        }
-
-        popUpManager?.locationToEdit = item
+        guard let location = clickedLocation() else { return }
+        popUpManager?.locationToEdit = location
         popUpManager?.showLocationEditPopup = true
+    }
+
+    @objc
+    func markAllTodosDone() {
+        guard let location = clickedLocation() else { return }
+        location.todos.forEach({ $0.isDone = true })
+        location.objectWillChange.send()
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func markAllTodosNotDone() {
+        guard let location = clickedLocation() else { return }
+        location.todos.forEach({ $0.isDone = false })
+        location.objectWillChange.send()
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func deleteLocation() {
+        guard let location = clickedLocation() else { return }
+
+        tabContent?.locations.removeAll { loc in
+            loc.id == location.id
+        }
+        tabContent?.objectWillChange.send()
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func markTodoAsDone() {
+        guard let item = clickedTodo(),
+              let location = parentOfClickedTodo()
+        else { return }
+
+        location.toggleTodoDone(withID: item.id)
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func editTodo() {
+        guard let item = clickedTodo(),
+              let manager = popUpManager
+        else { return }
+
+        manager.todoToEdit = item
+        manager.showTodoEditPopup = true
+    }
+
+    @objc
+    func deleteTodo() {
+        guard let item = clickedTodo(),
+              let location = parentOfClickedTodo()
+        else { return }
+
+        location.removeTodo(withID: item.id)
+        LocationManager.save(sender: self.view)
+    }
+
+    func clickedTodo() -> Todo? {
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Todo
+    }
+
+    func parentOfClickedTodo() -> Location? {
+        guard let todo = clickedTodo() else { return nil }
+        return outlineView.parent(forItem: todo) as? Location
+    }
+
+    func clickedLocation() -> Location? {
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Location
     }
 }

@@ -31,6 +31,9 @@ class LocationManager: macAppBoilerplate.TabBarItemRepresentable, ObservableObje
 
     // used for creating new locations
     var locationForNewTodo: ((CGSize) -> CGPoint)?
+
+    // do not allow saving while another save operation is happening
+    var saveIsHappening: Bool = false
 }
 
 // MARK: Save and load
@@ -65,6 +68,8 @@ extension LocationManager {
     }
 
     private func saveLocationsToPath(path: URL? = nil) {
+        guard !saveIsHappening else { return }
+        saveIsHappening = true
         let path = path ?? locationsURL
 
         let encoder = JSONEncoder()
@@ -73,6 +78,7 @@ extension LocationManager {
         }
 
         try? data.write(to: path, options: .atomic)
+        saveIsHappening = false
     }
 
     @discardableResult
@@ -111,6 +117,9 @@ extension LocationManager {
         guard let manager = sender.openedTabs.first as? LocationManager
         else { return }
 
-        manager.saveLocationsToPath()
+        // do the saving asyncly to avoid lag
+        DispatchQueue.main.async {
+            manager.saveLocationsToPath()
+        }
     }
 }

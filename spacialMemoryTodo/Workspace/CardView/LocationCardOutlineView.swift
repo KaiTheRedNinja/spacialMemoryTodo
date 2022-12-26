@@ -70,30 +70,15 @@ extension LocationCardOutlineView: NSMenuDelegate {
 
     @objc
     func markTodoAsDone() {
-        let row = outlineView.clickedRow
-        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
-            return
-        }
+        guard let item = clickedTodo() else { return }
 
-        item.isDone.toggle()
-
-        // put the item at the end
-        if let index = location.todos.firstIndex(of: item) {
-            location.todos.remove(at: index)
-            location.todos.append(item)
-        }
-
-        location.objectWillChange.send()
-
+        location.toggleTodoDone(withID: item.id)
         LocationManager.save(sender: self.view)
     }
 
     @objc
     func editTodo() {
-        let row = outlineView.clickedRow
-        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
-            return
-        }
+        guard let item = clickedTodo() else { return }
 
         let manager = cardView.cardsView.popUpManager
         manager.todoToEdit = item
@@ -102,13 +87,15 @@ extension LocationCardOutlineView: NSMenuDelegate {
 
     @objc
     func deleteTodo() {
-        let row = outlineView.clickedRow
-        guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
-            return
-        }
+        guard let item = clickedTodo() else { return }
 
-        location.todos.removeAll(where: { $0.id == item.id })
-        location.objectWillChange.send()
+        location.removeTodo(withID: item.id)
         LocationManager.save(sender: self.view)
+    }
+
+    func clickedTodo() -> Todo? {
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Todo
     }
 }

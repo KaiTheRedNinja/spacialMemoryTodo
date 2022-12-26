@@ -28,6 +28,23 @@ class Location: Identifiable, Equatable, ObservableObject, Codable {
 
     var id = UUID()
 
+    func toggleTodoDone(withID id: Todo.ID) {
+        // put the item at the end
+        guard let index = todos.firstIndex(where: { $0.id == id }) else { return }
+
+        let item = todos[index]
+        item.isDone.toggle()
+//        todos.remove(at: index)
+//        todos.append(item)
+
+        objectWillChange.send()
+    }
+
+    func removeTodo(withID id: Todo.ID) {
+        todos.removeAll(where: { $0.id == id })
+        objectWillChange.send()
+    }
+
     static func == (lhs: Location, rhs: Location) -> Bool {
         lhs.id == rhs.id
     }

@@ -19,7 +19,7 @@ class CardsView: NSScrollView {
     var tabManagerCancellable: AnyCancellable!
     var popUpManager: PopUpManager
 
-    var tabContent: MainTabContent?
+    var tabContent: LocationManager?
     var tabContentCancellable: AnyCancellable?
 
     var locations: [Location] {
@@ -27,7 +27,7 @@ class CardsView: NSScrollView {
             return tabContent.locations
         }
 
-        if let tabContent = tabManager.selectedTabItem() as? MainTabContent {
+        if let tabContent = tabManager.selectedTabItem() as? LocationManager {
             self.tabContent = tabContent
             tabContent.locationForNewTodo = { size in
                 // calculate the center of the visible screen

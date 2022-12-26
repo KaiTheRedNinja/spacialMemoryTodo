@@ -31,6 +31,7 @@
 		931B7BA52943703600BFAA4E /* SidebarNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA42943703600BFAA4E /* SidebarNavigatorView.swift */; };
 		931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA72943714200BFAA4E /* WorkspaceView.swift */; };
 		93C6405529457750006CEC5F /* DraggableResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C6405429457750006CEC5F /* DraggableResizableView.swift */; };
+		93F9FD5429595FD300ADA897 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9FD5329595FD300ADA897 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		931B7BA42943703600BFAA4E /* SidebarNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarNavigatorView.swift; sourceTree = "<group>"; };
 		931B7BA72943714200BFAA4E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		93C6405429457750006CEC5F /* DraggableResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableResizableView.swift; sourceTree = "<group>"; };
+		93F9FD5329595FD300ADA897 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			children = (
 				93065F3D29437513002A3381 /* Location.swift */,
 				93065F3F2943751B002A3381 /* Todo.swift */,
+				93F9FD5329595FD300ADA897 /* LocationManager.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */,
 				9312DC4029572C060044FEC6 /* EditTodoPopUpView.swift in Sources */,
 				93065F462943793E002A3381 /* CardsView.swift in Sources */,
+				93F9FD5429595FD300ADA897 /* LocationManager.swift in Sources */,
 				931B7BA02943655600BFAA4E /* TabBar.swift in Sources */,
 				93065F3B29437327002A3381 /* NavigatorOutlineView.swift in Sources */,
 				93C6405529457750006CEC5F /* DraggableResizableView.swift in Sources */,

@@ -11,7 +11,7 @@ import Combine
 
 class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
     var popUpManager: PopUpManager?
-    var tabContent: MainTabContent?
+    var tabContent: LocationManager?
     var tabContentCancellable: AnyCancellable?
     var locations: [Location] {
         // if tab content exists, return the locations
@@ -20,7 +20,7 @@ class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
         }
 
         // if it doesn't exist, see if it is stored in tab manager. Else, return empty.
-        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent else {
+        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else {
             return []
         }
 
@@ -113,7 +113,7 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
         // get the tab content and selection
-        guard let tabContent = tabManager.selectedTabItem() as? MainTabContent else { return }
+        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else { return }
         guard let selection = outlineView.item(atRow: outlineView.selectedRow) else {
             tabContent.selectedLocation = nil
             tabContent.selectedTodo = nil

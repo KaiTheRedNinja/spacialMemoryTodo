@@ -106,6 +106,7 @@ class LocationCardView: DraggableResizableView {
     @objc
     func addTodo() {
         location.todos.append(.init(name: "Untitled Todo"))
+        location.objectWillChange.send()
 
         LocationManager.save(sender: self)
     }

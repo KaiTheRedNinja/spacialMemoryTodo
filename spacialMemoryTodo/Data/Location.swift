@@ -8,9 +8,9 @@
 import Foundation
 
 class Location: Identifiable, Equatable, ObservableObject, Codable {
-    @Published var name: String
-    @Published var todos: [Todo]
-    @Published var colour: PossibleColours
+    var name: String
+    var todos: [Todo]
+    var colour: PossibleColours
 
     // as it changes VERY often while moving, it cannot be published
     // for the sake of memory usage

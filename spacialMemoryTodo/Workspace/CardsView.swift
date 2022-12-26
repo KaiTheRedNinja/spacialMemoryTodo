@@ -93,6 +93,7 @@ class CardsView: NSScrollView {
         // iterate over cards and see if they have a corresponding location, remove the card if otherwise
         var newCards = cards
         for (index, card) in cards.enumerated() where !locations.contains(card.location) {
+            card.removeFromSuperview()
             newCards.remove(at: index)
         }
         cards = newCards

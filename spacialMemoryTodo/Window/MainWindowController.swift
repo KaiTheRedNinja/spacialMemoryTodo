@@ -77,7 +77,13 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
     @objc
     func addNewItem() {
         guard let tabContent = tabManager.selectedTabItem() as? MainTabContent else { return }
-        tabContent.locations.append(.init(name: "Untitled Location", todos: []))
+        let location = tabContent.locationForNewTodo?(CGRect.defaultLocationCardSize.size) ?? .zero
+        tabContent.locations.append(.init(name: "Untitled Location",
+                                          todos: [],
+                                          rect: .init(x: location.x,
+                                                      y: location.y,
+                                                      width: CGRect.defaultLocationCardSize.width,
+                                                      height: CGRect.defaultLocationCardSize.height)))
         tabContent.objectWillChange.send()
     }
 }

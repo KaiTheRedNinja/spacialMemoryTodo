@@ -42,6 +42,9 @@ class MainTabContent: macAppBoilerplate.TabBarItemRepresentable, ObservableObjec
     // the selection
     @Published var selectedLocation: Location?
     @Published var selectedTodo: Todo?
+
+    // used for creating new locations
+    var locationForNewTodo: ((CGSize) -> CGPoint)?
 }
 
 enum OneOrOther<One, Two> {

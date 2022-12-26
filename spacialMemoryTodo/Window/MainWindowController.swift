@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import macAppBoilerplate
 
 class MainWindowController: macAppBoilerplate.MainWindowController {

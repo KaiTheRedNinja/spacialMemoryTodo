@@ -12,7 +12,9 @@ class Location: Identifiable, Equatable, ObservableObject {
     @Published var todos: [Todo]
     @Published var colour: PossibleColours = .gray
 
-    @Published var rect: CGRect
+    // as it changes VERY often while moving, it cannot be published
+    // for the sake of memory usage
+    var rect: CGRect
 
     init(name: String, todos: [Todo], rect: CGRect = .defaultLocationCardSize) {
         self.name = name

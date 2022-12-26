@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Todo: Identifiable, Equatable, ObservableObject {
+class Todo: Identifiable, Equatable, ObservableObject, Codable {
     var name: String
     var isDone: Bool
 
@@ -16,9 +16,7 @@ class Todo: Identifiable, Equatable, ObservableObject {
         self.isDone = isDone
     }
 
-    var id: String {
-        "\(name)_\(isDone)"
-    }
+    var id = UUID()
 
     static func == (lhs: Todo, rhs: Todo) -> Bool {
         lhs.id == rhs.id

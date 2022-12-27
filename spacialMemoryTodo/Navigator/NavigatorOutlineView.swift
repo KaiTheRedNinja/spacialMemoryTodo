@@ -161,6 +161,7 @@ extension NavigatorOutlineView: NSMenuDelegate {
                                         keyEquivalent: ""))
             }
 
+            menu.items.append(.init(title: "Add Todo", action: #selector(addTodo), keyEquivalent: ""))
             menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
         } else if let item = item as? Todo {
             menu.items = [
@@ -199,6 +200,15 @@ extension NavigatorOutlineView: NSMenuDelegate {
         guard let location = clickedLocation() else { return }
         location.todos.forEach({ $0.isDone = false })
         location.objectWillChange.send()
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func addTodo() {
+        guard let location = clickedLocation() else { return }
+        location.todos.append(.init(name: "Untitled Todo"))
+        location.objectWillChange.send()
+
         LocationManager.save(sender: self.view)
     }
 

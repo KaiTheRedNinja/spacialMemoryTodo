@@ -165,9 +165,26 @@ class LocationCardView: DraggableResizableView {
         // create the menu. The title is not actually visible.
         let menu = NSMenu(title: "Right Click Menu")
 
-        // add the items
-        menu.addItem(NSMenuItem(title: "Edit", action: #selector(showEditPopup), keyEquivalent: ""))
-        menu.addItem(NSMenuItem(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
+        let doneCount = location.todos.lazy.filter({ $0.isDone }).count
+        let notDoneCount = location.todos.count - doneCount
+
+        menu.items = [
+            .init(title: "Edit Location", action: #selector(showEditPopup), keyEquivalent: "")
+        ]
+
+        if notDoneCount > 0 {
+            menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
+                                    action: #selector(markAllTodosDone),
+                                    keyEquivalent: ""))
+        }
+
+        if doneCount > 0 {
+            menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
+                                    action: #selector(markAllTodosNotDone),
+                                    keyEquivalent: ""))
+        }
+
+        menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
 
         return menu
     }
@@ -177,6 +194,20 @@ class LocationCardView: DraggableResizableView {
         cardsView.popUpManager.locationToEdit = location
         cardsView.popUpManager.showLocationEditPopup.toggle()
         cardsView.popUpManager.objectWillChange.send()
+    }
+
+    @objc
+    func markAllTodosDone() {
+        location.todos.forEach({ $0.isDone = true })
+        location.objectWillChange.send()
+        LocationManager.save(sender: cardsView.tabManager)
+    }
+
+    @objc
+    func markAllTodosNotDone() {
+        location.todos.forEach({ $0.isDone = false })
+        location.objectWillChange.send()
+        LocationManager.save(sender: cardsView.tabManager)
     }
 
     @objc

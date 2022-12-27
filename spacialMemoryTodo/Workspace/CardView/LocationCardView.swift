@@ -90,6 +90,7 @@ class LocationCardView: DraggableResizableView {
             self.title.stringValue = self.location.name
             self.count.stringValue = "\(self.location.todos.filter({ !$0.isDone }).count)"
             outlineView.outlineView.reloadData()
+            self.resizeSubviews(withOldSize: frame.size)
             self.setBackgroundColour()
         }
 
@@ -180,9 +181,11 @@ class LocationCardView: DraggableResizableView {
 
     @objc
     func deleteLocation() {
-        cardsView.tabContent?.locations.removeAll(where: { $0.id == location.id })
+        cardsView.tabContent?.locations.removeAll { loc in
+            loc.id == location.id
+        }
         cardsView.tabContent?.objectWillChange.send()
-        LocationManager.save(sender: self)
+        LocationManager.save(sender: cardsView.tabManager)
     }
 
     deinit {

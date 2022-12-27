@@ -89,6 +89,7 @@ class LocationCardView: DraggableResizableView {
         self.locationCancellable = self.location.objectWillChange.sink {
             self.title.stringValue = self.location.name
             self.count.stringValue = "\(self.location.todos.filter({ !$0.isDone }).count)"
+            outlineView.outlineView.reloadData()
             self.setBackgroundColour()
         }
 

@@ -33,7 +33,20 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
         // add the watcher
         if locationCancellable == nil {
             locationCancellable = location.objectWillChange.sink { [weak self] in
-                self?.outlineView?.reloadItem(self?.location, reloadChildren: true)
+                // first, verify that this table view cell is actually the correct one
+                guard let self,
+                      let index = self.outlineView?.row(forItem: self.location),
+                      let view = self.outlineView?.view(atColumn: 0,
+                                                        row: index,
+                                                        makeIfNecessary: false) as? LocationTableViewCell,
+                      self == view
+                else {
+                    // cancel the watcher and return
+                    self?.locationCancellable?.cancel()
+                    return
+                }
+
+                self.outlineView?.reloadItem(self.location, reloadChildren: true)
             }
         }
     }
@@ -45,7 +58,9 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
 class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
     weak var todo: Todo!
-    weak var todoCancellable: AnyCancellable?
+    var todoCancellable: AnyCancellable?
+
+    weak var outlineView: NSOutlineView?
 
     override func configIcon(icon: NSImageView) {
         super.configIcon(icon: icon)
@@ -60,7 +75,20 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
         if todoCancellable == nil {
             todoCancellable = todo.objectWillChange.sink { [weak self] in
-                self?.addTodo()
+                // first, verify that this table view cell is actually the correct one
+                guard let self,
+                      let index = self.outlineView?.row(forItem: self.todo),
+                      let view = self.outlineView?.view(atColumn: 0,
+                                                        row: index,
+                                                        makeIfNecessary: false) as? TodoTableViewCell,
+                      self == view
+                else {
+                    // cancel the watcher and return
+                    self?.todoCancellable?.cancel()
+                    return
+                }
+
+                self.addTodo()
             }
         }
     }

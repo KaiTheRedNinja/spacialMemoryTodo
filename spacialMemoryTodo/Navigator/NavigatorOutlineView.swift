@@ -104,6 +104,7 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         if let item = item as? Todo {
             let cell = TodoTableViewCell(frame: .zero, isEditable: false)
             cell.todo = item
+            cell.outlineView = outlineView
             cell.addTodo()
             return cell
         }

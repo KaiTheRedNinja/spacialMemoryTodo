@@ -20,6 +20,7 @@ class LocationCardOutlineView: macAppBoilerplate.OutlineViewController {
         outlineView.menu = NSMenu()
         outlineView.menu?.delegate = self
         outlineView.allowsMultipleSelection = true
+        outlineView.doubleAction = #selector(onItemDoubleClicked)
     }
 }
 
@@ -46,6 +47,20 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
         cell.outlineView = outlineView
         cell.addTodo()
         return cell
+    }
+
+    @objc
+    func onItemDoubleClicked() {
+        let items = selectedTodos()
+
+        let doneCount = items.filter({ $0.isDone }).count
+        let notDoneCount = items.count - doneCount
+
+        if notDoneCount > doneCount {
+            markTodosAsDone()
+        } else {
+            markTodosAsNotDone()
+        }
     }
 }
 

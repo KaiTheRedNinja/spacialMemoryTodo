@@ -19,6 +19,8 @@ class NavigatorSidebar: macAppBoilerplate.SidebarProtocol {
     // no items needed since its only one view
     var items: [macAppBoilerplate.SidebarDockIcon] = []
 
+    var isNavigatorSidebar: Bool = false
+
     // if sidebarType is inspector, then it should not show
     func showSidebarFor(sidebarType: SidebarType) -> Bool {
         return sidebarType == .navigator
@@ -26,7 +28,11 @@ class NavigatorSidebar: macAppBoilerplate.SidebarProtocol {
 
     func sidebarViewFor(selection: Int) -> AnyView {
         MainContentWrapper {
-            SidebarNavigatorView(popUpManager: self.popUpManager)
+            ZStack {
+                if self.isNavigatorSidebar {
+                    SidebarNavigatorView(popUpManager: self.popUpManager)
+                }
+            }
         }
     }
 }

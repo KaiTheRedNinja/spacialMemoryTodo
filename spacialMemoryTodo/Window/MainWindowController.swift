@@ -13,7 +13,9 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
     var popUpManager: PopUpManager = .init()
 
     override func getNavigatorProtocol() -> SidebarProtocol {
-        return NavigatorSidebar(popUpManager: popUpManager)
+        let navigator = NavigatorSidebar(popUpManager: popUpManager)
+        navigator.isNavigatorSidebar = true
+        return navigator
     }
 
     override func getInspectorProtocol() -> SidebarProtocol {

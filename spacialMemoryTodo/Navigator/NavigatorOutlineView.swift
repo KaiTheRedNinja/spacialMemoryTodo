@@ -9,7 +9,7 @@ import SwiftUI
 import macAppBoilerplate
 import Combine
 
-class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
+class NavigatorOutlineView: LocationTodoOutlineViewController {
     var popUpManager: PopUpManager?
     var tabContent: LocationManager?
     var tabContentCancellable: AnyCancellable?
@@ -58,6 +58,31 @@ class NavigatorOutlineView: macAppBoilerplate.OutlineViewController {
     deinit {
         tabManagerCancellable.cancel()
         tabContentCancellable?.cancel()
+    }
+
+    override func getPopUpManager() -> PopUpManager? {
+        popUpManager
+    }
+
+    override func getTabContent() -> LocationManager? {
+        tabContent
+    }
+
+    override func getClickedTodo() -> Todo? {
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Todo
+    }
+
+    override func getParentOfClickedTodo() -> Location? {
+        guard let todo = getClickedTodo() else { return nil }
+        return outlineView.parent(forItem: todo) as? Location
+    }
+
+    override func getClickedLocation() -> Location? {
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Location
     }
 }
 
@@ -178,95 +203,5 @@ extension NavigatorOutlineView: NSMenuDelegate {
         } else {
             menu.items = []
         }
-    }
-
-    @objc
-    func editLocation() {
-        guard let location = clickedLocation() else { return }
-        popUpManager?.locationToEdit = location
-        popUpManager?.showLocationEditPopup = true
-    }
-
-    @objc
-    func markAllTodosDone() {
-        guard let location = clickedLocation() else { return }
-        location.todos.forEach({ $0.isDone = true })
-        location.objectWillChange.send()
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func markAllTodosNotDone() {
-        guard let location = clickedLocation() else { return }
-        location.todos.forEach({ $0.isDone = false })
-        location.objectWillChange.send()
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func addTodo() {
-        guard let location = clickedLocation() else { return }
-        location.todos.append(.init(name: "Untitled Todo"))
-        location.objectWillChange.send()
-
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func deleteLocation() {
-        guard let location = clickedLocation() else { return }
-
-        tabContent?.locations.removeAll { loc in
-            loc.id == location.id
-        }
-        tabContent?.objectWillChange.send()
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func markTodoAsDone() {
-        guard let item = clickedTodo(),
-              let location = parentOfClickedTodo()
-        else { return }
-
-        location.toggleTodoDone(withID: item.id)
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func editTodo() {
-        guard let item = clickedTodo(),
-              let manager = popUpManager
-        else { return }
-
-        manager.todoToEdit = item
-        manager.showTodoEditPopup = true
-    }
-
-    @objc
-    func deleteTodo() {
-        guard let item = clickedTodo(),
-              let location = parentOfClickedTodo()
-        else { return }
-
-        location.removeTodo(withID: item.id)
-        LocationManager.save(sender: self.view)
-    }
-
-    func clickedTodo() -> Todo? {
-        let row = outlineView.clickedRow
-        guard row >= 0 else { return nil }
-        return outlineView.item(atRow: row) as? Todo
-    }
-
-    func parentOfClickedTodo() -> Location? {
-        guard let todo = clickedTodo() else { return nil }
-        return outlineView.parent(forItem: todo) as? Location
-    }
-
-    func clickedLocation() -> Location? {
-        let row = outlineView.clickedRow
-        guard row >= 0 else { return nil }
-        return outlineView.item(atRow: row) as? Location
     }
 }

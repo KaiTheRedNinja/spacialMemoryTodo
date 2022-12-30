@@ -147,65 +147,11 @@ extension NavigatorOutlineView: NSMenuDelegate {
         }
 
         if let item = item as? Location {
-
-            let doneCount = item.todos.lazy.filter({ $0.isDone }).count
-            let notDoneCount = item.todos.count - doneCount
-
-            menu.items = [
-                .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: ""),
-                .init(title: "Focus Location", action: #selector(focusLocation), keyEquivalent: "")
-            ]
-
-            if notDoneCount > 0 {
-                menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
-                                        action: #selector(markAllTodosDone),
-                                        keyEquivalent: ""))
-            }
-
-            if doneCount > 0 {
-                menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
-                                        action: #selector(markAllTodosNotDone),
-                                        keyEquivalent: ""))
-            }
-
-            menu.items.append(.init(title: "Add Todo", action: #selector(addTodo), keyEquivalent: ""))
-            menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
+            updateMenuForLocation(menu, location: item)
         } else if let item = item as? Todo {
-            menu.items = [
-                .init(title: "Mark As \(item.isDone ? "Not " : "")Done",
-                      action: #selector(toggleTodoDone),
-                      keyEquivalent: ""),
-                .init(title: "Edit Todo",
-                      action: #selector(editTodo),
-                      keyEquivalent: ""),
-                .init(title: "Focus Todo",
-                      action: #selector(focusTodo),
-                      keyEquivalent: ""),
-                .init(title: "Delete Todo",
-                      action: #selector(deleteTodo),
-                      keyEquivalent: "")
-            ]
+            updateMenuForTodo(menu, todo: item)
         } else {
             menu.items = []
         }
-    }
-
-    @objc func focusLocation() {
-        guard let location = getClickedLocation(),
-              let tabContent = tabManager.selectedTabItem() as? LocationManager
-        else { return }
-
-        tabContent.selectedLocation = location
-        tabContent.selectedTodo = nil
-    }
-
-    @objc func focusTodo() {
-        guard let todo = getClickedTodo(),
-              let location = getParentOfClickedTodo(),
-              let tabContent = tabManager.selectedTabItem() as? LocationManager
-        else { return }
-
-        tabContent.selectedLocation = location
-        tabContent.selectedTodo = todo
     }
 }

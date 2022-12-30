@@ -28,6 +28,48 @@ class LocationTodoOutlineViewController: macAppBoilerplate.OutlineViewController
 }
 
 extension LocationTodoOutlineViewController {
+    func updateMenuForLocation(_ menu: NSMenu, location: Location) {
+        let doneCount = location.todos.lazy.filter({ $0.isDone }).count
+        let notDoneCount = location.todos.count - doneCount
+
+        menu.items = [
+            .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: ""),
+            .init(title: "Focus Location", action: #selector(focusLocation), keyEquivalent: "")
+        ]
+
+        if notDoneCount > 0 {
+            menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
+                                    action: #selector(markAllTodosDone),
+                                    keyEquivalent: ""))
+        }
+
+        if doneCount > 0 {
+            menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
+                                    action: #selector(markAllTodosNotDone),
+                                    keyEquivalent: ""))
+        }
+
+        menu.items.append(.init(title: "Add Todo", action: #selector(addTodo), keyEquivalent: ""))
+        menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
+    }
+
+    func updateMenuForTodo(_ menu: NSMenu, todo: Todo) {
+        menu.items = [
+            .init(title: "Mark As \(todo.isDone ? "Not " : "")Done",
+                  action: #selector(toggleTodoDone),
+                  keyEquivalent: ""),
+            .init(title: "Edit Todo",
+                  action: #selector(editTodo),
+                  keyEquivalent: ""),
+            .init(title: "Focus Todo",
+                  action: #selector(focusTodo),
+                  keyEquivalent: ""),
+            .init(title: "Delete Todo",
+                  action: #selector(deleteTodo),
+                  keyEquivalent: "")
+        ]
+    }
+
     @objc func editLocation() {
         guard let location = getClickedLocation(),
               let popUpManager = getPopUpManager()
@@ -95,5 +137,24 @@ extension LocationTodoOutlineViewController {
 
         location.removeTodo(withID: item.id)
         LocationManager.save(sender: self.view)
+    }
+
+    @objc func focusLocation() {
+        guard let location = getClickedLocation(),
+              let tabContent = getTabContent()
+        else { return }
+
+        tabContent.selectedLocation = location
+        tabContent.selectedTodo = nil
+    }
+
+    @objc func focusTodo() {
+        guard let todo = getClickedTodo(),
+              let location = getParentOfClickedTodo(),
+              let tabContent = getTabContent()
+        else { return }
+
+        tabContent.selectedLocation = location
+        tabContent.selectedTodo = todo
     }
 }

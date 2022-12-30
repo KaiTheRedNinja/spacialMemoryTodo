@@ -102,22 +102,8 @@ extension LocationCardOutlineView: NSMenuDelegate {
         let rows = outlineView.selectedRowIndexes
         if rows.count <= 1 {
             let row = outlineView.clickedRow
-            guard row >= 0, let item = outlineView.item(atRow: row) as? Todo else {
-                return
-            }
-
-            menu.items = [
-                .init(title: "Mark As \(item.isDone ? "Not " : "")Done",
-                      action: #selector(toggleTodoDone),
-                      keyEquivalent: ""),
-                .init(title: "Edit Todo",
-                      action: #selector(editTodo),
-                      keyEquivalent: ""),
-                .init(title: "Delete Todo",
-                      action: #selector(deleteTodo),
-                      keyEquivalent: "")
-            ]
-
+            guard let item = outlineView.item(atRow: row) as? Todo else { return }
+            updateMenuForTodo(menu, todo: item)
             return
         }
 

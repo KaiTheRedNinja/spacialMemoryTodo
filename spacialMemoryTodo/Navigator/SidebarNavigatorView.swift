@@ -18,7 +18,10 @@ struct SidebarNavigatorView: View {
     var popUpManager: PopUpManager
 
     @State
-    var showCompletedTodos: Bool = false
+    var hideCompletedTodos: Bool = false
+
+    @State
+    var searchTerm: String = ""
 
     var body: some View {
         VStack {
@@ -33,15 +36,19 @@ struct SidebarNavigatorView: View {
                 HStack {
                     HStack {
                         sortButton
-                        TextField("Filter", text: .constant(""))
+                        TextField("Filter", text: $searchTerm)
                             .textFieldStyle(.plain)
                             .font(.system(size: 12))
-                        Button {
-                        } label: {
-                            Image(systemName: "xmark")
+                        if !searchTerm.isEmpty {
+                            Button {
+                                searchTerm = ""
+                            } label: {
+                                Image(systemName: "xmark")
+                            }
+                            .font(.system(size: 12))
+                            .buttonStyle(.borderless)
+                            .padding(.trailing, 3)
                         }
-                        .buttonStyle(.borderless)
-                        .padding(.trailing, 3)
                     }
                     .padding(.vertical, 3)
                     .background(colorScheme == .dark ? Color(hex: "#FFFFFF").opacity(0.1) :
@@ -64,8 +71,9 @@ struct SidebarNavigatorView: View {
     var sortButton: some View {
         Menu {
             Button {
+                hideCompletedTodos.toggle()
             } label: {
-                Text("Hide Completed Todos")
+                Text("\(hideCompletedTodos ? "Show" : "Hide") Completed Todos")
             }
         } label: {
             Image(systemName: "line.3.horizontal.decrease.circle")
@@ -73,6 +81,19 @@ struct SidebarNavigatorView: View {
         .menuStyle(.borderlessButton)
         .frame(maxWidth: 30)
         .opacity(1)
+        .onAppear {
+            guard let locationManager = tabManager.openedTabs.first as? LocationManager else { return }
+            hideCompletedTodos = locationManager.hideCompletedTodos
+            searchTerm = locationManager.searchTerm
+        }
+        .onChange(of: hideCompletedTodos) { newValue in
+            guard let locationManager = tabManager.openedTabs.first as? LocationManager else { return }
+            locationManager.hideCompletedTodos = newValue
+        }
+        .onChange(of: searchTerm) { newValue in
+            guard let locationManager = tabManager.openedTabs.first as? LocationManager else { return }
+            locationManager.searchTerm = newValue
+        }
     }
 }
 

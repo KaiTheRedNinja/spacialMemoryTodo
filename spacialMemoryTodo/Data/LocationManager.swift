@@ -29,6 +29,10 @@ class LocationManager: macAppBoilerplate.TabBarItemRepresentable, ObservableObje
     @Published var selectedLocation: Location?
     @Published var selectedTodo: Todo?
 
+    // visibility settings
+    @Published var hideCompletedTodos: Bool = false
+    @Published var searchTerm: String = ""
+
     // used for creating new locations
     var locationForNewTodo: ((CGSize) -> CGPoint)?
 

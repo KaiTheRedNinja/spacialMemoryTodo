@@ -232,15 +232,26 @@ extension LocationCardView: DraggableResizableViewDelegate {
     func cursorForPosition(locationInView: CGPoint,
                            calculatedPosition: CornerBorderPosition,
                            suggestedCursor: NSCursor) -> NSCursor {
-        // if the mouse is not dragging, just use the default
-        guard calculatedPosition == .drag else { return suggestedCursor }
-
-        // if the cursor is in the title, let it drag
-        if title.frame.contains(locationInView) {
-            return suggestedCursor
+        switch calculatedPosition {
+        case .top:
+            return frame.height > CGSize.minimumCardSize.height ? suggestedCursor : .resizeUp
+        case .bottom:
+            return frame.height > CGSize.minimumCardSize.height ? suggestedCursor : .resizeDown
+        case .left:
+            return frame.width > CGSize.minimumCardSize.width ? suggestedCursor : .resizeLeft
+        case .right:
+            return frame.width > CGSize.minimumCardSize.width ? suggestedCursor : .resizeRight
+        case .drag:
+            // if the cursor is in the title, let it drag
+            if title.frame.contains(locationInView) {
+                return suggestedCursor
+            }
+            // else, do not have the cursor
+            return .arrow
+        default: break
         }
-        // else, do not have the cursor
-        return .arrow
+
+        return suggestedCursor
     }
 
     func rectToSizeTo(for event: NSEvent,

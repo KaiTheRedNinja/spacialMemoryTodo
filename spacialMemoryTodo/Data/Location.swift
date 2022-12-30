@@ -74,6 +74,15 @@ class Location: Identifiable, Equatable, ObservableObject, Codable {
     }
 }
 
+extension NSSize {
+    static let minimumCardSize: NSSize = .init(width: 200, height: 125)
+
+    func shrinkToNotSmallerThan(minSize: NSSize) -> NSSize {
+        return .init(width: max(minSize.width, self.width),
+                     height: max(minSize.height, self.height))
+    }
+}
+
 extension CGRect {
-    static let defaultLocationCardSize: CGRect = CGRect(origin: .zero, size: .init(width: 100, height: 100))
+    static let defaultLocationCardSize: CGRect = CGRect(origin: .zero, size: .minimumCardSize)
 }

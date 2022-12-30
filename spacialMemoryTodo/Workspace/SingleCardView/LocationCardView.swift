@@ -297,12 +297,3 @@ extension LocationCardView: DraggableResizableViewDelegate {
         LocationManager.save(sender: self)
     }
 }
-
-extension NSSize {
-    fileprivate static let minimumCardSize: NSSize = .init(width: 100, height: 100)
-
-    func shrinkToNotSmallerThan(minSize: NSSize) -> NSSize {
-        return .init(width: max(minSize.width, self.width),
-                     height: max(minSize.height, self.height))
-    }
-}

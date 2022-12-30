@@ -25,9 +25,20 @@ class LocationTodoOutlineViewController: macAppBoilerplate.OutlineViewController
     func getParentOfClickedTodo() -> Location? {
         fatalError("Please override this function")
     }
+
+    func getSelectedTodos() -> [Todo] {
+        fatalError("Please override this function")
+    }
+    func getSelectedLocations() -> [Location] {
+        fatalError("Please override this function")
+    }
+    func getParentOfTodo(todo: Todo) -> Location? {
+        fatalError("Please override this function")
+    }
 }
 
 extension LocationTodoOutlineViewController {
+    // MARK: Menu updates
     func updateMenuForLocation(_ menu: NSMenu, location: Location) {
         let doneCount = location.todos.lazy.filter({ $0.isDone }).count
         let notDoneCount = location.todos.count - doneCount
@@ -77,6 +88,7 @@ extension LocationTodoOutlineViewController {
         ]
     }
 
+    // MARK: Single location functions
     @objc func editLocation() {
         guard let location = getClickedLocation(),
               let popUpManager = getPopUpManager()
@@ -119,6 +131,7 @@ extension LocationTodoOutlineViewController {
         LocationManager.save(sender: self.view)
     }
 
+    // MARK: Single todo functions
     @objc func toggleTodoDone () {
         guard let item = getClickedTodo(),
               let location = getParentOfClickedTodo()
@@ -146,6 +159,7 @@ extension LocationTodoOutlineViewController {
         LocationManager.save(sender: self.view)
     }
 
+    // MARK: Focusing
     @objc func focusLocation() {
         guard let location = getClickedLocation(),
               let tabContent = getTabContent()
@@ -163,6 +177,64 @@ extension LocationTodoOutlineViewController {
 
         tabContent.selectedLocation = location
         tabContent.selectedTodo = todo
+    }
+
+    // MARK: Multiple location functions
+    @objc func deleteSelectedLocations() {
+        let selectedLocations = getSelectedLocations()
+        guard let tabContent = getTabContent(),
+              !selectedLocations.isEmpty
+        else { return }
+
+        for selectedLocation in selectedLocations {
+            tabContent.locations.removeAll(where: { loc in
+                loc == selectedLocation
+            })
+        }
+        tabContent.objectWillChange.send()
+        LocationManager.save(sender: self.view)
+    }
+
+    // MARK: Multiple todo functions
+    @objc func markSelectedTodosDone() {
+        let items = getSelectedTodos()
+        var locationsToUpdate: [Location] = []
+
+        for item in items {
+            item.isDone = true
+            if let itemParent = getParentOfTodo(todo: item) {
+                locationsToUpdate.append(itemParent)
+            }
+        }
+        locationsToUpdate.forEach({ $0.objectWillChange.send() })
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc func markSelectedTodosNotDone() {
+        let items = getSelectedTodos()
+        var locationsToUpdate: [Location] = []
+
+        for item in items {
+            item.isDone = false
+            if let itemParent = getParentOfTodo(todo: item) {
+                locationsToUpdate.append(itemParent)
+            }
+        }
+        locationsToUpdate.forEach({ $0.objectWillChange.send() })
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc func deleteTodos() {
+        let items = getSelectedTodos()
+        var locationsToUpdate: [Location] = []
+
+        for item in items {
+            guard let itemParent = getParentOfTodo(todo: item) else { continue }
+            locationsToUpdate.append(itemParent)
+            itemParent.removeTodo(withID: item.id)
+        }
+        locationsToUpdate.forEach({ $0.objectWillChange.send() })
+        LocationManager.save(sender: self.view)
     }
 }
 

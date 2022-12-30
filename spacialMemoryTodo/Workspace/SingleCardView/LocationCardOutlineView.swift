@@ -45,12 +45,20 @@ class LocationCardOutlineView: LocationTodoOutlineViewController {
         location
     }
 
-    func selectedTodos() -> [Todo] {
+    override func getSelectedTodos() -> [Todo] {
         let rows = outlineView.selectedRowIndexes
 
         return rows.compactMap { row in
             outlineView.item(atRow: row) as? Todo
         }
+    }
+
+    override func getSelectedLocations() -> [Location] {
+        return []
+    }
+
+    override func getParentOfTodo(todo: Todo) -> Location? {
+        return location
     }
 }
 
@@ -81,7 +89,7 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
 
     @objc
     func onItemDoubleClicked() {
-        let items = selectedTodos()
+        let items = getSelectedTodos()
 
         let doneCount = items.filter({ $0.isDone }).count
         let notDoneCount = items.count - doneCount
@@ -111,7 +119,7 @@ extension LocationCardOutlineView: NSMenuDelegate {
             return
         }
 
-        let items = selectedTodos()
+        let items = getSelectedTodos()
 
         let doneCount = items.filter({ $0.isDone }).count
         let notDoneCount = items.count - doneCount
@@ -131,37 +139,5 @@ extension LocationCardOutlineView: NSMenuDelegate {
         menu.items.append(.init(title: "Delete \(items.count) Todos",
                                 action: #selector(deleteTodos),
                                 keyEquivalent: ""))
-    }
-
-    @objc
-    func markSelectedTodosDone() {
-        let items = selectedTodos()
-
-        for item in items {
-            item.isDone = true
-        }
-        location.objectWillChange.send()
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func markSelectedTodosNotDone() {
-        let items = selectedTodos()
-
-        for item in items {
-            item.isDone = false
-        }
-        location.objectWillChange.send()
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func deleteTodos() {
-        let items = selectedTodos()
-
-        for item in items {
-            location.removeTodo(withID: item.id)
-        }
-        LocationManager.save(sender: self.view)
     }
 }

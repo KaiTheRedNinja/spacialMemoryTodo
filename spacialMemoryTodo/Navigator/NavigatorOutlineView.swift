@@ -86,7 +86,7 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         return outlineView.item(atRow: row) as? Location
     }
 
-    func selectedTodos() -> [Todo] {
+    override func getSelectedTodos() -> [Todo] {
         let rows = outlineView.selectedRowIndexes
 
         return rows.compactMap { row in
@@ -94,12 +94,16 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         }
     }
 
-    func selectedLocations() -> [Location] {
+    override func getSelectedLocations() -> [Location] {
         let rows = outlineView.selectedRowIndexes
 
         return rows.compactMap { row in
             outlineView.item(atRow: row) as? Location
         }
+    }
+
+    override func getParentOfTodo(todo: Todo) -> Location? {
+        return outlineView.parent(forItem: todo) as? Location
     }
 }
 
@@ -176,8 +180,8 @@ extension NavigatorOutlineView: NSMenuDelegate {
         }
 
         // get the selected locations and todos
-        var selectedLocations = selectedLocations()
-        var selectedTodos = selectedTodos()
+        var selectedLocations = getSelectedLocations()
+        var selectedTodos = getSelectedTodos()
 
         // get the clicked item
         guard let item = outlineView.item(atRow: row),
@@ -247,63 +251,5 @@ extension NavigatorOutlineView: NSMenuDelegate {
                                     action: #selector(deleteTodos),
                                     keyEquivalent: ""))
         } // if there are no todos, do not add any menu for it.
-    }
-
-    @objc
-    func deleteSelectedLocations() {
-        let selectedLocations = selectedLocations()
-        guard let tabContent, !selectedLocations.isEmpty else { return }
-
-        for selectedLocation in selectedLocations {
-            tabContent.locations.removeAll(where: { loc in
-                loc == selectedLocation
-            })
-        }
-        tabContent.objectWillChange.send()
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func markSelectedTodosDone() {
-        let items = selectedTodos()
-        var locationsToUpdate: [Location] = []
-
-        for item in items {
-            item.isDone = true
-            if let itemParent = outlineView.parent(forItem: item) as? Location {
-                locationsToUpdate.append(itemParent)
-            }
-        }
-        locationsToUpdate.forEach({ $0.objectWillChange.send() })
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func markSelectedTodosNotDone() {
-        let items = selectedTodos()
-        var locationsToUpdate: [Location] = []
-
-        for item in items {
-            item.isDone = false
-            if let itemParent = outlineView.parent(forItem: item) as? Location {
-                locationsToUpdate.append(itemParent)
-            }
-        }
-        locationsToUpdate.forEach({ $0.objectWillChange.send() })
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func deleteTodos() {
-        let items = selectedTodos()
-        var locationsToUpdate: [Location] = []
-
-        for item in items {
-            guard let itemParent = outlineView.parent(forItem: item) as? Location else { continue }
-            locationsToUpdate.append(itemParent)
-            itemParent.removeTodo(withID: item.id)
-        }
-        locationsToUpdate.forEach({ $0.objectWillChange.send() })
-        LocationManager.save(sender: self.view)
     }
 }

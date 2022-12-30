@@ -50,6 +50,7 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         outlineView.delegate = self
         outlineView.menu = NSMenu()
         outlineView.menu?.delegate = self
+        outlineView.allowsMultipleSelection = true
         tabManagerCancellable = tabManager.objectWillChange.sink {
             self.outlineView.reloadData()
         }
@@ -83,6 +84,22 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         let row = outlineView.clickedRow
         guard row >= 0 else { return nil }
         return outlineView.item(atRow: row) as? Location
+    }
+
+    func selectedTodos() -> [Todo] {
+        let rows = outlineView.selectedRowIndexes
+
+        return rows.compactMap { row in
+            outlineView.item(atRow: row) as? Todo
+        }
+    }
+
+    func selectedLocations() -> [Location] {
+        let rows = outlineView.selectedRowIndexes
+
+        return rows.compactMap { row in
+            outlineView.item(atRow: row) as? Location
+        }
     }
 }
 
@@ -140,18 +157,95 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
 extension NavigatorOutlineView: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
+        menu.items = []
+
+        // if there are no selections,
+        // a single selection that was the click, or
+        // the click was outside the selection, then update the menu for a single item
+        let rows = outlineView.selectedRowIndexes
         let row = outlineView.clickedRow
-        guard row >= 0, let item = outlineView.item(atRow: row) else {
+        if  (rows.isEmpty) ||
+            (rows.count == 1 && rows.contains(row)) ||
+            (!rows.contains(row)) {
+            if let item = outlineView.item(atRow: row) as? Location {
+                updateMenuForLocation(menu, location: item)
+            } else if let item = outlineView.item(atRow: row) as? Todo {
+                updateMenuForTodo(menu, todo: item)
+            }
+            return
+        }
+
+        // get the selected locations and todos
+        var selectedLocations = selectedLocations()
+        var selectedTodos = selectedTodos()
+
+        // get the clicked item
+        guard let item = outlineView.item(atRow: row),
+              item is Location || item is Todo else {
             menu.items = []
             return
         }
 
-        if let item = item as? Location {
-            updateMenuForLocation(menu, location: item)
-        } else if let item = item as? Todo {
-            updateMenuForTodo(menu, todo: item)
-        } else {
-            menu.items = []
+        // add it to its respective category if it isn't already there
+        if let item = item as? Location, !selectedLocations.contains(item) {
+            selectedLocations.append(item)
+        } else if let item = item as? Todo, !selectedTodos.contains(item) {
+            selectedTodos.append(item)
         }
+
+        // add location related things
+        addLocationMenu(menu, selectedLocations: selectedLocations)
+
+        // add todo related things
+        addTodoMenu(menu, selectedTodos: selectedTodos)
+    }
+
+    func addLocationMenu(_ menu: NSMenu, selectedLocations: [Location]) {
+        // if it is the only location, add only that
+        if selectedLocations.count == 1, let item = selectedLocations.first {
+            updateMenuForLocation(menu, location: item)
+        } else if selectedLocations.count > 1 {
+            // if it is not the only location, add the menu for many locations
+            menu.items.append(.init(title: "Delete \(selectedLocations.count) Locations",
+                                    action: nil,
+                                    keyEquivalent: ""))
+        } // if there are no locations, do not add any menu for it.
+    }
+
+    func addTodoMenu(_ menu: NSMenu, selectedTodos: [Todo]) {
+        // if it is the only todo, add only that
+        if selectedTodos.count == 1, let item = selectedTodos.first {
+            let items = menu.items
+            updateMenuForTodo(menu, todo: item)
+            let newItems = menu.items
+            menu.items = []
+            if !items.isEmpty {
+                menu.items = items
+                menu.addSeparator()
+            }
+            menu.items.append(contentsOf: newItems)
+        } else if selectedTodos.count > 1 {
+            if !menu.items.isEmpty {
+                menu.addSeparator()
+            }
+            let doneCount = selectedTodos.filter({ $0.isDone }).count
+            let notDoneCount = selectedTodos.count - doneCount
+
+            if notDoneCount > 0 {
+                menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
+                                        action: nil,
+                                        keyEquivalent: ""))
+            }
+
+            if doneCount > 0 {
+                menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
+                                        action: nil,
+                                        keyEquivalent: ""))
+            }
+
+            menu.items.append(.init(title: "Delete \(selectedTodos.count) Todos",
+                                    action: nil,
+                                    keyEquivalent: ""))
+        } // if there are no todos, do not add any menu for it.
     }
 }

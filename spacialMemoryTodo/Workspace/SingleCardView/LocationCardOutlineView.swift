@@ -111,26 +111,19 @@ extension LocationCardOutlineView: NSMenuDelegate {
             return
         }
 
-        var items: [Todo] = []
-        for row in rows {
-            guard row >= 0,
-                  let item = outlineView.item(atRow: row) as? Todo else {
-                continue
-            }
-            items.append(item)
-        }
+        let items = selectedTodos()
 
         let doneCount = items.filter({ $0.isDone }).count
         let notDoneCount = items.count - doneCount
 
         if notDoneCount > 0 {
-            menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
+            menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
                                     action: #selector(markSelectedTodosDone),
                                     keyEquivalent: ""))
         }
 
         if doneCount > 0 {
-            menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
+            menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
                                     action: #selector(markSelectedTodosNotDone),
                                     keyEquivalent: ""))
         }

@@ -10,20 +10,20 @@ import macAppBoilerplate
 
 class LocationTodoOutlineViewController: macAppBoilerplate.OutlineViewController {
     func getPopUpManager() -> PopUpManager? {
-        fatalError("Please override this class")
+        fatalError("Please override this function")
     }
     func getTabContent() -> LocationManager? {
-        fatalError("Please override this class")
+        fatalError("Please override this function")
     }
 
     func getClickedLocation() -> Location? {
-        fatalError("Please override this class")
+        fatalError("Please override this function")
     }
     func getClickedTodo() -> Todo? {
-        fatalError("Please override this class")
+        fatalError("Please override this function")
     }
     func getParentOfClickedTodo() -> Location? {
-        fatalError("Please override this class")
+        fatalError("Please override this function")
     }
 }
 
@@ -70,6 +70,7 @@ extension LocationTodoOutlineViewController {
             .init(title: "Focus Todo",
                   action: #selector(focusTodo),
                   keyEquivalent: ""),
+            .separator(),
             .init(title: "Delete Todo",
                   action: #selector(deleteTodo),
                   keyEquivalent: "")

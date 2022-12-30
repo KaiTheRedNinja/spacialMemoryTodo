@@ -104,14 +104,6 @@ class LocationCardView: DraggableResizableView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc
-    func addTodo() {
-        location.todos.append(.init(name: "Untitled Todo"))
-        location.objectWillChange.send()
-
-        LocationManager.save(sender: self)
-    }
-
     // some constants to manage the title's size
     let titleHeight: CGFloat = 25
     let titleOffset: CGFloat = 10
@@ -198,6 +190,14 @@ class LocationCardView: DraggableResizableView {
         guard let tabContent = cardsView.tabContent else { return }
         tabContent.selectedLocation = location
         tabContent.selectedTodo = nil
+    }
+
+    @objc
+    func addTodo() {
+        location.todos.append(.init(name: "Untitled Todo"))
+        location.objectWillChange.send()
+
+        LocationManager.save(sender: self)
     }
 
     @objc

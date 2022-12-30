@@ -153,6 +153,22 @@ class LocationCardView: DraggableResizableView {
         setBackgroundColour()
     }
 
+    func setBackgroundColour() {
+        let colourSource = effectiveAppearance.name.rawValue.lowercased().contains("dark") ?
+        PossibleColours.darkColours :
+        PossibleColours.lightColours
+        let colour = colourSource[location.colour] ?? .init(white: 0.5, alpha: 1)
+        layer?.backgroundColor = colour.cgColor
+
+        // reinit the shadow, since just updating its properties does not seem to work
+        self.shadow = nil
+        let shadow = NSShadow()
+        shadow.shadowBlurRadius = 3
+        shadow.shadowOffset = .init(width: 0, height: 0)
+        shadow.shadowColor = colour
+        self.shadow = shadow
+    }
+
     override func menu(for event: NSEvent) -> NSMenu? {
         // ensure that its a right mouse up event, or else its some event that we won't respond to.
         // though it says right mouse down, but it actually triggers when right mouse releases.

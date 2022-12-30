@@ -17,7 +17,6 @@
 		93065F4C294440A0002A3381 /* LocationCardOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */; };
 		930967692952E33B00DB17CE /* PopUpManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930967682952E33B00DB17CE /* PopUpManager.swift */; };
 		9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */; };
-		9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */; };
 		9312DC4029572C060044FEC6 /* EditTodoPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */; };
 		931AD2A32953FFEC00062A13 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931AD2A22953FFEC00062A13 /* Log.swift */; };
 		931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7B872943609300BFAA4E /* AppDelegate.swift */; };
@@ -31,6 +30,7 @@
 		931B7BA52943703600BFAA4E /* SidebarNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA42943703600BFAA4E /* SidebarNavigatorView.swift */; };
 		931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA72943714200BFAA4E /* WorkspaceView.swift */; };
 		934A3599295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */; };
+		934A359C295E81F300A3C1A4 /* PossibleColours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A359B295E81F300A3C1A4 /* PossibleColours.swift */; };
 		93C6405529457750006CEC5F /* DraggableResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C6405429457750006CEC5F /* DraggableResizableView.swift */; };
 		93F9FD5429595FD300ADA897 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9FD5329595FD300ADA897 /* LocationManager.swift */; };
 /* End PBXBuildFile section */
@@ -46,7 +46,6 @@
 		93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCardOutlineView.swift; sourceTree = "<group>"; };
 		930967682952E33B00DB17CE /* PopUpManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpManager.swift; sourceTree = "<group>"; };
 		9309676C295300BA00DB17CE /* EditLocationPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLocationPopUpView.swift; sourceTree = "<group>"; };
-		9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocationCardView+Colours.swift"; sourceTree = "<group>"; };
 		9312DC3F29572C060044FEC6 /* EditTodoPopUpView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTodoPopUpView.swift; sourceTree = "<group>"; };
 		931AD2A22953FFEC00062A13 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		931B7B842943609300BFAA4E /* spacialMemoryTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spacialMemoryTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,6 +60,7 @@
 		931B7BA42943703600BFAA4E /* SidebarNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarNavigatorView.swift; sourceTree = "<group>"; };
 		931B7BA72943714200BFAA4E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTodoOutlineHelper.swift; sourceTree = "<group>"; };
+		934A359B295E81F300A3C1A4 /* PossibleColours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossibleColours.swift; sourceTree = "<group>"; };
 		93C6405429457750006CEC5F /* DraggableResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableResizableView.swift; sourceTree = "<group>"; };
 		93F9FD5329595FD300ADA897 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -83,6 +83,7 @@
 				93065F3D29437513002A3381 /* Location.swift */,
 				93065F3F2943751B002A3381 /* Todo.swift */,
 				93F9FD5329595FD300ADA897 /* LocationManager.swift */,
+				934A359B295E81F300A3C1A4 /* PossibleColours.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -116,6 +117,7 @@
 		931B7B862943609300BFAA4E /* spacialMemoryTodo */ = {
 			isa = PBXGroup;
 			children = (
+				934A359A295E81CF00A3C1A4 /* Helper */,
 				93065F3C294374FE002A3381 /* Data */,
 				931B7BA62943712200BFAA4E /* Workspace */,
 				931B7BA32943702800BFAA4E /* Navigator */,
@@ -154,7 +156,6 @@
 				931B7BA42943703600BFAA4E /* SidebarNavigatorView.swift */,
 				93065F3A29437327002A3381 /* NavigatorOutlineView.swift */,
 				93065F4129437639002A3381 /* NavigatorTableViewCell.swift */,
-				934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */,
 			);
 			path = Navigator;
 			sourceTree = "<group>";
@@ -163,23 +164,38 @@
 			isa = PBXGroup;
 			children = (
 				931B7BA72943714200BFAA4E /* WorkspaceView.swift */,
-				93065F4329437931002A3381 /* CardsContainerView.swift */,
-				93065F452943793E002A3381 /* CardsView.swift */,
-				93C640562946079F006CEC5F /* CardView */,
+				934A359D295E822E00A3C1A4 /* CardsView */,
+				93C640562946079F006CEC5F /* SingleCardView */,
 				930967672952E30600DB17CE /* PopUp */,
 			);
 			path = Workspace;
 			sourceTree = "<group>";
 		};
-		93C640562946079F006CEC5F /* CardView */ = {
+		934A359A295E81CF00A3C1A4 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				93C6405429457750006CEC5F /* DraggableResizableView.swift */,
+				934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		934A359D295E822E00A3C1A4 /* CardsView */ = {
+			isa = PBXGroup;
+			children = (
+				93065F4329437931002A3381 /* CardsContainerView.swift */,
+				93065F452943793E002A3381 /* CardsView.swift */,
+			);
+			path = CardsView;
+			sourceTree = "<group>";
+		};
+		93C640562946079F006CEC5F /* SingleCardView */ = {
 			isa = PBXGroup;
 			children = (
 				93065F4729437D9A002A3381 /* LocationCardView.swift */,
-				9309676E29530BF400DB17CE /* LocationCardView+Colours.swift */,
 				93065F4B294440A0002A3381 /* LocationCardOutlineView.swift */,
-				93C6405429457750006CEC5F /* DraggableResizableView.swift */,
 			);
-			path = CardView;
+			path = SingleCardView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,13 +298,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				931B7B9C2943614D00BFAA4E /* MainWindowController.swift in Sources */,
-				9309676F29530BF400DB17CE /* LocationCardView+Colours.swift in Sources */,
 				931AD2A32953FFEC00062A13 /* Log.swift in Sources */,
 				931B7B9E2943628500BFAA4E /* NavigatorSidebar.swift in Sources */,
 				93065F4429437931002A3381 /* CardsContainerView.swift in Sources */,
 				931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */,
 				931B7BA229436A0600BFAA4E /* Workspace.swift in Sources */,
 				93065F4229437639002A3381 /* NavigatorTableViewCell.swift in Sources */,
+				934A359C295E81F300A3C1A4 /* PossibleColours.swift in Sources */,
 				93065F3E29437513002A3381 /* Location.swift in Sources */,
 				93065F4829437D9A002A3381 /* LocationCardView.swift in Sources */,
 				934A3599295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift in Sources */,

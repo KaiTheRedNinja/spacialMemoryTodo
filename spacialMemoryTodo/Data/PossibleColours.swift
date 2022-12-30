@@ -1,29 +1,11 @@
 //
-//  LocationCardView+Colours.swift
+//  PossibleColours.swift
 //  spacialMemoryTodo
 //
-//  Created by Kai Quan Tay on 21/12/22.
+//  Created by Kai Quan Tay on 30/12/22.
 //
 
 import SwiftUI
-
-extension LocationCardView {
-    func setBackgroundColour() {
-        let colourSource = effectiveAppearance.name.rawValue.lowercased().contains("dark") ?
-            PossibleColours.darkColours :
-            PossibleColours.lightColours
-        let colour = colourSource[location.colour] ?? .init(white: 0.5, alpha: 1)
-        layer?.backgroundColor = colour.cgColor
-
-        // reinit the shadow, since just updating its properties does not seem to work
-        self.shadow = nil
-        let shadow = NSShadow()
-        shadow.shadowBlurRadius = 3
-        shadow.shadowOffset = .init(width: 0, height: 0)
-        shadow.shadowColor = colour
-        self.shadow = shadow
-    }
-}
 
 enum PossibleColours: String, CaseIterable {
     case blue

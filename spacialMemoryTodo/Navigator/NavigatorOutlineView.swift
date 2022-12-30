@@ -207,7 +207,7 @@ extension NavigatorOutlineView: NSMenuDelegate {
         } else if selectedLocations.count > 1 {
             // if it is not the only location, add the menu for many locations
             menu.items.append(.init(title: "Delete \(selectedLocations.count) Locations",
-                                    action: nil,
+                                    action: #selector(deleteSelectedLocations),
                                     keyEquivalent: ""))
         } // if there are no locations, do not add any menu for it.
     }
@@ -233,19 +233,77 @@ extension NavigatorOutlineView: NSMenuDelegate {
 
             if notDoneCount > 0 {
                 menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
-                                        action: nil,
+                                        action: #selector(markSelectedTodosDone),
                                         keyEquivalent: ""))
             }
 
             if doneCount > 0 {
                 menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
-                                        action: nil,
+                                        action: #selector(markSelectedTodosNotDone),
                                         keyEquivalent: ""))
             }
 
             menu.items.append(.init(title: "Delete \(selectedTodos.count) Todos",
-                                    action: nil,
+                                    action: #selector(deleteTodos),
                                     keyEquivalent: ""))
         } // if there are no todos, do not add any menu for it.
+    }
+
+    @objc
+    func deleteSelectedLocations() {
+        let selectedLocations = selectedLocations()
+        guard let tabContent, !selectedLocations.isEmpty else { return }
+
+        for selectedLocation in selectedLocations {
+            tabContent.locations.removeAll(where: { loc in
+                loc == selectedLocation
+            })
+        }
+        tabContent.objectWillChange.send()
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func markSelectedTodosDone() {
+        let items = selectedTodos()
+        var locationsToUpdate: [Location] = []
+
+        for item in items {
+            item.isDone = true
+            if let itemParent = outlineView.parent(forItem: item) as? Location {
+                locationsToUpdate.append(itemParent)
+            }
+        }
+        locationsToUpdate.forEach({ $0.objectWillChange.send() })
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func markSelectedTodosNotDone() {
+        let items = selectedTodos()
+        var locationsToUpdate: [Location] = []
+
+        for item in items {
+            item.isDone = false
+            if let itemParent = outlineView.parent(forItem: item) as? Location {
+                locationsToUpdate.append(itemParent)
+            }
+        }
+        locationsToUpdate.forEach({ $0.objectWillChange.send() })
+        LocationManager.save(sender: self.view)
+    }
+
+    @objc
+    func deleteTodos() {
+        let items = selectedTodos()
+        var locationsToUpdate: [Location] = []
+
+        for item in items {
+            guard let itemParent = outlineView.parent(forItem: item) as? Location else { continue }
+            locationsToUpdate.append(itemParent)
+            itemParent.removeTodo(withID: item.id)
+        }
+        locationsToUpdate.forEach({ $0.objectWillChange.send() })
+        LocationManager.save(sender: self.view)
     }
 }

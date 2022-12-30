@@ -136,25 +136,6 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
         return nil
     }
-
-    func outlineViewSelectionDidChange(_ notification: Notification) {
-        // get the tab content and selection
-        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else { return }
-        guard let selection = outlineView.item(atRow: outlineView.selectedRow) else {
-            tabContent.selectedLocation = nil
-            tabContent.selectedTodo = nil
-            return
-        }
-
-        if let selection = selection as? Location {
-            tabContent.selectedLocation = selection
-            tabContent.selectedTodo = nil
-        } else if let selection = selection as? Todo,
-                  let location = outlineView.parent(forItem: selection) as? Location {
-            tabContent.selectedLocation = location
-            tabContent.selectedTodo = selection
-        }
-    }
 }
 
 extension NavigatorOutlineView: NSMenuDelegate {
@@ -171,7 +152,8 @@ extension NavigatorOutlineView: NSMenuDelegate {
             let notDoneCount = item.todos.count - doneCount
 
             menu.items = [
-                .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: "")
+                .init(title: "Edit Location", action: #selector(editLocation), keyEquivalent: ""),
+                .init(title: "Focus Location", action: #selector(focusLocation), keyEquivalent: "")
             ]
 
             if notDoneCount > 0 {
@@ -196,6 +178,9 @@ extension NavigatorOutlineView: NSMenuDelegate {
                 .init(title: "Edit Todo",
                       action: #selector(editTodo),
                       keyEquivalent: ""),
+                .init(title: "Focus Todo",
+                      action: #selector(focusTodo),
+                      keyEquivalent: ""),
                 .init(title: "Delete Todo",
                       action: #selector(deleteTodo),
                       keyEquivalent: "")
@@ -203,5 +188,24 @@ extension NavigatorOutlineView: NSMenuDelegate {
         } else {
             menu.items = []
         }
+    }
+
+    @objc func focusLocation() {
+        guard let location = getClickedLocation(),
+              let tabContent = tabManager.selectedTabItem() as? LocationManager
+        else { return }
+
+        tabContent.selectedLocation = location
+        tabContent.selectedTodo = nil
+    }
+
+    @objc func focusTodo() {
+        guard let todo = getClickedTodo(),
+              let location = getParentOfClickedTodo(),
+              let tabContent = tabManager.selectedTabItem() as? LocationManager
+        else { return }
+
+        tabContent.selectedLocation = location
+        tabContent.selectedTodo = todo
     }
 }

@@ -35,24 +35,6 @@ class LocationCardOutlineView: LocationTodoOutlineViewController {
         location
     }
 
-    override func getClickedTodo() -> Todo? {
-        let row = outlineView.clickedRow
-        guard row >= 0 else { return nil }
-        return outlineView.item(atRow: row) as? Todo
-    }
-
-    override func getParentOfClickedTodo() -> Location? {
-        location
-    }
-
-    override func getSelectedTodos() -> [Todo] {
-        let rows = outlineView.selectedRowIndexes
-
-        return rows.compactMap { row in
-            outlineView.item(atRow: row) as? Todo
-        }
-    }
-
     override func getSelectedLocations() -> [Location] {
         return []
     }

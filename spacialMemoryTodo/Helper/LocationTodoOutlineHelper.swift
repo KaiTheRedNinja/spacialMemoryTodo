@@ -17,23 +17,39 @@ class LocationTodoOutlineViewController: macAppBoilerplate.OutlineViewController
     }
 
     func getClickedLocation() -> Location? {
-        fatalError("Please override this function")
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Location
     }
     func getClickedTodo() -> Todo? {
-        fatalError("Please override this function")
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Todo
     }
     func getParentOfClickedTodo() -> Location? {
-        fatalError("Please override this function")
+        if let clickedTodo = getClickedTodo(),
+           let parent = getParentOfTodo(todo: clickedTodo) {
+            return parent
+        }
+        return nil
     }
 
     func getSelectedTodos() -> [Todo] {
-        fatalError("Please override this function")
+        let rows = outlineView.selectedRowIndexes
+
+        return rows.compactMap { row in
+            outlineView.item(atRow: row) as? Todo
+        }
     }
     func getSelectedLocations() -> [Location] {
-        fatalError("Please override this function")
+        let rows = outlineView.selectedRowIndexes
+
+        return rows.compactMap { row in
+            outlineView.item(atRow: row) as? Location
+        }
     }
     func getParentOfTodo(todo: Todo) -> Location? {
-        fatalError("Please override this function")
+        return outlineView.parent(forItem: todo) as? Location
     }
 }
 

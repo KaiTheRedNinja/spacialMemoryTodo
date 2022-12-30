@@ -68,43 +68,6 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
     override func getTabContent() -> LocationManager? {
         tabContent
     }
-
-    override func getClickedTodo() -> Todo? {
-        let row = outlineView.clickedRow
-        guard row >= 0 else { return nil }
-        return outlineView.item(atRow: row) as? Todo
-    }
-
-    override func getParentOfClickedTodo() -> Location? {
-        guard let todo = getClickedTodo() else { return nil }
-        return outlineView.parent(forItem: todo) as? Location
-    }
-
-    override func getClickedLocation() -> Location? {
-        let row = outlineView.clickedRow
-        guard row >= 0 else { return nil }
-        return outlineView.item(atRow: row) as? Location
-    }
-
-    override func getSelectedTodos() -> [Todo] {
-        let rows = outlineView.selectedRowIndexes
-
-        return rows.compactMap { row in
-            outlineView.item(atRow: row) as? Todo
-        }
-    }
-
-    override func getSelectedLocations() -> [Location] {
-        let rows = outlineView.selectedRowIndexes
-
-        return rows.compactMap { row in
-            outlineView.item(atRow: row) as? Location
-        }
-    }
-
-    override func getParentOfTodo(todo: Todo) -> Location? {
-        return outlineView.parent(forItem: todo) as? Location
-    }
 }
 
 extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
@@ -217,39 +180,30 @@ extension NavigatorOutlineView: NSMenuDelegate {
     }
 
     func addTodoMenu(_ menu: NSMenu, selectedTodos: [Todo]) {
-        // if it is the only todo, add only that
-        if selectedTodos.count == 1, let item = selectedTodos.first {
-            let items = menu.items
-            updateMenuForTodo(menu, todo: item)
-            let newItems = menu.items
-            menu.items = []
-            if !items.isEmpty {
-                menu.items = items
-                menu.addSeparator()
-            }
-            menu.items.append(contentsOf: newItems)
-        } else if selectedTodos.count > 1 {
-            if !menu.items.isEmpty {
-                menu.addSeparator()
-            }
-            let doneCount = selectedTodos.filter({ $0.isDone }).count
-            let notDoneCount = selectedTodos.count - doneCount
+        // if there are no todos, do not add any menu for it
+        guard !selectedTodos.isEmpty else { return }
 
-            if notDoneCount > 0 {
-                menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
-                                        action: #selector(markSelectedTodosDone),
-                                        keyEquivalent: ""))
-            }
+        // adding the single todo menu looks odd, so just add the multi todo menu
+        if !menu.items.isEmpty {
+            menu.addSeparator()
+        }
+        let doneCount = selectedTodos.filter({ $0.isDone }).count
+        let notDoneCount = selectedTodos.count - doneCount
 
-            if doneCount > 0 {
-                menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
-                                        action: #selector(markSelectedTodosNotDone),
-                                        keyEquivalent: ""))
-            }
-
-            menu.items.append(.init(title: "Delete \(selectedTodos.count) Todos",
-                                    action: #selector(deleteTodos),
+        if notDoneCount > 0 {
+            menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
+                                    action: #selector(markSelectedTodosDone),
                                     keyEquivalent: ""))
-        } // if there are no todos, do not add any menu for it.
+        }
+
+        if doneCount > 0 {
+            menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
+                                    action: #selector(markSelectedTodosNotDone),
+                                    keyEquivalent: ""))
+        }
+
+        menu.items.append(.init(title: "Delete \(selectedTodos.count) Todos",
+                                action: #selector(deleteTodos),
+                                keyEquivalent: ""))
     }
 }

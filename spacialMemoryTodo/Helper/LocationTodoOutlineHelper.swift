@@ -37,6 +37,10 @@ extension LocationTodoOutlineViewController {
             .init(title: "Focus Location", action: #selector(focusLocation), keyEquivalent: "")
         ]
 
+        menu.addSeparator()
+
+        menu.items.append(.init(title: "Add Todo", action: #selector(addTodo), keyEquivalent: ""))
+
         if notDoneCount > 0 {
             menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
                                     action: #selector(markAllTodosDone),
@@ -49,7 +53,8 @@ extension LocationTodoOutlineViewController {
                                     keyEquivalent: ""))
         }
 
-        menu.items.append(.init(title: "Add Todo", action: #selector(addTodo), keyEquivalent: ""))
+        menu.addSeparator()
+
         menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
     }
 
@@ -58,6 +63,7 @@ extension LocationTodoOutlineViewController {
             .init(title: "Mark As \(todo.isDone ? "Not " : "")Done",
                   action: #selector(toggleTodoDone),
                   keyEquivalent: ""),
+            .separator(),
             .init(title: "Edit Todo",
                   action: #selector(editTodo),
                   keyEquivalent: ""),
@@ -156,5 +162,15 @@ extension LocationTodoOutlineViewController {
 
         tabContent.selectedLocation = location
         tabContent.selectedTodo = todo
+    }
+}
+
+extension NSMenu {
+    func addSeparator(at index: Int = -1) {
+        if (0..<items.count).contains(index) {
+            items.insert(.separator(), at: index)
+        } else {
+            items.append(.separator())
+        }
     }
 }

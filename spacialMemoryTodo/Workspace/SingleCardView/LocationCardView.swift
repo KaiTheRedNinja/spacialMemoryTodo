@@ -180,36 +180,24 @@ class LocationCardView: DraggableResizableView {
 
         // create the menu. The title is not actually visible.
         let menu = NSMenu(title: "Right Click Menu")
+        menu.autoenablesItems = true
 
-        let doneCount = location.todos.lazy.filter({ $0.isDone }).count
-        let notDoneCount = location.todos.count - doneCount
-
-        menu.items = [
-            .init(title: "Edit Location", action: #selector(showEditPopup), keyEquivalent: "")
-        ]
-
-        if notDoneCount > 0 {
-            menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
-                                    action: #selector(markAllTodosDone),
-                                    keyEquivalent: ""))
-        }
-
-        if doneCount > 0 {
-            menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
-                                    action: #selector(markAllTodosNotDone),
-                                    keyEquivalent: ""))
-        }
-
-        menu.items.append(.init(title: "Delete Location", action: #selector(deleteLocation), keyEquivalent: ""))
-
+        // add the items. We can reuse code here.
+        outlineView.updateMenuForLocation(menu, location: location)
         return menu
     }
 
     @objc
-    func showEditPopup() {
+    func editLocation() {
         cardsView.popUpManager.locationToEdit = location
         cardsView.popUpManager.showLocationEditPopup.toggle()
         cardsView.popUpManager.objectWillChange.send()
+    }
+
+    @objc func focusLocation() {
+        guard let tabContent = cardsView.tabContent else { return }
+        tabContent.selectedLocation = location
+        tabContent.selectedTodo = nil
     }
 
     @objc

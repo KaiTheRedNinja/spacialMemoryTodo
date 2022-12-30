@@ -98,10 +98,14 @@ extension LocationCardOutlineView: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         menu.items = []
 
-        // check for single-row or no-row selection clicks
+        // if there are no selections,
+        // a single selection that was the click, or
+        // the click was outside the selection, then update the menu for a single item
         let rows = outlineView.selectedRowIndexes
-        if rows.count <= 1 {
-            let row = outlineView.clickedRow
+        let row = outlineView.clickedRow
+        if  (rows.isEmpty) ||
+            (rows.count == 1 && rows.contains(row)) ||
+            (!rows.contains(row)) {
             guard let item = outlineView.item(atRow: row) as? Todo else { return }
             updateMenuForTodo(menu, todo: item)
             return

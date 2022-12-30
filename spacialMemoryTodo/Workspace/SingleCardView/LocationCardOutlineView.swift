@@ -86,40 +86,6 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
 
 extension LocationCardOutlineView: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
-        menu.items = []
-
-        // if there are no selections,
-        // a single selection that was the click, or
-        // the click was outside the selection, then update the menu for a single item
-        let rows = outlineView.selectedRowIndexes
-        let row = outlineView.clickedRow
-        if  (rows.isEmpty) ||
-            (rows.count == 1 && rows.contains(row)) ||
-            (!rows.contains(row)) {
-            guard let item = outlineView.item(atRow: row) as? Todo else { return }
-            updateMenuForTodo(menu, todo: item)
-            return
-        }
-
-        let items = getSelectedTodos()
-
-        let doneCount = items.filter({ $0.isDone }).count
-        let notDoneCount = items.count - doneCount
-
-        if notDoneCount > 0 {
-            menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
-                                    action: #selector(markSelectedTodosDone),
-                                    keyEquivalent: ""))
-        }
-
-        if doneCount > 0 {
-            menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
-                                    action: #selector(markSelectedTodosNotDone),
-                                    keyEquivalent: ""))
-        }
-
-        menu.items.append(.init(title: "Delete \(items.count) Todos",
-                                action: #selector(deleteTodos),
-                                keyEquivalent: ""))
+        updateMenuAutomatically(menu)
     }
 }

@@ -55,6 +55,50 @@ class LocationTodoOutlineViewController: macAppBoilerplate.OutlineViewController
 
 extension LocationTodoOutlineViewController {
     // MARK: Menu updates
+    func updateMenuAutomatically(_ menu: NSMenu) {
+        menu.items = []
+
+        // if there are no selections,
+        // a single selection that was the click, or
+        // the click was outside the selection, then update the menu for a single item
+        let rows = outlineView.selectedRowIndexes
+        let row = outlineView.clickedRow
+        if  (rows.isEmpty) ||
+                (rows.count == 1 && rows.contains(row)) ||
+                (!rows.contains(row)) {
+            if let item = outlineView.item(atRow: row) as? Location {
+                updateMenuForLocation(menu, location: item)
+            } else if let item = outlineView.item(atRow: row) as? Todo {
+                updateMenuForTodo(menu, todo: item)
+            }
+            return
+        }
+
+        // get the selected locations and todos
+        var selectedLocations = getSelectedLocations()
+        var selectedTodos = getSelectedTodos()
+
+        // get the clicked item
+        guard let item = outlineView.item(atRow: row),
+              item is Location || item is Todo else {
+            menu.items = []
+            return
+        }
+
+        // add it to its respective category if it isn't already there
+        if let item = item as? Location, !selectedLocations.contains(item) {
+            selectedLocations.append(item)
+        } else if let item = item as? Todo, !selectedTodos.contains(item) {
+            selectedTodos.append(item)
+        }
+
+        // add location related things
+        addLocationsMenu(menu, selectedLocations: selectedLocations)
+
+        // add todo related things
+        addTodosMenu(menu, selectedTodos: selectedTodos)
+    }
+
     func updateMenuForLocation(_ menu: NSMenu, location: Location) {
         let doneCount = location.todos.lazy.filter({ $0.isDone }).count
         let notDoneCount = location.todos.count - doneCount
@@ -102,6 +146,46 @@ extension LocationTodoOutlineViewController {
                   action: #selector(deleteTodo),
                   keyEquivalent: "")
         ]
+    }
+
+    func addLocationsMenu(_ menu: NSMenu, selectedLocations: [Location]) {
+        // if it is the only location, add only that
+        if selectedLocations.count == 1, let item = selectedLocations.first {
+            updateMenuForLocation(menu, location: item)
+        } else if selectedLocations.count > 1 {
+            // if it is not the only location, add the menu for many locations
+            menu.items.append(.init(title: "Delete \(selectedLocations.count) Locations",
+                                    action: #selector(deleteSelectedLocations),
+                                    keyEquivalent: ""))
+        } // if there are no locations, do not add any menu for it.
+    }
+
+    func addTodosMenu(_ menu: NSMenu, selectedTodos: [Todo]) {
+        // if there are no todos, do not add any menu for it
+        guard !selectedTodos.isEmpty else { return }
+
+        // adding the single todo menu looks odd, so just add the multi todo menu
+        if !menu.items.isEmpty {
+            menu.addSeparator()
+        }
+        let doneCount = selectedTodos.filter({ $0.isDone }).count
+        let notDoneCount = selectedTodos.count - doneCount
+
+        if notDoneCount > 0 {
+            menu.items.append(.init(title: "Mark \(notDoneCount) Selected Todos As Done",
+                                    action: #selector(markSelectedTodosDone),
+                                    keyEquivalent: ""))
+        }
+
+        if doneCount > 0 {
+            menu.items.append(.init(title: "Mark \(doneCount) Selected Todos As Not Done",
+                                    action: #selector(markSelectedTodosNotDone),
+                                    keyEquivalent: ""))
+        }
+
+        menu.items.append(.init(title: "Delete \(selectedTodos.count) Todos",
+                                action: #selector(deleteTodos),
+                                keyEquivalent: ""))
     }
 
     // MARK: Single location functions

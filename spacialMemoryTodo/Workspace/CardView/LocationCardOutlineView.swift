@@ -8,7 +8,7 @@
 import SwiftUI
 import macAppBoilerplate
 
-class LocationCardOutlineView: macAppBoilerplate.OutlineViewController {
+class LocationCardOutlineView: LocationTodoOutlineViewController {
 
     var location: Location!
     var cardView: LocationCardView!
@@ -21,6 +21,36 @@ class LocationCardOutlineView: macAppBoilerplate.OutlineViewController {
         outlineView.menu?.delegate = self
         outlineView.allowsMultipleSelection = true
         outlineView.doubleAction = #selector(onItemDoubleClicked)
+    }
+
+    override func getPopUpManager() -> PopUpManager? {
+        cardView.cardsView.popUpManager
+    }
+
+    override func getTabContent() -> LocationManager? {
+        cardView.cardsView.tabContent
+    }
+
+    override func getClickedLocation() -> Location? {
+        location
+    }
+
+    override func getClickedTodo() -> Todo? {
+        let row = outlineView.clickedRow
+        guard row >= 0 else { return nil }
+        return outlineView.item(atRow: row) as? Todo
+    }
+
+    override func getParentOfClickedTodo() -> Location? {
+        location
+    }
+
+    func selectedTodos() -> [Todo] {
+        let rows = outlineView.selectedRowIndexes
+
+        return rows.compactMap { row in
+            outlineView.item(atRow: row) as? Todo
+        }
     }
 }
 
@@ -57,9 +87,9 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
         let notDoneCount = items.count - doneCount
 
         if notDoneCount > doneCount {
-            markTodosAsDone()
+            markAllTodosDone()
         } else {
-            markTodosAsNotDone()
+            markAllTodosNotDone()
         }
     }
 }
@@ -105,50 +135,23 @@ extension LocationCardOutlineView: NSMenuDelegate {
 
         if notDoneCount > 0 {
             menu.items.append(.init(title: "Mark \(notDoneCount) Todos As Done",
-                                    action: #selector(markTodosAsDone),
+                                    action: #selector(markSelectedTodosDone),
                                     keyEquivalent: ""))
         }
 
         if doneCount > 0 {
             menu.items.append(.init(title: "Mark \(doneCount) Todos As Not Done",
-                                    action: #selector(markTodosAsNotDone),
+                                    action: #selector(markSelectedTodosNotDone),
                                     keyEquivalent: ""))
         }
 
         menu.items.append(.init(title: "Delete \(items.count) Todos",
-                                action: #selector(deleteTodo),
+                                action: #selector(deleteTodos),
                                 keyEquivalent: ""))
     }
 
     @objc
-    func toggleTodoDone() {
-        guard let item = clickedTodo() else { return }
-
-        location.toggleTodoDone(withID: item.id)
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func editTodo() {
-        guard let item = clickedTodo() else { return }
-
-        let manager = cardView.cardsView.popUpManager
-        manager.todoToEdit = item
-        manager.showTodoEditPopup = true
-    }
-
-    @objc
-    func deleteTodo() {
-        let items = selectedTodos()
-
-        for item in items {
-            location.removeTodo(withID: item.id)
-        }
-        LocationManager.save(sender: self.view)
-    }
-
-    @objc
-    func markTodosAsDone() {
+    func markSelectedTodosDone() {
         let items = selectedTodos()
 
         for item in items {
@@ -159,7 +162,7 @@ extension LocationCardOutlineView: NSMenuDelegate {
     }
 
     @objc
-    func markTodosAsNotDone() {
+    func markSelectedTodosNotDone() {
         let items = selectedTodos()
 
         for item in items {
@@ -169,17 +172,13 @@ extension LocationCardOutlineView: NSMenuDelegate {
         LocationManager.save(sender: self.view)
     }
 
-    func clickedTodo() -> Todo? {
-        let row = outlineView.clickedRow
-        guard row >= 0 else { return nil }
-        return outlineView.item(atRow: row) as? Todo
-    }
+    @objc
+    func deleteTodos() {
+        let items = selectedTodos()
 
-    func selectedTodos() -> [Todo] {
-        let rows = outlineView.selectedRowIndexes
-
-        return rows.compactMap { row in
-            outlineView.item(atRow: row) as? Todo
+        for item in items {
+            location.removeTodo(withID: item.id)
         }
+        LocationManager.save(sender: self.view)
     }
 }

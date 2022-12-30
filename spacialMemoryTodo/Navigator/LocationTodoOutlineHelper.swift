@@ -70,7 +70,7 @@ extension LocationTodoOutlineViewController {
         LocationManager.save(sender: self.view)
     }
 
-    @objc func markTodoAsDone() {
+    @objc func toggleTodoDone () {
         guard let item = getClickedTodo(),
               let location = getParentOfClickedTodo()
         else { return }

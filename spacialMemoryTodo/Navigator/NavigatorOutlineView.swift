@@ -191,7 +191,7 @@ extension NavigatorOutlineView: NSMenuDelegate {
         } else if let item = item as? Todo {
             menu.items = [
                 .init(title: "Mark As \(item.isDone ? "Not " : "")Done",
-                      action: #selector(markTodoAsDone),
+                      action: #selector(toggleTodoDone),
                       keyEquivalent: ""),
                 .init(title: "Edit Todo",
                       action: #selector(editTodo),

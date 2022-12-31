@@ -82,16 +82,16 @@ struct SidebarNavigatorView: View {
         .frame(maxWidth: 30)
         .opacity(1)
         .onAppear {
-            guard let locationManager = tabManager.openedTabs.first as? LocationManager else { return }
+            let locationManager = LocationManager.default
             hideCompletedTodos = locationManager.hideCompletedTodos
             searchTerm = locationManager.searchTerm
         }
         .onChange(of: hideCompletedTodos) { newValue in
-            guard let locationManager = tabManager.openedTabs.first as? LocationManager else { return }
+            let locationManager = LocationManager.default
             locationManager.hideCompletedTodos = newValue
         }
         .onChange(of: searchTerm) { newValue in
-            guard let locationManager = tabManager.openedTabs.first as? LocationManager else { return }
+            let locationManager = LocationManager.default
             locationManager.searchTerm = newValue
         }
     }

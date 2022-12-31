@@ -19,45 +19,11 @@ class CardsView: NSScrollView {
     var tabManagerCancellable: AnyCancellable!
     var popUpManager: PopUpManager
 
-    var tabContent: LocationManager?
+    var tabContent: LocationManager = .default
     var tabContentCancellable: AnyCancellable?
 
     var locations: [Location] {
-        if let tabContent {
-            return tabContent.locations
-        }
-
-        if let tabContent = tabManager.selectedTabItem() as? LocationManager {
-            self.tabContent = tabContent
-            tabContent.locationForNewTodo = { size in
-                // calculate the center of the visible screen
-                let visibleScreenCenter = CGPoint(x: self.documentVisibleRect.midX,
-                                                  y: self.documentVisibleRect.midY)
-
-                // get the card offset (use 0,0 if there are no cards)
-                var cardOffset = CGSize.zero
-                if let refCard = self.cards.first {
-                    cardOffset = .init(width: refCard.location.rect.minX - refCard.frame.minX,
-                                       height: refCard.location.rect.minY - refCard.frame.minY)
-                }
-
-                // offset it by the card offset
-                var locationForTodo = CGPoint(from: visibleScreenCenter, offsetBy: cardOffset)
-
-                // move it to account for the card's size
-                locationForTodo = .init(from: locationForTodo,
-                                        offsetBy: .init(width: size.width/2 * -1,
-                                                        height: size.height/2 * -1))
-
-                return locationForTodo
-            }
-            self.tabContentCancellable = tabContent.objectWillChange.sink {
-                self.updateData()
-            }
-            return tabContent.locations
-        }
-
-        return []
+        tabContent.locations
     }
 
     init(frame frameRect: NSRect, tabManager: TabManager, popUpManager: PopUpManager) {
@@ -73,6 +39,33 @@ class CardsView: NSScrollView {
         self.documentView = NSView(frame: frameRect)
         self.wantsLayer = true
         self.layer?.backgroundColor = NSColor.systemGray.cgColor
+
+        tabContent.locationForNewTodo = { size in
+            // calculate the center of the visible screen
+            let visibleScreenCenter = CGPoint(x: self.documentVisibleRect.midX,
+                                              y: self.documentVisibleRect.midY)
+
+            // get the card offset (use 0,0 if there are no cards)
+            var cardOffset = CGSize.zero
+            if let refCard = self.cards.first {
+                cardOffset = .init(width: refCard.location.rect.minX - refCard.frame.minX,
+                                   height: refCard.location.rect.minY - refCard.frame.minY)
+            }
+
+            // offset it by the card offset
+            var locationForTodo = CGPoint(from: visibleScreenCenter, offsetBy: cardOffset)
+
+            // move it to account for the card's size
+            locationForTodo = .init(from: locationForTodo,
+                                    offsetBy: .init(width: size.width/2 * -1,
+                                                    height: size.height/2 * -1))
+
+            return locationForTodo
+        }
+        self.tabContentCancellable = tabContent.objectWillChange.sink {
+            self.updateData()
+        }
+
         locationsToCards()
         calculateCardFrames()
     }
@@ -199,7 +192,7 @@ class CardsView: NSScrollView {
         // Continue only if a card is not being dragged, document view exists,
         // a location has been selected, and that location has a card
         guard !isCurrentlyDraggingCard, let documentView,
-              let selectedLocation = tabContent?.selectedLocation,
+              let selectedLocation = tabContent.selectedLocation,
               selectedLocation.id != currentlySelectedLocation,
               let cardForLocation = cards.first(where: { $0.location == selectedLocation })
         else { return }

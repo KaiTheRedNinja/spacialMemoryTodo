@@ -28,7 +28,7 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
 
     override func getWorkspaceProtocol() -> WorkspaceProtocol {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.tabManager.openTab(tab: LocationManager())
+            self.tabManager.openTab(tab: LocationManager.default)
         }
         return Workspace(popUpManager: popUpManager)
     }
@@ -96,7 +96,7 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
 
     @objc
     func addNewItem() {
-        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else { return }
+        let tabContent = LocationManager.default
         let location = tabContent.locationForNewTodo?(CGRect.defaultLocationCardSize.size) ?? .zero
         tabContent.locations.append(.init(name: "Untitled Location",
                                           todos: [],

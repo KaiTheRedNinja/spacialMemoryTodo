@@ -11,35 +11,10 @@ import Combine
 
 class NavigatorOutlineView: LocationTodoOutlineViewController {
     var popUpManager: PopUpManager?
-    var tabContent: LocationManager?
+    var tabContent: LocationManager = .default
     var tabContentCancellable: AnyCancellable?
     var locations: [Location] {
-        // if tab content exists, return the locations
-        if let tabContent {
-            return tabContent.locations
-        }
-
-        // if it doesn't exist, see if it is stored in tab manager. Else, return empty.
-        guard let tabContent = tabManager.selectedTabItem() as? LocationManager else {
-            return []
-        }
-
-        // if it is stored in tab manager but tab content does not exist yet, it means
-        // that this is the initial load. All top-level items should therefore be expanded.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            for location in tabContent.locations {
-                self.outlineView.expandItem(location)
-            }
-        }
-
-        // save the tab content
-        self.tabContent = tabContent
-
-        self.tabContentCancellable = tabContent.objectWillChange.sink {
-            self.outlineView.reloadData()
-        }
-
-        return tabContent.locations
+        tabContent.locations
     }
 
     var tabManagerCancellable: AnyCancellable!
@@ -54,6 +29,18 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         tabManagerCancellable = tabManager.objectWillChange.sink {
             self.outlineView.reloadData()
         }
+
+        // Expand all top level items
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            for location in self.tabContent.locations {
+                self.outlineView.expandItem(location)
+            }
+        }
+
+        // Set up the listener
+        self.tabContentCancellable = tabContent.objectWillChange.sink {
+            self.outlineView.reloadData()
+        }
     }
 
     deinit {
@@ -63,10 +50,6 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
 
     override func getPopUpManager() -> PopUpManager? {
         popUpManager
-    }
-
-    override func getTabContent() -> LocationManager? {
-        tabContent
     }
 }
 

@@ -27,10 +27,6 @@ class LocationCardOutlineView: LocationTodoOutlineViewController {
         cardView.cardsView.popUpManager
     }
 
-    override func getTabContent() -> LocationManager? {
-        cardView.cardsView.tabContent
-    }
-
     override func getClickedLocation() -> Location? {
         location
     }

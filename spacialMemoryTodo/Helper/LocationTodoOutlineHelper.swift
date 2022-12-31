@@ -12,9 +12,6 @@ class LocationTodoOutlineViewController: macAppBoilerplate.OutlineViewController
     func getPopUpManager() -> PopUpManager? {
         fatalError("Please override this function")
     }
-    func getTabContent() -> LocationManager? {
-        fatalError("Please override this function")
-    }
 
     func getClickedLocation() -> Location? {
         let row = outlineView.clickedRow
@@ -220,9 +217,8 @@ extension LocationTodoOutlineViewController {
     }
 
     @objc func deleteLocation() {
-        guard let location = getClickedLocation(),
-              let tabContent = getTabContent()
-        else { return }
+        guard let location = getClickedLocation() else { return }
+        let tabContent = LocationManager.default
 
         tabContent.locations.removeAll { loc in
             loc.id == location.id
@@ -261,9 +257,8 @@ extension LocationTodoOutlineViewController {
 
     // MARK: Focusing
     @objc func focusLocation() {
-        guard let location = getClickedLocation(),
-              let tabContent = getTabContent()
-        else { return }
+        guard let location = getClickedLocation() else { return }
+        let tabContent = LocationManager.default
 
         tabContent.selectedLocation = location
         tabContent.selectedTodo = nil
@@ -271,9 +266,9 @@ extension LocationTodoOutlineViewController {
 
     @objc func focusTodo() {
         guard let todo = getClickedTodo(),
-              let location = getParentOfClickedTodo(),
-              let tabContent = getTabContent()
+              let location = getParentOfClickedTodo()
         else { return }
+        let tabContent = LocationManager.default
 
         tabContent.selectedLocation = location
         tabContent.selectedTodo = todo
@@ -282,9 +277,8 @@ extension LocationTodoOutlineViewController {
     // MARK: Multiple location functions
     @objc func deleteSelectedLocations() {
         let selectedLocations = getSelectedLocations()
-        guard let tabContent = getTabContent(),
-              !selectedLocations.isEmpty
-        else { return }
+        guard !selectedLocations.isEmpty else { return }
+        let tabContent = LocationManager.default
 
         for selectedLocation in selectedLocations {
             tabContent.locations.removeAll(where: { loc in

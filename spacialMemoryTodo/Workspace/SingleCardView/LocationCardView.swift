@@ -187,7 +187,7 @@ class LocationCardView: DraggableResizableView {
     }
 
     @objc func focusLocation() {
-        guard let tabContent = cardsView.tabContent else { return }
+        let tabContent = LocationManager.default
         tabContent.selectedLocation = location
         tabContent.selectedTodo = nil
     }
@@ -216,10 +216,10 @@ class LocationCardView: DraggableResizableView {
 
     @objc
     func deleteLocation() {
-        cardsView.tabContent?.locations.removeAll { loc in
+        LocationManager.default.locations.removeAll { loc in
             loc.id == location.id
         }
-        cardsView.tabContent?.objectWillChange.send()
+        LocationManager.default.objectWillChange.send()
         LocationManager.save(sender: cardsView.tabManager)
     }
 

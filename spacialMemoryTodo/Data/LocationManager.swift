@@ -10,7 +10,9 @@ import macAppBoilerplate
 
 class LocationManager: macAppBoilerplate.TabBarItemRepresentable, ObservableObject {
 
-    init(fromDisk: Bool = true) {
+    static let `default`: LocationManager = .init()
+
+    private init(fromDisk: Bool = true) {
         if fromDisk {
             loadLocationsFromPath()
         }
@@ -118,8 +120,7 @@ extension LocationManager {
     }
 
     static func save(sender: TabManager) {
-        guard let manager = sender.openedTabs.first as? LocationManager
-        else { return }
+        let manager = LocationManager.default
 
         // do the saving asyncly to avoid lag
         DispatchQueue.main.async {

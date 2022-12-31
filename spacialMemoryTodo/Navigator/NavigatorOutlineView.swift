@@ -103,7 +103,7 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         if let item = item as? Location {
-            let cell = LocationTableViewCell(frame: .zero, isEditable: false)
+            let cell = LocationTableViewCell(frame: .zero, isEditable: true)
             cell.location = item
             cell.outlineView = outlineView
             cell.addLocation()
@@ -111,7 +111,7 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         }
 
         if let item = item as? Todo {
-            let cell = TodoTableViewCell(frame: .zero, isEditable: false)
+            let cell = TodoTableViewCell(frame: .zero, isEditable: true)
             cell.todo = item
             cell.outlineView = outlineView
             cell.addTodo()

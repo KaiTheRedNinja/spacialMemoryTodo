@@ -20,6 +20,11 @@ class LocationTableViewCell: macAppBoilerplate.StandardTableViewCell {
         icon.image = NSImage(systemSymbolName: "location.circle", accessibilityDescription: nil)
     }
 
+    override func configLabel(label: NSTextField, isEditable: Bool) {
+        super.configLabel(label: label, isEditable: isEditable)
+        label.delegate = self
+    }
+
     func addLocation() {
         label.stringValue = location.name
         secondaryLabel.stringValue = "\(location.todos.filter({ !$0.isDone }).count)"
@@ -65,6 +70,11 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
     override func configIcon(icon: NSImageView) {
         super.configIcon(icon: icon)
         icon.image = NSImage(systemSymbolName: "square", accessibilityDescription: nil)
+    }
+
+    override func configLabel(label: NSTextField, isEditable: Bool) {
+        super.configLabel(label: label, isEditable: isEditable)
+        label.delegate = self
     }
 
     func addTodo() {

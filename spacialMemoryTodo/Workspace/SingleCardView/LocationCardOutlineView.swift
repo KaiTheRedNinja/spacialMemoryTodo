@@ -62,7 +62,7 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         guard let item = item as? Todo else { return nil }
 
-        let cell = TodoTableViewCell(frame: .zero, isEditable: false)
+        let cell = TodoTableViewCell(frame: .zero, isEditable: true)
         cell.todo = item
         cell.outlineView = outlineView
         cell.addTodo()

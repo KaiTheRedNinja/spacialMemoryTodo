@@ -58,10 +58,18 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let item else { return LocationManager.default.locations.count }
 
         if let item = item as? Location {
-            if LocationManager.default.hideCompletedTodos {
-                return item.todos.filter({ !$0.isDone }).count
+            let manager = LocationManager.default
+
+            let todos = manager.hideCompletedTodos ?
+                            item.todos.filter({ !$0.isDone }) :
+                            item.todos
+
+            guard !manager.searchTerm.isEmpty else {
+                return todos.count
             }
-            return item.todos.count
+
+            // filter the todos
+            return todos.filter({ $0.name.contains(manager.searchTerm) }).count
         }
 
         return 0
@@ -71,10 +79,18 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let item else { return LocationManager.default.locations[index] }
 
         if let item = item as? Location {
-            if LocationManager.default.hideCompletedTodos {
-                return item.todos.filter({ !$0.isDone })[index]
+            let manager = LocationManager.default
+
+            let todos = manager.hideCompletedTodos ?
+                            item.todos.filter({ !$0.isDone }) :
+                            item.todos
+
+            guard !manager.searchTerm.isEmpty else {
+                return todos[index]
             }
-            return item.todos[index]
+
+            // filter the todos
+            return todos.filter({ $0.name.contains(manager.searchTerm) })[index]
         }
 
         return 0

@@ -42,13 +42,33 @@ class LocationCardOutlineView: LocationTodoOutlineViewController {
 
 extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-//        return location.todos.filter({ !$0.isDone }).count
-        return location.todos.count
+        let manager = LocationManager.default
+
+        let todos = manager.hideCompletedTodos ?
+                        location.todos.filter({ !$0.isDone }) :
+                        location.todos
+
+        guard !manager.searchTerm.isEmpty else {
+            return todos.count
+        }
+
+        // filter the todos
+        return todos.filter({ $0.name.contains(manager.searchTerm) }).count
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-//        return location.todos.filter({ !$0.isDone })[index]
-        return location.todos[index]
+        let manager = LocationManager.default
+
+        let todos = manager.hideCompletedTodos ?
+                        location.todos.filter({ !$0.isDone }) :
+                        location.todos
+
+        guard !manager.searchTerm.isEmpty else {
+            return todos[index]
+        }
+
+        // filter the todos
+        return todos.filter({ $0.name.contains(manager.searchTerm) })[index]
     }
 
     func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {

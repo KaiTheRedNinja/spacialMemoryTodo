@@ -11,9 +11,12 @@ class Todo: Identifiable, Equatable, ObservableObject, Codable {
     var name: String
     var isDone: Bool
 
-    init(name: String, isDone: Bool = false) {
+    let creationDate: Date
+
+    init(name: String, creationDate: Date = .now, isDone: Bool = false) {
         self.name = name
         self.isDone = isDone
+        self.creationDate = creationDate
     }
 
     var id = UUID()

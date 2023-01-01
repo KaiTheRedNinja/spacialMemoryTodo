@@ -79,6 +79,7 @@ extension LocationManager {
         let path = path ?? locationsURL
 
         let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
         guard let data = try? encoder.encode(locations) else {
             return
         }

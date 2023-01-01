@@ -32,6 +32,8 @@ struct EditTodoPopUpView: View {
     }
 
     @State var newName: String = "Untitled Todo"
+    @State var creationDate: Date = .now
+    @State var dueDate: Date?
 
     /// The main view for editing things
     @ViewBuilder
@@ -39,15 +41,43 @@ struct EditTodoPopUpView: View {
         VStack {
             TextField("Todo Name", text: $newName)
                 .padding(.bottom, 5)
-                .onAppear {
-                    newName = popUpManager.todoToEdit?.name ?? ""
-                }
                 .onSubmit {
                     save()
                 }
+            HStack {
+                Text("Creation Date:")
+                    .bold()
+                    .frame(width: 100, alignment: .trailing)
+                Image(systemName: "lock")
+                Text("\(creationDate.formatted())")
+                Spacer()
+            }
+            .foregroundColor(.gray)
+            HStack {
+                Text("Due Date:")
+                    .bold()
+                    .multilineTextAlignment(.trailing)
+                    .frame(width: 100, alignment: .trailing)
+                Button {
+                    // TODO: Edit due date
+                } label: {
+                    if let dueDate {
+                        Text("\(dueDate.formatted())")
+                    } else {
+                        Text("No Due Date")
+                    }
+                }
+                Spacer()
+            }
             cancelSaveOptions
         }
         .padding(10)
+        .onAppear {
+            guard let todo = popUpManager.todoToEdit else { return }
+            newName = todo.name
+            creationDate = todo.creationDate
+            dueDate = todo.dueDate
+        }
     }
 
     /// The error view that is shown when no todo is selected

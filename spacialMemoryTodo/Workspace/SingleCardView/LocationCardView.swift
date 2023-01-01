@@ -15,6 +15,9 @@ class LocationCardView: DraggableResizableView {
     /// The cancellable for the Location's listener
     var locationCancellable: AnyCancellable!
 
+    /// The cancellable for the location manager
+    var locManagerCancelalble: AnyCancellable?
+
     /// The parent CardsView, for sending updates
     weak var cardsView: CardsView!
     /// If the card has an outline
@@ -92,6 +95,10 @@ class LocationCardView: DraggableResizableView {
             outlineView.outlineView.reloadData()
             self.resizeSubviews(withOldSize: frame.size)
             self.setBackgroundColour()
+        }
+
+        self.locManagerCancelalble = LocationManager.default.objectWillChange.sink { .now() + 0.005 } receiveValue: {
+            outlineView.outlineView.reloadData()
         }
 
         // run these to frame the objects correctly

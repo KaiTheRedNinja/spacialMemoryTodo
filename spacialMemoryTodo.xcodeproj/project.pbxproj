@@ -31,6 +31,7 @@
 		931B7BA82943714200BFAA4E /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B7BA72943714200BFAA4E /* WorkspaceView.swift */; };
 		934A3599295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */; };
 		934A359C295E81F300A3C1A4 /* PossibleColours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A359B295E81F300A3C1A4 /* PossibleColours.swift */; };
+		93ACF3502961A1C600B2EC19 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACF34F2961A1C600B2EC19 /* Combine.swift */; };
 		93AE3DE0295FBE7E00DF6041 /* NavigatorTableViewCell+NSTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE3DDF295FBE7E00DF6041 /* NavigatorTableViewCell+NSTextFieldDelegate.swift */; };
 		93C6405529457750006CEC5F /* DraggableResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C6405429457750006CEC5F /* DraggableResizableView.swift */; };
 		93F9FD5429595FD300ADA897 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9FD5329595FD300ADA897 /* LocationManager.swift */; };
@@ -62,6 +63,7 @@
 		931B7BA72943714200BFAA4E /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
 		934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTodoOutlineHelper.swift; sourceTree = "<group>"; };
 		934A359B295E81F300A3C1A4 /* PossibleColours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossibleColours.swift; sourceTree = "<group>"; };
+		93ACF34F2961A1C600B2EC19 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		93AE3DDF295FBE7E00DF6041 /* NavigatorTableViewCell+NSTextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigatorTableViewCell+NSTextFieldDelegate.swift"; sourceTree = "<group>"; };
 		93C6405429457750006CEC5F /* DraggableResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableResizableView.swift; sourceTree = "<group>"; };
 		93F9FD5329595FD300ADA897 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			children = (
 				93C6405429457750006CEC5F /* DraggableResizableView.swift */,
 				934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */,
+				93ACF34F2961A1C600B2EC19 /* Combine.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				93065F4829437D9A002A3381 /* LocationCardView.swift in Sources */,
 				934A3599295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift in Sources */,
 				931B7BA52943703600BFAA4E /* SidebarNavigatorView.swift in Sources */,
+				93ACF3502961A1C600B2EC19 /* Combine.swift in Sources */,
 				931B7B882943609300BFAA4E /* AppDelegate.swift in Sources */,
 				9312DC4029572C060044FEC6 /* EditTodoPopUpView.swift in Sources */,
 				93065F462943793E002A3381 /* CardsView.swift in Sources */,

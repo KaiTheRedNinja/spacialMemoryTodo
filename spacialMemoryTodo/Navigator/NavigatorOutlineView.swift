@@ -36,7 +36,9 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         }
 
         // Set up the listener
-        self.locManagerCancellable = manager.objectWillChange.sink {
+        self.locManagerCancellable = manager.objectWillChange.sink { .now() + 0.005 } receiveValue: {
+            // the value of LocationManager.default.hideCompletedTodos seems to take
+            // a while to update, so we wait a bit and then run the code
             self.outlineView.reloadData()
         }
     }
@@ -56,7 +58,9 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let item else { return LocationManager.default.locations.count }
 
         if let item = item as? Location {
-//            return item.todos.filter({ !$0.isDone }).count
+            if LocationManager.default.hideCompletedTodos {
+                return item.todos.filter({ !$0.isDone }).count
+            }
             return item.todos.count
         }
 
@@ -67,7 +71,9 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
         guard let item else { return LocationManager.default.locations[index] }
 
         if let item = item as? Location {
-//            return item.todos.filter({ !$0.isDone })[index]
+            if LocationManager.default.hideCompletedTodos {
+                return item.todos.filter({ !$0.isDone })[index]
+            }
             return item.todos[index]
         }
 

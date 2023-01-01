@@ -21,7 +21,7 @@ struct SidebarNavigatorViewToolbar: View {
         VStack {
             HStack {
                 HStack {
-                    sortButton
+                    toggleCompletedTodoVisibility
                     TextField("Filter", text: $searchTerm)
                         .textFieldStyle(.plain)
                         .font(.system(size: 12))
@@ -51,21 +51,6 @@ struct SidebarNavigatorViewToolbar: View {
             }
         }
         .padding(.top, -8)
-    }
-
-    var sortButton: some View {
-        Menu {
-            Button {
-                hideCompletedTodos.toggle()
-            } label: {
-                Text("\(hideCompletedTodos ? "Show" : "Hide") Completed Todos")
-            }
-        } label: {
-            Image(systemName: "line.3.horizontal.decrease.circle")
-        }
-        .menuStyle(.borderlessButton)
-        .frame(maxWidth: 30)
-        .opacity(1)
         .onAppear {
             let locationManager = LocationManager.default
             hideCompletedTodos = locationManager.hideCompletedTodos
@@ -79,5 +64,16 @@ struct SidebarNavigatorViewToolbar: View {
             let locationManager = LocationManager.default
             locationManager.searchTerm = newValue
         }
+    }
+
+    var toggleCompletedTodoVisibility: some View {
+        Button {
+            hideCompletedTodos.toggle()
+        } label: {
+            Image(systemName: "checkmark.square\(hideCompletedTodos ? "" : ".fill")")
+        }
+        .help("\(hideCompletedTodos ? "Show" : "Hide") completed todos")
+        .buttonStyle(.borderless)
+        .offset(x: 3)
     }
 }

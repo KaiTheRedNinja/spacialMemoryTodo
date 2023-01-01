@@ -96,16 +96,16 @@ class MainWindowController: macAppBoilerplate.MainWindowController {
 
     @objc
     func addNewItem() {
-        let tabContent = LocationManager.default
-        let location = tabContent.locationForNewTodo?(CGRect.defaultLocationCardSize.size) ?? .zero
-        tabContent.locations.append(.init(name: "Untitled Location",
+        let locManager = LocationManager.default
+        let location = locManager.locationForNewTodo?(CGRect.defaultLocationCardSize.size) ?? .zero
+        locManager.locations.append(.init(name: "Untitled Location",
                                           todos: [],
                                           colour: popUpManager.lastColour,
                                           rect: .init(x: location.x,
                                                       y: location.y,
                                                       width: CGRect.defaultLocationCardSize.width,
                                                       height: CGRect.defaultLocationCardSize.height)))
-        tabContent.objectWillChange.send()
+        locManager.objectWillChange.send()
 
         LocationManager.save(sender: tabManager)
     }

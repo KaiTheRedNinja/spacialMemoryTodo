@@ -187,9 +187,9 @@ class LocationCardView: DraggableResizableView {
     }
 
     @objc func focusLocation() {
-        let tabContent = LocationManager.default
-        tabContent.selectedLocation = location
-        tabContent.selectedTodo = nil
+        let locManager = LocationManager.default
+        locManager.selectedLocation = location
+        locManager.selectedTodo = nil
     }
 
     @objc

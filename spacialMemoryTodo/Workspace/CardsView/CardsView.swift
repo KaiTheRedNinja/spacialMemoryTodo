@@ -19,7 +19,7 @@ class CardsView: NSScrollView {
     var tabManagerCancellable: AnyCancellable!
     var popUpManager: PopUpManager
 
-    var tabContentCancellable: AnyCancellable?
+    var locManagerCancellable: AnyCancellable?
 
     init(frame frameRect: NSRect, tabManager: TabManager, popUpManager: PopUpManager) {
         self.tabManager = tabManager
@@ -58,7 +58,7 @@ class CardsView: NSScrollView {
 
             return locationForTodo
         }
-        self.tabContentCancellable = manager.objectWillChange.sink {
+        self.locManagerCancellable = manager.objectWillChange.sink {
             self.updateData()
         }
 
@@ -249,7 +249,7 @@ class CardsView: NSScrollView {
 
     deinit {
         tabManagerCancellable.cancel()
-        tabContentCancellable?.cancel()
+        locManagerCancellable?.cancel()
     }
 }
 

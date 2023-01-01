@@ -11,7 +11,7 @@ import Combine
 
 class NavigatorOutlineView: LocationTodoOutlineViewController {
     var popUpManager: PopUpManager?
-    var tabContentCancellable: AnyCancellable?
+    var locManagerCancellable: AnyCancellable?
 
     var tabManagerCancellable: AnyCancellable!
 
@@ -36,14 +36,14 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         }
 
         // Set up the listener
-        self.tabContentCancellable = manager.objectWillChange.sink {
+        self.locManagerCancellable = manager.objectWillChange.sink {
             self.outlineView.reloadData()
         }
     }
 
     deinit {
         tabManagerCancellable.cancel()
-        tabContentCancellable?.cancel()
+        locManagerCancellable?.cancel()
     }
 
     override func getPopUpManager() -> PopUpManager? {

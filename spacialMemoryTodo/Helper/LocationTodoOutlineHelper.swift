@@ -218,12 +218,12 @@ extension LocationTodoOutlineViewController {
 
     @objc func deleteLocation() {
         guard let location = getClickedLocation() else { return }
-        let tabContent = LocationManager.default
+        let locManager = LocationManager.default
 
-        tabContent.locations.removeAll { loc in
+        locManager.locations.removeAll { loc in
             loc.id == location.id
         }
-        tabContent.objectWillChange.send()
+        locManager.objectWillChange.send()
         LocationManager.save(sender: self.view)
     }
 
@@ -258,34 +258,34 @@ extension LocationTodoOutlineViewController {
     // MARK: Focusing
     @objc func focusLocation() {
         guard let location = getClickedLocation() else { return }
-        let tabContent = LocationManager.default
+        let locManager = LocationManager.default
 
-        tabContent.selectedLocation = location
-        tabContent.selectedTodo = nil
+        locManager.selectedLocation = location
+        locManager.selectedTodo = nil
     }
 
     @objc func focusTodo() {
         guard let todo = getClickedTodo(),
               let location = getParentOfClickedTodo()
         else { return }
-        let tabContent = LocationManager.default
+        let locManager = LocationManager.default
 
-        tabContent.selectedLocation = location
-        tabContent.selectedTodo = todo
+        locManager.selectedLocation = location
+        locManager.selectedTodo = todo
     }
 
     // MARK: Multiple location functions
     @objc func deleteSelectedLocations() {
         let selectedLocations = getSelectedLocations()
         guard !selectedLocations.isEmpty else { return }
-        let tabContent = LocationManager.default
+        let locManager = LocationManager.default
 
         for selectedLocation in selectedLocations {
-            tabContent.locations.removeAll(where: { loc in
+            locManager.locations.removeAll(where: { loc in
                 loc == selectedLocation
             })
         }
-        tabContent.objectWillChange.send()
+        locManager.objectWillChange.send()
         LocationManager.save(sender: self.view)
     }
 

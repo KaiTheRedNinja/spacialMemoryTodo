@@ -11,11 +11,7 @@ import Combine
 
 class NavigatorOutlineView: LocationTodoOutlineViewController {
     var popUpManager: PopUpManager?
-    var tabContent: LocationManager = .default
     var tabContentCancellable: AnyCancellable?
-    var locations: [Location] {
-        tabContent.locations
-    }
 
     var tabManagerCancellable: AnyCancellable!
 
@@ -30,15 +26,17 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
             self.outlineView.reloadData()
         }
 
+        let manager = LocationManager.default
+
         // Expand all top level items
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            for location in self.tabContent.locations {
+            for location in manager.locations {
                 self.outlineView.expandItem(location)
             }
         }
 
         // Set up the listener
-        self.tabContentCancellable = tabContent.objectWillChange.sink {
+        self.tabContentCancellable = manager.objectWillChange.sink {
             self.outlineView.reloadData()
         }
     }
@@ -55,7 +53,7 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
 
 extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-        guard let item else { return locations.count }
+        guard let item else { return LocationManager.default.locations.count }
 
         if let item = item as? Location {
 //            return item.todos.filter({ !$0.isDone }).count
@@ -66,7 +64,7 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        guard let item else { return locations[index] }
+        guard let item else { return LocationManager.default.locations[index] }
 
         if let item = item as? Location {
 //            return item.todos.filter({ !$0.isDone })[index]

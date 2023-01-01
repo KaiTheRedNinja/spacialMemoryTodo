@@ -19,12 +19,7 @@ class CardsView: NSScrollView {
     var tabManagerCancellable: AnyCancellable!
     var popUpManager: PopUpManager
 
-    var tabContent: LocationManager = .default
     var tabContentCancellable: AnyCancellable?
-
-    var locations: [Location] {
-        tabContent.locations
-    }
 
     init(frame frameRect: NSRect, tabManager: TabManager, popUpManager: PopUpManager) {
         self.tabManager = tabManager
@@ -40,7 +35,8 @@ class CardsView: NSScrollView {
         self.wantsLayer = true
         self.layer?.backgroundColor = NSColor.systemGray.cgColor
 
-        tabContent.locationForNewTodo = { size in
+        let manager = LocationManager.default
+        manager.locationForNewTodo = { size in
             // calculate the center of the visible screen
             let visibleScreenCenter = CGPoint(x: self.documentVisibleRect.midX,
                                               y: self.documentVisibleRect.midY)
@@ -62,7 +58,7 @@ class CardsView: NSScrollView {
 
             return locationForTodo
         }
-        self.tabContentCancellable = tabContent.objectWillChange.sink {
+        self.tabContentCancellable = manager.objectWillChange.sink {
             self.updateData()
         }
 
@@ -81,6 +77,7 @@ class CardsView: NSScrollView {
     }
 
     func locationsToCards() {
+        let locations = LocationManager.default.locations
         // iterate over locations and see if they have a corresponding card, add the location if otherwise
         let cardLocations = cards.map { $0.location }
         for (index, location) in locations.enumerated() where !cardLocations.contains(location) {
@@ -192,7 +189,7 @@ class CardsView: NSScrollView {
         // Continue only if a card is not being dragged, document view exists,
         // a location has been selected, and that location has a card
         guard !isCurrentlyDraggingCard, let documentView,
-              let selectedLocation = tabContent.selectedLocation,
+              let selectedLocation = LocationManager.default.selectedLocation,
               selectedLocation.id != currentlySelectedLocation,
               let cardForLocation = cards.first(where: { $0.location == selectedLocation })
         else { return }

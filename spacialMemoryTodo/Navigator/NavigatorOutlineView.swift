@@ -31,6 +31,7 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
         outlineView.menu = NSMenu()
         outlineView.menu?.delegate = self
         outlineView.allowsMultipleSelection = true
+        outlineView.doubleAction = #selector(onItemDoubleClicked)
         tabManagerCancellable = tabManager.objectWillChange.sink {
             self.outlineView.reloadData()
         }

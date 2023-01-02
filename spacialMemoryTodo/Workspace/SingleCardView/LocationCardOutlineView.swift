@@ -84,20 +84,6 @@ extension LocationCardOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegat
         cell.addTodo()
         return cell
     }
-
-    @objc
-    func onItemDoubleClicked() {
-        let items = getSelectedTodos()
-
-        let doneCount = items.filter({ $0.isDone }).count
-        let notDoneCount = items.count - doneCount
-
-        if notDoneCount > doneCount {
-            markAllTodosDone()
-        } else {
-            markAllTodosNotDone()
-        }
-    }
 }
 
 extension LocationCardOutlineView: NSMenuDelegate {

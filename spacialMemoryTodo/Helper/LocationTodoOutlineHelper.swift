@@ -330,6 +330,19 @@ extension LocationTodoOutlineViewController {
         locationsToUpdate.forEach({ $0.objectWillChange.send() })
         LocationManager.save(sender: self.view)
     }
+
+    @objc func onItemDoubleClicked() {
+        let items = getSelectedTodos()
+
+        let doneCount = items.filter({ $0.isDone }).count
+        let notDoneCount = items.count - doneCount
+
+        if notDoneCount > doneCount {
+            markSelectedTodosDone()
+        } else {
+            markSelectedTodosNotDone()
+        }
+    }
 }
 
 extension NSMenu {

@@ -32,7 +32,10 @@ struct EditTodoPopUpView: View {
     }
 
     @State var newName: String = "Untitled Todo"
+
     @State var creationDate: Date = .now
+    @State var showInfoView: Bool = false
+
     @State var dueDate: Date?
     @State var showDateSelector: Bool = false
 
@@ -46,19 +49,8 @@ struct EditTodoPopUpView: View {
                     save()
                 }
             HStack {
-                Text("Creation Date:")
-                    .bold()
-                    .frame(width: 100, alignment: .trailing)
-                Image(systemName: "lock")
-                Text("\(creationDate.formatted())")
-                Spacer()
-            }
-            .foregroundColor(.gray)
-            HStack {
                 Text("Due Date:")
                     .bold()
-                    .multilineTextAlignment(.trailing)
-                    .frame(width: 100, alignment: .trailing)
                 Button {
                     showDateSelector = true
                 } label: {
@@ -70,27 +62,13 @@ struct EditTodoPopUpView: View {
                 }
                 Spacer()
             }
-            .sheet(isPresented: $showDateSelector) {
-                VStack {
-                    DatePicker("Due Date:", selection: .init(get: {
-                        dueDate ?? .now
-                    }, set: { newDate in
-                        dueDate = newDate
-                    }))
-                    HStack {
-                        Spacer()
-                        Button("Remove Due Date") {
-                            dueDate = nil
-                            showDateSelector = false
-                        }
-                        Button("Close") {
-                            showDateSelector = false
-                        }
-                    }
-                }
-                .padding(10)
-            }
             cancelSaveOptions
+        }
+        .sheet(isPresented: $showInfoView) {
+            infoView
+        }
+        .sheet(isPresented: $showDateSelector) {
+            editDateView
         }
         .padding(10)
         .onAppear {
@@ -112,11 +90,58 @@ struct EditTodoPopUpView: View {
         }
     }
 
+    @ViewBuilder
+    var infoView: some View {
+        VStack {
+            HStack {
+                Text("Creation Date:")
+                    .bold()
+                Text("\(creationDate.formatted())")
+            }
+            HStack {
+                Spacer()
+                Button("Done") {
+                    showInfoView = false
+                }
+            }
+        }
+        .padding(10)
+    }
+
+    @ViewBuilder
+    var editDateView: some View {
+        VStack {
+            DatePicker("Due Date:", selection: .init(get: {
+                dueDate ?? .now
+            }, set: { newDate in
+                dueDate = newDate
+            }))
+            HStack {
+                Spacer()
+                Button("Remove Due Date") {
+                    dueDate = nil
+                    showDateSelector = false
+                }
+                Button("Done") {
+                    showDateSelector = false
+                }
+            }
+        }
+        .padding(10)
+    }
+
     /// The Cancel and Save buttons at the bottom left of the screen
     @ViewBuilder
     var cancelSaveOptions: some View {
         HStack {
             Spacer()
+            Button {
+                showInfoView = true
+            } label: {
+                Image(systemName: "info.circle")
+                    .foregroundColor(.gray)
+            }
+            .buttonStyle(.borderless)
             Button("Cancel") {
                 exit()
             }

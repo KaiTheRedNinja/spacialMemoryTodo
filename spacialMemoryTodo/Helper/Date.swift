@@ -21,39 +21,70 @@ extension Date {
         let isDueString = isDue ? "-" : ""
         interval = abs(interval)
 
-        let minute: Double = 60
-        let hour: Double = minute * 60
-        let day: Double = hour * 24
-        let week: Double = day * 7
-        let year: Double = day * 365.25
-        let month: Double = year / 12
+        // calculate the ideal unit
+        let dateUnit = interval.idealUnit()
 
-        var timeDenominator: Double = 1
-        var unitString: String = "?"
-
-        if 0 <= interval, interval < hour { // 0s to 1 hour is specified in minutes
-            timeDenominator = minute
-            unitString = "min"
-        } else if hour <= interval, interval < day { // 1 hour to 1 day is specified in hours
-            timeDenominator = hour
-            unitString = "hr"
-        } else if day <= interval, interval < week { // 1 day to 1 week is specified in days
-            timeDenominator = day
-            unitString = "day"
-        } else if week <= interval, interval < month { // 1 week to 1 month is specified in weeks
-            timeDenominator = week
-            unitString = "week"
-        } else if month <= interval, interval < year { // 1 month to 1 year is specified in months
-            timeDenominator = month
-            unitString = "month"
-        } else if year <= interval { // 1 year onwards is specified in years
-            timeDenominator = year
-            unitString = "year"
-        }
-
-        let dividedByTime = interval/timeDenominator
+        // use the ideal unit to create the resultant string
+        let dividedByTime = interval/dateUnit.value
         let rounded = Int(dividedByTime.rounded(.toNearestOrAwayFromZero))
         let plural = rounded == 1 ? "" : "s"
-        return "\(isDueString)\(rounded) \(unitString)\(plural)"
+        return "\(isDueString)\(rounded) \(dateUnit.string)\(plural)"
+    }
+}
+
+extension TimeInterval {
+    func idealUnit() -> DateUnit {
+        if 0 <= self, self < DateUnit.hour.value { // 0s to 1 hour is specified in minutes
+            return .min
+        } else if DateUnit.hour.value <= self, self < DateUnit.day.value { // 1 hour to 1 day is specified in hours
+            return .hour
+        } else if DateUnit.day.value <= self, self < DateUnit.week.value { // 1 day to 1 week is specified in days
+            return .day
+        } else if DateUnit.week.value <= self, self < DateUnit.month.value { // 1 week to 1 month is specified in weeks
+            return .week
+        } else if DateUnit.month.value <= self, self < DateUnit.year.value { // 1 month to 1 year is specified in months
+            return .month
+        } else if DateUnit.year.value <= self { // 1 year onwards is specified in years
+            return .year
+        }
+
+        return .hour // default to hour
+    }
+}
+
+enum DateUnit {
+    case min
+    case hour
+    case day
+    case week
+    case month
+    case year
+
+    var value: Double {
+        switch self {
+        case .min:
+            return 60
+        case .hour:
+            return 3_600 // 60 * 60
+        case .day:
+            return 86_400 // 60*60 * 24
+        case .week:
+            return 604_800 // 60*60*24 * 7
+        case .month:
+            return 2_629_800 // 60*60*24*365.25 / 12
+        case .year:
+            return 31_557_600 // 60*60*24 * 365.25
+        }
+    }
+
+    var string: String {
+        switch self {
+        case .min: return "min"
+        case .hour: return "hr"
+        case .day: return "day"
+        case .week: return "week"
+        case .month: return "month"
+        case .year: return "year"
+        }
     }
 }

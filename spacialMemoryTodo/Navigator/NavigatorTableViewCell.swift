@@ -79,6 +79,7 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
     func addTodo() {
         label.stringValue = todo.name
+        toolTip = todo.name
         icon.image = NSImage(systemSymbolName: todo.isDone ? "checkmark.square.fill" : "square",
                              accessibilityDescription: nil)
 

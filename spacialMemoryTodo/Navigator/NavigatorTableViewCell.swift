@@ -145,6 +145,13 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
         }
     }
 
+    override func mouseDown(with event: NSEvent) {
+        let globalLocation: NSPoint = event.locationInWindow
+        let localLocation: NSPoint = self.icon.convert(globalLocation, to: nil)
+
+        Log.info("Recieved mouse down event")
+    }
+
     deinit {
         todoCancellable?.cancel()
     }

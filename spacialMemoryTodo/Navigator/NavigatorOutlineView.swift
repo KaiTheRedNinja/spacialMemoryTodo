@@ -17,6 +17,15 @@ class NavigatorOutlineView: LocationTodoOutlineViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // create a new outline view that we control
+        self.outlineView = MouseDetectingOutlineView()
+        outlineView.headerView = nil
+        let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
+        column.title = "Cell"
+        outlineView.addTableColumn(column)
+        scrollView.documentView = outlineView
+        outlineView.rowHeight = defaultRowHeight
+
         outlineView.dataSource = self
         outlineView.delegate = self
         outlineView.menu = NSMenu()
@@ -128,5 +137,22 @@ extension NavigatorOutlineView: NSOutlineViewDataSource, NSOutlineViewDelegate {
 extension NavigatorOutlineView: NSMenuDelegate {
     func menuNeedsUpdate(_ menu: NSMenu) {
         updateMenuAutomatically(menu)
+    }
+}
+
+class MouseDetectingOutlineView: NSOutlineView {
+    // send the mouse down event to subviews
+    override func mouseDown(with event: NSEvent) {
+        defer { super.mouseDown(with: event) }
+
+        let globalLocation: NSPoint = event.locationInWindow
+        let localLocation: NSPoint = self.convert(globalLocation, to: nil)
+        let clickedRow = self.row(at: localLocation)
+
+        guard clickedRow != -1 else { return }
+
+        if let row = self.view(atColumn: 0, row: clickedRow, makeIfNecessary: false) {
+            row.mouseDown(with: event)
+        }
     }
 }

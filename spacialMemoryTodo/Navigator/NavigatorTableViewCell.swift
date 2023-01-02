@@ -81,6 +81,11 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
         label.stringValue = todo.name
         icon.image = NSImage(systemSymbolName: todo.isDone ? "checkmark.square.fill" : "square",
                              accessibilityDescription: nil)
+
+        if let dueDate = todo.dueDate {
+            secondaryLabel.stringValue = Date.now.prettyTimeUntil(laterDate: dueDate)
+        }
+
         resizeSubviews(withOldSize: .zero)
 
         if todoCancellable == nil {

@@ -25,27 +25,27 @@ extension Date {
 
         // 0s to 30 minutes is specified in minutes, rounded up
         if 0 <= interval, interval < minute*30 {
-            return "\(Int((interval/minute).rounded(.awayFromZero)))min"
+            return "\(Int((interval/minute).rounded(.awayFromZero))) mins"
         }
         // 30 minutes to 1 day is specified in hours, rounded up
         if minute*30 <= interval, interval < day {
-            return "\(Int((interval/hour).rounded(.awayFromZero)))hr"
+            return "\(Int((interval/hour).rounded(.awayFromZero))) hrs"
         }
         // 1 day to 1 week is specified in days, rounded up
         if day <= interval, interval < week {
-            return "\(Int((interval/day).rounded(.awayFromZero)))d"
+            return "\(Int((interval/day).rounded(.awayFromZero))) days"
         }
         // 1 week to 1 month is specified in weeks, rounded to the nearest week
         if week <= interval, interval < month {
-            return "\(Int((interval/week).rounded(.toNearestOrAwayFromZero)))wk"
+            return "\(Int((interval/week).rounded(.toNearestOrAwayFromZero))) weeks"
         }
         // 1 month to 1 year is specified in months, rounded to the nearest month
         if month <= interval, interval < year {
-            return "\(Int((interval/month).rounded(.toNearestOrAwayFromZero)))mth"
+            return "\(Int((interval/month).rounded(.toNearestOrAwayFromZero))) months"
         }
         // 1 year onwards is specified in years, rounded to the nearest year
         if year <= interval {
-            return "\(Int((interval/year).rounded(.toNearestOrAwayFromZero)))yr"
+            return "\(Int((interval/year).rounded(.toNearestOrAwayFromZero))) years"
         }
 
         return "?"

@@ -87,6 +87,9 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
             secondaryLabel.stringValue = Date.now.prettyTimeUntil(laterDate: dueDate)
         }
 
+        // colour the icon
+        setIconColour()
+
         resizeSubviews(withOldSize: .zero)
 
         if todoCancellable == nil {
@@ -106,6 +109,39 @@ class TodoTableViewCell: macAppBoilerplate.StandardTableViewCell {
 
                 self.addTodo()
             }
+        }
+    }
+
+    func setIconColour() {
+        icon.contentTintColor = .controlAccentColor
+
+        // finished todos should always be the accent colour
+        guard !todo.isDone else { return }
+
+        guard let dueDate = todo.dueDate else { return }
+
+        let interval = dueDate.timeIntervalSince(.now)
+        if interval < 0 { // red for overdue, different icon too
+            icon.contentTintColor = .red
+            icon.image = NSImage(systemSymbolName: "exclamationmark.square",
+                                 accessibilityDescription: nil)
+            return
+        }
+
+        let dateUnit = interval.idealUnit()
+        // year/month:  green
+        // day/week:    yellow
+        // hour:        orange
+        // minute:      red
+        switch dateUnit {
+        case .min:
+            icon.contentTintColor = .red
+        case .hour:
+            icon.contentTintColor = .orange
+        case .day, .week:
+            icon.contentTintColor = .yellow
+        case .month, .year:
+            icon.contentTintColor = .green
         }
     }
 

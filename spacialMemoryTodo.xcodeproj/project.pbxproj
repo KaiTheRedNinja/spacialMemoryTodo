@@ -33,6 +33,7 @@
 		934A359C295E81F300A3C1A4 /* PossibleColours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934A359B295E81F300A3C1A4 /* PossibleColours.swift */; };
 		93ACF3502961A1C600B2EC19 /* Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACF34F2961A1C600B2EC19 /* Combine.swift */; };
 		93ACF3522961C3BE00B2EC19 /* SidebarNavigatorViewToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACF3512961C3BE00B2EC19 /* SidebarNavigatorViewToolbar.swift */; };
+		93ACF3542962D8E000B2EC19 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ACF3532962D8E000B2EC19 /* Date.swift */; };
 		93AE3DE0295FBE7E00DF6041 /* NavigatorTableViewCell+NSTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93AE3DDF295FBE7E00DF6041 /* NavigatorTableViewCell+NSTextFieldDelegate.swift */; };
 		93C6405529457750006CEC5F /* DraggableResizableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C6405429457750006CEC5F /* DraggableResizableView.swift */; };
 		93F9FD5429595FD300ADA897 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F9FD5329595FD300ADA897 /* LocationManager.swift */; };
@@ -66,6 +67,7 @@
 		934A359B295E81F300A3C1A4 /* PossibleColours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PossibleColours.swift; sourceTree = "<group>"; };
 		93ACF34F2961A1C600B2EC19 /* Combine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Combine.swift; sourceTree = "<group>"; };
 		93ACF3512961C3BE00B2EC19 /* SidebarNavigatorViewToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarNavigatorViewToolbar.swift; sourceTree = "<group>"; };
+		93ACF3532962D8E000B2EC19 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		93AE3DDF295FBE7E00DF6041 /* NavigatorTableViewCell+NSTextFieldDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigatorTableViewCell+NSTextFieldDelegate.swift"; sourceTree = "<group>"; };
 		93C6405429457750006CEC5F /* DraggableResizableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DraggableResizableView.swift; sourceTree = "<group>"; };
 		93F9FD5329595FD300ADA897 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				93C6405429457750006CEC5F /* DraggableResizableView.swift */,
 				934A3598295DD2DF00A3C1A4 /* LocationTodoOutlineHelper.swift */,
 				93ACF34F2961A1C600B2EC19 /* Combine.swift */,
+				93ACF3532962D8E000B2EC19 /* Date.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				93065F4C294440A0002A3381 /* LocationCardOutlineView.swift in Sources */,
 				93065F402943751B002A3381 /* Todo.swift in Sources */,
 				9309676D295300BA00DB17CE /* EditLocationPopUpView.swift in Sources */,
+				93ACF3542962D8E000B2EC19 /* Date.swift in Sources */,
 				930967692952E33B00DB17CE /* PopUpManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

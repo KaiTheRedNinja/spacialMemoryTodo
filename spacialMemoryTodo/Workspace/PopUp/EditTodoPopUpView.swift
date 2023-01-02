@@ -34,6 +34,7 @@ struct EditTodoPopUpView: View {
     @State var newName: String = "Untitled Todo"
     @State var creationDate: Date = .now
     @State var dueDate: Date?
+    @State var showDateSelector: Bool = false
 
     /// The main view for editing things
     @ViewBuilder
@@ -59,7 +60,7 @@ struct EditTodoPopUpView: View {
                     .multilineTextAlignment(.trailing)
                     .frame(width: 100, alignment: .trailing)
                 Button {
-                    // TODO: Edit due date
+                    showDateSelector = true
                 } label: {
                     if let dueDate {
                         Text("\(dueDate.formatted())")
@@ -68,6 +69,26 @@ struct EditTodoPopUpView: View {
                     }
                 }
                 Spacer()
+            }
+            .sheet(isPresented: $showDateSelector) {
+                VStack {
+                    DatePicker("Due Date:", selection: .init(get: {
+                        dueDate ?? .now
+                    }, set: { newDate in
+                        dueDate = newDate
+                    }))
+                    HStack {
+                        Spacer()
+                        Button("Remove Due Date") {
+                            dueDate = nil
+                            showDateSelector = false
+                        }
+                        Button("Close") {
+                            showDateSelector = false
+                        }
+                    }
+                }
+                .padding(10)
             }
             cancelSaveOptions
         }
@@ -114,6 +135,7 @@ struct EditTodoPopUpView: View {
         guard let todo = popUpManager.todoToEdit else { return }
 
         todo.name = newName
+        todo.dueDate = dueDate
         todo.objectWillChange.send()
 
         LocationManager.save(sender: tabManager)

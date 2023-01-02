@@ -12,7 +12,7 @@ class Todo: Identifiable, Equatable, ObservableObject, Codable {
     var isDone: Bool
 
     let creationDate: Date
-    let dueDate: Date?
+    var dueDate: Date?
 
     init(name: String, creationDate: Date = .now, dueDate: Date? = nil, isDone: Bool = false) {
         self.name = name
